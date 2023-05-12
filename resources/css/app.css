@@ -1,0 +1,137 @@
+@import url('/resources/template/sbadmin/vendor/fontawesome-free/css/all.min.css');
+@import url('https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i');
+@import url('/resources/template/sbadmin/css/sb-admin-2.min.css');
+@import url('/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.css');
+
+/* // Override the default color of the progress bar */
+#inertia-progress[data-progress] {
+    background-color: red;
+}
+
+/* // Override the default height of the progress bar */
+#inertia-progress[data-progress] {
+    height: 5px;
+}
+
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+button {
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    height: 40px !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+
+input:focus {
+    border: 1px solid #EC407A !important;
+}
+
+
+
+.bg-main {
+    background-color: #ef95b3;
+}
+
+#accordionSidebar {
+    background-color: white !important;
+}
+
+.navbar {
+    background-color: transparent !important;
+}
+
+.main-color {
+    color: #cd2c62;
+}
+
+.sidebar li a,
+.sidebar li span {
+    font-size: 14px !important;
+    color: black !important;
+
+}
+
+body .card {
+    border-radius: 15px !important;
+}
+
+#content {
+    background: url(../../public/assets/img/bg4png.png);
+    background-repeat: no-repeat !important;
+    /* background-position: 100px !important; */
+    background-size: cover !important;
+    background-attachment: fixed !important;
+}
+
+.sidebar li i {
+    color: #ff9898 !important;
+    font-size: 20px !important;
+    margin-right: 10px !important;
+}
+
+.sidebar-heading {
+    color: #696969 !important;
+}
+
+.sidebar-divider {
+    border: 1px solid #eee;
+}
+
+.login-wrapper .ilustration {
+    background-color: #EC407A !important;
+}
+
+.login-wrapper {
+    width: 100vw;
+    height: 100vh;
+}
+
+.login-wrapper .row {
+    height: 100vh;
+}
+
+.primary-btn {
+    background-color: #EC407A;
+    border: 1px solid #EC407A;
+}
+
+.primary-btn:hover {
+    background-color: #cd2c62;
+    border: 1px solid #EC407A;
+}
+
+
+.primary-btn:focus,
+.primary-btn:active {
+    background-color: #dadada !important;
+    border: 1px solid #dadada !important;
+
+}
+
+.flash-message {}
+
+#flash-message {
+    background-color: rgba(255, 228, 196, 0.8);
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    opacity: 0;
+    transition: 1s;
+    z-index: -10;
+}
+
+#flash-message.show {
+    opacity: 1;
+    z-index: 9999;
+}
