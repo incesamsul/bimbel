@@ -3,6 +3,10 @@
 @import url('/resources/template/sbadmin/css/sb-admin-2.min.css');
 @import url('/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.css');
 
+body {
+    font-family: 'Nunito' !important;
+}
+
 /* // Override the default color of the progress bar */
 #inertia-progress[data-progress] {
     background-color: red;
@@ -11,6 +15,12 @@
 /* // Override the default height of the progress bar */
 #inertia-progress[data-progress] {
     height: 5px;
+}
+
+#sidebarToggle::after {
+    color: #ef95b3 !important;
+    font-size: 25px;
+
 }
 
 
@@ -54,8 +64,28 @@ input:focus {
 .sidebar li span {
     font-size: 14px !important;
     color: black !important;
+    padding-top: 13px !important;
+    padding-bottom: 13px !important;
+    margin-top: 10px;
+    width: 90% !important;
 
 }
+
+.sidebar li a:hover,
+.sidebar li.active a {
+    background-color: #cd2c6211;
+    border-top-right-radius: 90px;
+    border-bottom-right-radius: 90px;
+    font-weight: 500 !important;
+}
+
+.toggled.sidebar li span {
+    display: none !important;
+}
+
+
+
+
 
 body .card {
     border-radius: 15px !important;
@@ -73,6 +103,7 @@ body .card {
     color: #ff9898 !important;
     font-size: 20px !important;
     margin-right: 10px !important;
+    margin-left: 10px !important;
 }
 
 .sidebar-heading {

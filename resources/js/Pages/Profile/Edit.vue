@@ -34,7 +34,7 @@ defineProps({
                     </div>
                 </div>
             </div>
-            <div class="row mt-4">
+            <div class="row mt-4 mb-5">
                 <div class="col-sm-12">
                     <div class="card border-0 p-3">
                         <div class="card-body">
@@ -45,13 +45,13 @@ defineProps({
             </div>
 
 
-            <div class="row mt-4">
+            <!-- <div class="row mt-4">
                 <div class="col-sm-12">
                     <div class="card border-0 p-5">
                         <DeleteUserForm class="max-w-xl" />
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </AuthenticatedLayout>
 </template>

@@ -27,7 +27,16 @@ createInertiaApp({
             .mount(el);
     },
     progress: {
-        color: '#4B5563',
+
+        // The color of the progress bar...
+        color: '#EC407A',
+
+        // Whether to include the default NProgress styles...
+        includeCSS: true,
+
+        // Whether the NProgress spinner will be shown...
+        showSpinner: true,
     },
+    // ...
 });
 

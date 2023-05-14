@@ -13,11 +13,4 @@ class GeneralController extends Controller
             'user' => auth()->user()
         ]);
     }
-
-    public function logAktivitas()
-    {
-        return Inertia::render('LogAktivitas', [
-            'user' => auth()->user()
-        ]);
-    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeneralController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
@@ -33,7 +34,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::get('/bantuan', [GeneralController::class, 'index']);
-    Route::get('/log_aktivitas', [GeneralController::class, 'logAktivitas']);
+    Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
+    Route::get('/kelas/create', [KelasController::class, 'create']);
+    Route::post('/kelas', [KelasController::class, 'store']);
+    Route::put('/kelas', [KelasController::class, 'update']);
+    Route::get('/kelas/edit/{id_kelas}', [KelasController::class, 'edit']);
+    Route::delete('/kelas/{id_kelas}', [KelasController::class, 'delete'])->name('kelas.delete');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

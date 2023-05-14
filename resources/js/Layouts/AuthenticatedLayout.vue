@@ -12,7 +12,7 @@ const showingNavigationDropdown = ref(false);
         <ul class="navbar-nav bg-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center mt-4" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-book main-color"></i>
                 </div>
@@ -22,74 +22,58 @@ const showingNavigationDropdown = ref(false);
                 </div>
             </a>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
 
 
-            <li class="nav-item">
+
+            <li class="nav-item mt-3 " :class="{ 'active': isActive('/dashboard') }">
                 <Link href="/dashboard" class="nav-link">
                 <i class="far fa-fw fa-chart-bar"></i>
+
                 <span>Dashboard</span></Link>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Pengguna
-            </div>
 
 
-            <li class="nav-item">
+
+            <li class="nav-item" :class="{ 'active': isActive('/profile') }">
                 <Link class="nav-link" href="/profile">
                 <i class="far fa-fw fa-user"></i>
                 <span>Profile</span></Link>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item" :class="{ 'active': isActive('/bantuan') }">
                 <Link class="nav-link" href="/bantuan">
                 <i class="far fa-fw fa-question-circle"></i>
                 <span>Bantuan</span></Link>
             </li>
 
-
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                menu {{ user.role }}
-            </div>
-
-
             <template v-if="user.role == 'admin'">
-                <li class="nav-item">
+                <li class="nav-item" :class="{ 'active': isActive('/admin/pengguna') }">
                     <Link class="nav-link" href="/admin/pengguna">
-                    <i class="fas fa-fw fa-users"></i>
+                    <i class="far fa-fw fa-address-card"></i>
                     <span>Pengguna</span></Link>
                 </li>
 
 
-                <li class="nav-item">
-                    <Link class="nav-link" href="/log_aktivitas">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>Log Aktivitas</span></Link>
+                <li class="nav-item" :class="{ 'active': isActive('/kelas') }">
+                    <Link class="nav-link" href="/kelas">
+                    <i class="far fa-fw fa-folder-open"></i>
+                    <span>Data Kelas</span></Link>
                 </li>
 
             </template>
 
             <li class="nav-item">
-                <Link :href="route('logout')" as="buttton" method="post" class="nav-link" href="tables.html">
-                <i class="fas fa-fw fa-sign-out-alt"></i>
+                <Link :href="route('logout')" as="buttton" method="post" class="nav-link cursor-pointer" href="tables.html">
+                <i class="far fa-fw fa-frown"></i>
                 <span>Logout</span></Link>
             </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
-            <div class="text-center d-none d-md-inline">
-                <button @click="toggleNav" class="rounded-circle border-0" id="sidebarToggle"></button>
+            <div class="text-center d-none d-md-inline mt-5">
+                <button @click="toggleNav" class="rounded-circle border-0 bg-light" id="sidebarToggle"></button>
             </div>
 
         </ul>
@@ -313,7 +297,11 @@ export default {
             const navbar = document.querySelector('.navbar-nav');
             navbar.classList.toggle('toggled');
         },
+        isActive(url) {
+            return window.location.pathname === url;
+        }
     },
+
 };
 </script>
 
