@@ -168,7 +168,7 @@ function resetForm() {
                             <div class="form-group">
                                 <InputLabel for="whatsapp" value="Whatsapp" />
 
-                                <TextInput id="whatsapp" type="whatsapp" class="form-control shadow-none"
+                                <TextInput id="whatsapp" type="text" class="form-control shadow-none"
                                     v-model="form.whatsapp" required autocomplete="username" />
 
                                 <InputError class="mt-2" :message="form.errors.whatsapp" />
@@ -187,7 +187,7 @@ function resetForm() {
                             <div class="form-group">
                                 <InputLabel for="alamat" value="Alamat" />
 
-                                <TextInput id="alamat" type="alamat" class="form-control shadow-none" v-model="form.alamat"
+                                <TextInput id="alamat" type="text" class="form-control shadow-none" v-model="form.alamat"
                                     required autocomplete="username" />
 
                                 <InputError class="mt-2" :message="form.errors.alamat" />

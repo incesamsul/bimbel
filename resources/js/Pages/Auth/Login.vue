@@ -54,7 +54,7 @@ const submit = () => {
             </div>
 
 
-            <PrimaryButton class="btn btn-primary btn-user btn-block" :class="{ 'opacity-25': form.processing }"
+            <PrimaryButton class="btn bg-main text-white btn-user btn-block mt-4" :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
                 Log in
             </PrimaryButton>
@@ -84,3 +84,9 @@ const submit = () => {
 
     </GuestLayout>
 </template>
+
+<style>
+.bg-main {
+    background: #EC407A !important;
+}
+</style>

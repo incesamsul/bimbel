@@ -12,7 +12,7 @@ import '/resources/template/sbadmin/vendor/jquery-easing/jquery.easing.min.js';
 import '/resources/template/sbadmin/js/sb-admin-2.min.js';
 import '/resources/template/sbadmin/vendor/datatables/jquery.dataTables.min.js';
 import '/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.js';
-
+import '/resources/template/sbadmin/vendor/ckeditor/build/ckeditor.js';
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';

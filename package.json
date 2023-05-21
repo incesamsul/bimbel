@@ -17,6 +17,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@tinymce/tinymce-vue": "^5.1.0",
+        "ckeditor5": "^37.1.0",
         "lottie-web": "^5.11.0",
         "vue-toastification": "^2.0.0-rc.5"
     }

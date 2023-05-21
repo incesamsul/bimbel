@@ -63,7 +63,6 @@ export default {
     props: {
         user: Object,
         users: Object,
-        absensi: Object,
         edit: Object,
     },
 

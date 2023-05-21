@@ -55,11 +55,54 @@ const showingNavigationDropdown = ref(false);
                 </li>
 
 
+                <li class="nav-item" :class="{ 'active': isActive('/soal') }">
+                    <Link class="nav-link" href="/soal">
+                    <i class="far fa-fw fa-folder"></i>
+                    <span>Data Soal</span></Link>
+                </li>
+
                 <li class="nav-item" :class="{ 'active': isActive('/kelas') }">
                     <Link class="nav-link" href="/kelas">
                     <i class="far fa-fw fa-folder-open"></i>
                     <span>Data Kelas</span></Link>
                 </li>
+
+
+                <li class="nav-item" :class="{ 'active': isActive('/kategori_soal') }">
+                    <Link class="nav-link" href="/kategori_soal">
+                    <i class="far fa-fw fa-list-alt"></i>
+                    <span>Kategori Soal</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/sub_kategori_soal') }">
+                    <Link class="nav-link" href="/sub_kategori_soal">
+                    <i class="far fa-fw fa-list-alt"></i>
+                    <span>SubKategori Soal</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/tryout') }">
+                    <Link class="nav-link" href="/tryout">
+                    <i class="far fa-fw fa-object-group"></i>
+                    <span>Tryout</span></Link>
+                </li>
+
+            </template>
+
+
+
+            <template v-if="user.role == 'member'">
+                <li class="nav-item" :class="{ 'active': isActive('/member/pembayaran') }">
+                    <Link class="nav-link" href="/member/pembayaran">
+                    <i class="far fa-fw fa-credit-card"></i>
+                    <span>Pembayaran</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/member/tryout') }">
+                    <Link class="nav-link" href="/member/tryout">
+                    <i class="far fa-fw fa-object-group"></i>
+                    <span>Tryout</span></Link>
+                </li>
+
 
             </template>
 

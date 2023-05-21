@@ -3,19 +3,55 @@
 @import url('/resources/template/sbadmin/css/sb-admin-2.min.css');
 @import url('/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.css');
 
+.hide {
+    display: none !important;
+}
+
+/* Set the overflow property to enable scrolling */
+.scrollable-div {
+    overflow: auto;
+}
+
+/* Customize the scrollbar for the scrollable div */
+.scrollable-div::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scrollable-div::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb {
+    background: #bbb;
+    border-radius: 15px;
+}
+
+.scrollable-div::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+
 body {
     font-family: 'Nunito' !important;
 }
 
-/* // Override the default color of the progress bar */
-#inertia-progress[data-progress] {
-    background-color: red;
+.ck-editor__editable {
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 10px !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1) !important;
 }
 
-/* // Override the default height of the progress bar */
-#inertia-progress[data-progress] {
-    height: 5px;
+.ck.ck-toolbar {
+    border: none !important;
 }
+
+.ck.ck-editor {
+    border: 1px solid #ddd !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
 
 #sidebarToggle::after {
     color: #ef95b3 !important;
@@ -27,7 +63,10 @@ body {
 input[type="text"],
 input[type="email"],
 input[type="password"],
-button {
+input[type="date"],
+input[type="number"],
+button,
+select {
     border-radius: 8px !important;
     font-size: 12px !important;
     height: 40px !important;
@@ -55,6 +94,8 @@ input:focus {
 .navbar {
     background-color: transparent !important;
 }
+
+
 
 .main-color {
     color: #cd2c62;
@@ -92,7 +133,9 @@ body .card {
 }
 
 #content {
-    background: url(../../public/assets/img/bg4png.png);
+    background-color: #F7F8FF !important;
+    padding-left: 5px;
+    /* background: url(../../public/assets/img/bg4png.png); */
     background-repeat: no-repeat !important;
     /* background-position: 100px !important; */
     background-size: cover !important;
@@ -149,7 +192,7 @@ body .card {
 
 #flash-message {
     background-color: rgba(255, 228, 196, 0.8);
-    position: absolute;
+    position: fixed;
     right: 10px;
     top: 10px;
     padding: 20px;

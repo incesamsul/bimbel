@@ -22,7 +22,7 @@
     <div id="flash-message">
         <div class="flash-message shadow">
             <i class="fas fa-info-circle"></i>
-            <span class="ml-3">' + message + '</span>
+            <span class="ml-3"></span>
         </div>
     </div>
     @inertia
