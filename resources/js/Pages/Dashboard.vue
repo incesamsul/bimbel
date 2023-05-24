@@ -1,6 +1,11 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+
+import { Head, Link, useForm } from '@inertiajs/vue3';
+import { showFlashMessage } from '@/global_func.js';
+
+
+
 
 </script>
 
@@ -11,184 +16,165 @@ import { Head } from '@inertiajs/vue3';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary "><i
-                        class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
-            </div>
-
-            <!-- Content Row -->
-            <div class="row">
-
-                <!-- Pemasukan (perbulan) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-0 border-left-primary   py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                        Pemasukan (perbulan)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pemasukan (perbulan) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-0 border-left-success   py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                        Pemasukan (Tahunan)</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pemasukan (perbulan) Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-0 border-left-info   py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
-                                    </div>
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="progress progress-sm mr-2">
-                                                <div class="progress-bar bg-info" role="progressbar" style="width: 50%"
-                                                    aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pending Requests Card Example -->
-                <div class="col-xl-3 col-md-6 mb-4">
-                    <div class="card border-0 border-left-warning   py-2">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                        Pending Requests</div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Content Row -->
+            <h1 class="h3 mb-2 text-gray-800">Summary tryout</h1>
+            <p class="mb-4">Berikut hasil tryout anda.</p>
 
             <div class="row">
-
-                <!-- Area Chart -->
-                <div class="col-xl-8 col-lg-7">
-                    <div class="card border-0  mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Pemasukan Overview</h6>
-                            <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right  animated--fade-in"
-                                    aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="chart-area">
-                                <canvas id="myAreaChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pie Chart -->
-                <div class="col-xl-4 col-lg-5">
-                    <div class="card border-0  mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div class="card-header bg-white py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                            <div class="dropdown no-arrow">
-                                <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-right  animated--fade-in"
-                                    aria-labelledby="dropdownMenuLink">
-                                    <div class="dropdown-header">Dropdown Header:</div>
-                                    <a class="dropdown-item" href="#">Action</a>
-                                    <a class="dropdown-item" href="#">Another action</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Something else here</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="chart-pie pt-4 pb-2">
-                                <canvas id="myPieChart"></canvas>
-                            </div>
-                            <div class="mt-4 text-center small">
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-primary"></i> Direct
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-success"></i> Social
-                                </span>
-                                <span class="mr-2">
-                                    <i class="fas fa-circle text-info"></i> Referral
-                                </span>
-                            </div>
+                <div class="col-sm-12">
+                    <div class="card border-0">
+                        <div class="card-body text-center">
+                            <h4>Maaf, Anda tidak lulus</h4>
                         </div>
                     </div>
                 </div>
             </div>
-
-
 
         </div>
+
+
     </AuthenticatedLayout>
 </template>
 
 <script>
+
+
+
 export default {
     props: {
-        user: Object
+        user: Object,
+        segment_tryout: Object,
+    },
+    computed: {
+
+    },
+    methods: {
+
+    }, mounted() {
+        // Initialize DataTables
+        $('#dataTable').DataTable({
+            // DataTables configuration options
+        });
+
+        let total = [10, 30, 5];
+        let tiu = [24, 30, 5];
+        let tkp = [77, 30, 5];
+        let twk = [0, 0, 25];
+
+        var ctx = document.getElementById("totalChart");
+        if (ctx) {
+            var myChart = new Chart(ctx, {
+                aspectRatio: 1,
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: total,
+                        backgroundColor: [
+                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
+                        ],
+                        label: 'Dataset 1'
+                    }],
+                    labels: [
+                        'tiu',
+                        'tkp',
+                        'twk'
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                    },
+                }
+            });
+        }
+
+        var ctx = document.getElementById("tiuChart");
+        if (ctx) {
+            var myChart = new Chart(ctx, {
+                aspectRatio: 1,
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: tiu,
+                        backgroundColor: [
+                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
+                        ],
+                        label: 'Dataset 1'
+                    }],
+                    labels: [
+                        'benar',
+                        'salah',
+                        'kosong'
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                    },
+                }
+            });
+        }
+
+
+        var ctx = document.getElementById("tkpChart");
+        if (ctx) {
+            var myChart = new Chart(ctx, {
+                aspectRatio: 1,
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: tkp,
+                        backgroundColor: [
+                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
+                        ],
+                        label: 'Dataset 1'
+                    }],
+                    labels: [
+                        'benar',
+                        'salah',
+                        'kosong'
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                    },
+                }
+            });
+        }
+
+
+        var ctx = document.getElementById("twkChart");
+        if (ctx) {
+            var myChart = new Chart(ctx, {
+                aspectRatio: 1,
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: twk,
+                        backgroundColor: [
+                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
+                        ],
+                        label: 'Dataset 1'
+                    }],
+                    labels: [
+                        'benar',
+                        'salah',
+                        'kosong'
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        position: 'bottom',
+                    },
+                }
+            });
+        }
+
+
     }
 }
 </script>

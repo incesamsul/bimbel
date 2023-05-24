@@ -1,0 +1,1 @@
+(function(i){const n=i["gu"]=i["gu"]||{};n.dictionary=Object.assign(n.dictionary||{},{"%0 of %1":"",Cancel:"",Italic:"ત્રાંસુ - ઇટલિક્",Save:"","Show more items":"",Subscript:"",Superscript:""});n.getPluralForm=function(i){return i!=1}})(window.CKEDITOR_TRANSLATIONS||(window.CKEDITOR_TRANSLATIONS={}));

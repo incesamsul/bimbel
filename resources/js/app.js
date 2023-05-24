@@ -13,6 +13,7 @@ import '/resources/template/sbadmin/js/sb-admin-2.min.js';
 import '/resources/template/sbadmin/vendor/datatables/jquery.dataTables.min.js';
 import '/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.js';
 import '/resources/template/sbadmin/vendor/ckeditor/build/ckeditor.js';
+import '/resources/template/sbadmin/vendor/chart.js/chart.min.js';
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';

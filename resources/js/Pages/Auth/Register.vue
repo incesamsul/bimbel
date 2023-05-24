@@ -77,3 +77,9 @@ const submit = () => {
     </GuestLayout>
 </template>
 
+
+<style>
+.bg-main {
+    background-color: #EC407A !important;
+}
+</style>
