@@ -92,6 +92,26 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="col-sm-12">
                             <div class="card border-0 mb-4">
                                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-">Sisa Waktu</h6>
+                                    <h6><i class="far fa-hourglass"></i></h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-sm-12 d-flex justify-content-center">
+                                            <h3>
+                                                <strong>
+                                                    <div id="timer"></div>
+                                                    <div id="ket"></div>
+                                                </strong>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div class="card border-0 mb-4">
+                                <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                                     <h6 class="m-0 font-weight-bold text-">Nomor soal</h6>
                                 </div>
                                 <div class="card-body">
@@ -264,9 +284,12 @@ export default {
         kategori_soals: Object,
         id_tryout: Number,
         segment_tryout_id: Number,
+        active_segment: Object,
     },
     data() {
         return {
+
+            timerInterval: null,
 
             tryout_soal: [],
             selectedAnswerIndex: null,
@@ -279,15 +302,23 @@ export default {
     },
     methods: {
         finishSegment(tryoutId) {
+
+            clearInterval(this.timerInterval);
+            localStorage.removeItem('startTime');
+            localStorage.removeItem('duration');
+
+            // Reset the timer display
+            $('#timer').text('00:00');
             this.loading = true;
             axios.post(`/api/finish_segment/${tryoutId}`, {
                 user_id: this.user.id,
 
             })
                 .then(response => {
-                    console.log(response)
+                    // console.log(response)
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
+
                     this.$inertia.visit(`/member/tryout/finish/${this.segment_tryout_id}`);
 
                 })
@@ -324,7 +355,7 @@ export default {
             })
                 .then(response => {
                     // Handle the success response if needed
-                    console.log('Question flag successfully');
+                    // console.log('Question flag successfully');
                     // Remove the question from the local array
                     this.fetchDataSoal();
                 })
@@ -350,7 +381,7 @@ export default {
             })
                 .then(response => {
                     // Handle the success response if needed
-                    console.log('Question flag successfully');
+                    // console.log('Question flag successfully');
                     // Remove the question from the local array
                     this.fetchDataSoal();
                 })
@@ -376,7 +407,7 @@ export default {
             })
                 .then(response => {
                     // Handle the success response if needed
-                    console.log('Question removed successfully');
+                    // console.log('Question removed successfully');
                     // Remove the question from the local array
                     this.fetchDataSoal();
                 })
@@ -459,7 +490,7 @@ export default {
                 .then(response => {
                     // Update the soal data in the component
                     this.tryout_soal = response.data;
-                    console.log(this.tryout_soal);
+                    // console.log(this.tryout_soal);
 
                     // Set the default selected question
                     this.displayQuestion(this.selectedQuestionIndex);
@@ -479,10 +510,59 @@ export default {
     },
     mounted() {
 
+        let durasi_menit = this.active_segment.tryout.durasi;
+        let durasi_seconds = durasi_menit * 60;
+
+        let self = this;
+
         this.fetchDataSoal();
 
         const navbar = document.querySelector('.navbar-nav');
         navbar.classList.add('toggled');
+
+        // Check if the timer is already running
+        var startTime = localStorage.getItem('startTime');
+        var duration = localStorage.getItem('duration');
+        var interval;
+
+        if (startTime && duration) {
+            // Calculate the remaining time
+            var elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            var remainingTime = Math.max(duration - elapsedTime, 0);
+            startTimer(remainingTime);
+        } else {
+            // Set the exam duration in seconds (e.g., 10 minutes = 600 seconds)
+            var examDuration = durasi_seconds;
+            startTimer(examDuration);
+        }
+
+        function startTimer(seconds) {
+            // Store the start time and duration
+            localStorage.setItem('startTime', Date.now());
+            localStorage.setItem('duration', seconds);
+
+            // Start the countdown
+            self.timerInterval = setInterval(function () {
+                // Update the display
+                var minutes = Math.floor(seconds / 60);
+                var remainingSeconds = seconds % 60;
+                $('#timer').text(minutes + ':' + remainingSeconds.toString().padStart(2, '0'));
+
+                // Check if the timer has reached zero
+                if (seconds <= 0) {
+                    clearInterval(self.timerInterval);
+                    $('#timer').text('Time is up!');
+                    localStorage.removeItem('startTime');
+                    localStorage.removeItem('duration');
+                    self.finishSegment(self.segment_tryout_id);
+                    // Perform actions when time is up (e.g., close the exam)
+                    // ...
+
+                }
+
+                seconds--;
+            }, 1000);
+        }
 
     },
     computed: {

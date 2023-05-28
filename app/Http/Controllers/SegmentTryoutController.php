@@ -41,8 +41,10 @@ class SegmentTryoutController extends Controller
     public function finishSegment(Request $request, $segmentTryoutId)
     {
 
+
         $cekJawaban = SegmentTryout::where('user_id', $request->user_id)
             ->where('id', $segmentTryoutId);
+
 
         $updatedSegment = $cekJawaban->update([
             'selesai' => date('Y-m-d H:i:s'),

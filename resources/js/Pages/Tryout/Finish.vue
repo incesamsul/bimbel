@@ -22,7 +22,9 @@ import { showFlashMessage } from '@/global_func.js';
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card border-0">
-                        <div class="card-body text-center">
+                        <div class="card-body text-center d-flex">
+                            <Link :href="'/member/tryout/history/' + this.segment_tryout.tryout.id"><i
+                                class="fas fa-arrow-left mr-2"></i></Link>
                             <h4>Maaf, Anda tidak lulus</h4>
                         </div>
                     </div>
@@ -36,6 +38,24 @@ import { showFlashMessage } from '@/global_func.js';
                         </div>
                         <div class="card-body text-center">
                             <canvas height="350" id="totalChart"></canvas>
+                            <small>Total Poin</small>
+                            <h3>{{ this.hasilTryout.total_poin_tiu + this.hasilTryout.total_poin_twk +
+                                this.hasilTryout.total_poin_tkp }}</h3>
+                            <hr>
+                            <div class="d-flex justify-content-around">
+                                <div class="d-flex flex-column ">
+                                    <small>TIU</small>
+                                    <h3>{{ this.hasilTryout.total_poin_tiu }}</h3>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <small>TWK</small>
+                                    <h3>{{ this.hasilTryout.total_poin_twk }}</h3>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <small>TKP</small>
+                                    <h3>{{ this.hasilTryout.total_poin_tkp }}</h3>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -46,6 +66,23 @@ import { showFlashMessage } from '@/global_func.js';
                         </div>
                         <div class="card-body text-center">
                             <canvas height="350" id="tiuChart"></canvas>
+                            <small>Total Poin</small>
+                            <h3>{{ this.hasilTryout.total_poin_tiu }}</h3>
+                            <hr>
+                            <div class="d-flex justify-content-around">
+                                <div class="d-flex flex-column ">
+                                    <small>BENAR</small>
+                                    <h3>{{ this.hasilTryout.tiu_terjawab_benar }}</h3>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <small>SALAH</small>
+                                    <h3>{{ this.hasilTryout.tiu_terjawab_salah }}</h3>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <small>KOSONG</small>
+                                    <h3>{{ this.hasilTryout.tiu_tidak_terjawab }}</h3>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,6 +93,36 @@ import { showFlashMessage } from '@/global_func.js';
                         </div>
                         <div class="card-body text-center">
                             <canvas height="350" id="tkpChart"></canvas>
+                            <div class="d-flex flex-column">
+                                <div class="d-flex flex-row justify-content-between">
+                                    <small>Poin 5</small>
+                                    <small>{{ this.hasilTryout.poin_tkp_5 }}</small>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <small>Poin 4</small>
+                                    <small>{{ this.hasilTryout.poin_tkp_4 }}</small>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <small>Poin 3</small>
+                                    <small>{{ this.hasilTryout.poin_tkp_3 }}</small>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <small>Poin 2</small>
+                                    <small>{{ this.hasilTryout.poin_tkp_2 }}</small>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <small>Poin 1</small>
+                                    <small>{{ this.hasilTryout.poin_tkp_1 }}</small>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <small>Kosong</small>
+                                    <small>{{ this.hasilTryout.tkp_tidak_terjawab }}</small>
+                                </div>
+                                <div class="d-flex flex-row justify-content-between mt-2">
+                                    <small><strong>Total Poin</strong></small>
+                                    <h6>{{ this.hasilTryout.total_poin_tkp }}</h6>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -66,6 +133,23 @@ import { showFlashMessage } from '@/global_func.js';
                         </div>
                         <div class="card-body text-center">
                             <canvas height="350" id="twkChart"></canvas>
+                            <small>Total Poin</small>
+                            <h3>{{ this.hasilTryout.total_poin_twk }}</h3>
+                            <hr>
+                            <div class="d-flex justify-content-around">
+                                <div class="d-flex flex-column ">
+                                    <small>BENAR</small>
+                                    <h3>{{ this.hasilTryout.twk_terjawab_benar }}</h3>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <small>SALAH</small>
+                                    <h3>{{ this.hasilTryout.twk_terjawab_salah }}</h3>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <small>KOSONG</small>
+                                    <h3>{{ this.hasilTryout.twk_tidak_terjawab }}</h3>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,20 +174,20 @@ import { showFlashMessage } from '@/global_func.js';
                                     <tr>
                                         <td>Tiu</td>
                                         <td>80</td>
-                                        <td>0</td>
+                                        <td>{{ this.hasilTryout.total_poin_tiu }}</td>
                                         <td>Gagal</td>
 
                                     </tr>
                                     <tr>
                                         <td>TKP</td>
-                                        <td>126</td>
+                                        <td>{{ this.hasilTryout.total_poin_tkp }}</td>
                                         <td>0</td>
                                         <td>Gagal</td>
 
                                     </tr>
                                     <tr>
                                         <td>TWK</td>
-                                        <td>65</td>
+                                        <td>{{ this.hasilTryout.total_poin_twk }}</td>
                                         <td>0</td>
                                         <td>Gagal</td>
 
@@ -171,6 +255,12 @@ export default {
     props: {
         user: Object,
         segment_tryout: Object,
+        hasil_tryout: String,
+    },
+    data() {
+        return {
+            hasilTryout: JSON.parse(this.hasil_tryout)
+        }
     },
     computed: {
 
@@ -178,15 +268,19 @@ export default {
     methods: {
 
     }, mounted() {
-        // Initialize DataTables
-        $('#dataTable').DataTable({
-            // DataTables configuration options
-        });
 
-        let total = [10, 30, 5];
-        let tiu = [24, 30, 5];
-        let tkp = [77, 30, 5];
-        let twk = [0, 0, 25];
+
+        let total = [this.hasilTryout.total_poin_tiu, this.hasilTryout.total_poin_tkp, this.hasilTryout.total_poin_twk];
+        let tiu = [this.hasilTryout.tiu_terjawab_benar, this.hasilTryout.tiu_terjawab_salah, this.hasilTryout.tiu_tidak_terjawab];
+        let tkp = [
+            this.hasilTryout.poin_tkp_5,
+            this.hasilTryout.poin_tkp_4,
+            this.hasilTryout.poin_tkp_3,
+            this.hasilTryout.poin_tkp_2,
+            this.hasilTryout.poin_tkp_1,
+            this.hasilTryout.tkp_tidak_terjawab,
+        ];
+        let twk = [this.hasilTryout.twk_terjawab_benar, this.hasilTryout.twk_terjawab_salah, this.hasilTryout.twk_tidak_terjawab];
 
         var ctx = document.getElementById("totalChart");
         if (ctx) {
@@ -210,7 +304,7 @@ export default {
                 options: {
                     responsive: true,
                     legend: {
-                        position: 'bottom',
+                        position: 'right',
                     },
                 }
             });
@@ -238,7 +332,7 @@ export default {
                 options: {
                     responsive: true,
                     legend: {
-                        position: 'bottom',
+                        position: 'right',
                     },
                 }
             });
@@ -259,15 +353,18 @@ export default {
                         label: 'Dataset 1'
                     }],
                     labels: [
-                        'benar',
-                        'salah',
-                        'kosong'
+                        'poin 5',
+                        'poin 4',
+                        'poin 3',
+                        'poin 2',
+                        'poin 1',
+                        'kosong',
                     ],
                 },
                 options: {
                     responsive: true,
                     legend: {
-                        position: 'bottom',
+                        position: 'right',
                     },
                 }
             });
@@ -296,7 +393,7 @@ export default {
                 options: {
                     responsive: true,
                     legend: {
-                        position: 'bottom',
+                        position: 'right',
                     },
                 }
             });

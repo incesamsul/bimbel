@@ -87,16 +87,16 @@ class TryoutController extends Controller
         // 1 = tiu
         // 2 = tkp
         // 3 = twk
-        $tiu = 0;
-        $tkp = 0;
-        $twk = 0;
+        $totalTiu = 0;
+        $totalTkp = 0;
+        $totalTwk = 0;
         foreach ($tryoutSoal as $row) {
             if ($row->soal->kategori_soal_id == 1) {
-                $tiu++;
+                $totalTiu++;
             } else if ($row->soal->kategori_soal_id == 2) {
-                $tkp++;
+                $totalTkp++;
             } else if ($row->soal->kategori_soal_id == 3) {
-                $twk++;
+                $totalTwk++;
             }
         }
 
@@ -106,8 +106,16 @@ class TryoutController extends Controller
         $twkTerjawab = 0;
 
         $tiuTerjawabBenar = 0;
-        $tkpTerjawabBenar = 0;
         $twkTerjawabBenar = 0;
+
+        $tiuTerjawabSalah = 0;
+        $twkTerjawabSalah = 0;
+
+        $poinTkp5 = 0;
+        $poinTkp4 = 0;
+        $poinTkp3 = 0;
+        $poinTkp2 = 0;
+        $poinTkp1 = 0;
 
         $jawabanTryout = JawabanTryout::with('segment_tryout.tryout.tryout_soal.soal')
             ->where('user_id', auth()->user()->id)
@@ -127,41 +135,130 @@ class TryoutController extends Controller
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
                     if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
                         $tiuTerjawabBenar++;
+                    } else {
+                        $tiuTerjawabSalah++;
                     }
-                } else if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 2) {
+                }
+                if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 2) {
                     $tkpTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-                    if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
-                        $tkpTerjawabBenar++;
+
+                    if (isset($jawabanTryout[$index])) {
+                        if ($jawabanTryout[$index]->jawaban == 0) {
+                            $poinTkp3++;
+                        }
+                        if ($jawabanTryout[$index]->jawaban == 1) {
+                            $poinTkp5++;
+                        }
+                        if ($jawabanTryout[$index]->jawaban == 2) {
+                            $poinTkp4++;
+                        }
+                        if ($jawabanTryout[$index]->jawaban == 3) {
+                            $poinTkp2++;
+                        }
+                        if ($jawabanTryout[$index]->jawaban == 4) {
+                            $poinTkp1++;
+                        }
                     }
+                    // sistem penilaian tkp BCADE : 54321
+                    // 0:A = 3
+                    // 1:B = 5
+                    // 2:C = 4
+                    // 3:D = 2
+                    // 4:E = 1
                 }
                 if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 3) {
                     $twkTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-                    if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
-                        $twkTerjawabBenar++;
+                    if (isset($jawabanTryout[$index])) {
+                        if ($soal->soal->jawaban == $jawabanTryout[$index]) {
+                            $twkTerjawabBenar++;
+                        } else {
+                            $twkTerjawabSalah++;
+                        }
                     }
                 }
             }
         }
 
-        echo "total soal tiu  : " . $tiu . "<br>";
-        echo "total soal twk  : " . $twk . "<br>";
-        echo "total soal tkp  : " . $tkp . "<br>";
 
-        echo "<br><br><br>";
 
-        echo "tiu terjawab : " . $tiuTerjawab . "<br>";
-        echo "twk terjawab : " . $twkTerjawab . "<br>";
-        echo "tkp terjawab : " . $tkpTerjawab . "<br>";
+        // echo "total soal tiu  : " . $totalTiu . "<br>";
+        // echo "total soal twk  : " . $totalTwk . "<br>";
+        // echo "total soal tkp  : " . $totalTkp . "<br>";
 
-        echo "<br><br><br>";
+        // echo "<br><br><br>";
 
-        echo "tiu terjawab benar : " . $tiuTerjawabBenar . "<br>";
-        echo "twk terjawab benar : " . $twkTerjawabBenar . "<br>";
-        echo "tkp terjawab benar : " . $tkpTerjawabBenar . "<br>";
+        // echo "tiu terjawab : " . $tiuTerjawab . "<br>";
+        // echo "twk terjawab : " . $twkTerjawab . "<br>";
+        // echo "tkp terjawab : " . $tkpTerjawab . "<br>";
 
-        die;
+        // echo "<br><br><br>";
+
+        // echo "tiu tidak terjawab : " . $totalTiu - $tiuTerjawab  . "<br>";
+        // echo "twk tidak terjawab : " . $totalTwk - $twkTerjawab  . "<br>";
+        // echo "tkp tidak terjawab : " . $totalTkp - $tkpTerjawab  . "<br>";
+
+        // echo "<br><br><br>";
+
+        // echo "tiu terjawab benar : " . $tiuTerjawabBenar . "<br>";
+        // echo "twk terjawab benar : " . $twkTerjawabBenar . "<br>";
+
+        // echo "<br><br><br>";
+
+        // echo "tiu terjawab salah : " . $tiuTerjawabSalah . "<br>";
+        // echo "twk terjawab salah : " . $twkTerjawabSalah . "<br>";
+
+        // echo "<br><br><br>";
+
+        // echo "poin tiu  : " . $tiuTerjawabBenar * 5 . "<br>";
+        // echo "poin twk  : " . $twkTerjawabBenar * 5 . "<br>";
+
+
+        // echo "<br><br><br>";
+
+        // echo "poin tkp 5  : " . $poinTkp5 . "<br>";
+        // echo "poin tkp 4  : " . $poinTkp4 . "<br>";
+        // echo "poin tkp 3  : " . $poinTkp3 . "<br>";
+        // echo "poin tkp 2  : " . $poinTkp2 . "<br>";
+        // echo "poin tkp 1  : " . $poinTkp1 . "<br>";
+
+        // echo "<br><br><br>";
+
+        // echo "poin tkp   : " . (($poinTkp5 * 5) + ($poinTkp4 * 4) + ($poinTkp3 * 3) + ($poinTkp2 * 2) + ($poinTkp1 * 1)) . "<br>";
+
+        $hasilTryout = [
+            'total_soal_tiu' => $totalTiu,
+            'total_soal_twk' => $totalTwk,
+            'total_soal_tkp' => $totalTkp,
+
+            'tiu_terjawab' => $tiuTerjawab,
+            'twk_terjawab' => $twkTerjawab,
+            'tkp_terjawab' => $tkpTerjawab,
+
+            'tiu_tidak_terjawab' => $totalTiu - $tiuTerjawab,
+            'twk_tidak_terjawab' => $totalTwk - $twkTerjawab,
+            'tkp_tidak_terjawab' => $totalTkp - $tkpTerjawab,
+
+            'twk_terjawab_benar' => $twkTerjawabBenar,
+            'tiu_terjawab_benar' => $tiuTerjawabBenar,
+
+            'twk_terjawab_salah' => $twkTerjawabSalah,
+            'tiu_terjawab_salah' => $tiuTerjawabSalah,
+
+            'total_poin_tiu' => $tiuTerjawabBenar * 5,
+            'total_poin_twk' => $twkTerjawabBenar * 5,
+
+            'poin_tkp_5' => $poinTkp5,
+            'poin_tkp_4' => $poinTkp4,
+            'poin_tkp_3' => $poinTkp3,
+            'poin_tkp_2' => $poinTkp2,
+            'poin_tkp_1' => $poinTkp1,
+
+            'total_poin_tkp' => (($poinTkp5 * 5) + ($poinTkp4 * 4) + ($poinTkp3 * 3) + ($poinTkp2 * 2) + ($poinTkp1 * 1)),
+        ];
+
+
         if (!$finishedSegment) {
             // Perform the redirect to the desired route or URL
             return redirect('/member/tryout');
@@ -169,7 +266,8 @@ class TryoutController extends Controller
         return Inertia::render('Tryout/Finish', [
             'user' => auth()->user(),
             // 'tryout' => Tryout::with('kelas')->with('tryout_soal')->with('segment_tryout')->where('id', $idTryout)->first(),
-            'segment_tryout' => $finishedSegment
+            'segment_tryout' => $finishedSegment,
+            'hasil_tryout' => json_encode($hasilTryout),
         ]);
     }
 
@@ -194,6 +292,7 @@ class TryoutController extends Controller
             'kelas' => Kelas::all(),
             'segment_tryout_id' => $segment_tryout_id,
             'id_tryout' => SegmentTryout::where('id', $segment_tryout_id)->first()->tryout_id,
+            'active_segment' => $activeSegment,
         ]);
     }
 
