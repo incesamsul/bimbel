@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
         Route::get('/tryout', [TryoutController::class, 'member']);
         Route::get('/tryout/konfirmasi', [TryoutController::class, 'konfirmasi']);
         Route::get('/tryout/kerjakan/{segment_tryout_id}', [TryoutController::class, 'kerjakan']);
+        Route::get('/tryout/review/{segment_tryout_id}', [TryoutController::class, 'review']);
         Route::get('/tryout/finish/{segment_tryout_id}', [TryoutController::class, 'finish']);
         Route::get('/tryout/history/{tryout_id}', [TryoutController::class, 'history']);
     });

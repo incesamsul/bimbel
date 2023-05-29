@@ -31,10 +31,10 @@ import { showFlashMessage } from '@/global_func.js';
                                     <tr>
                                         <th>Mulai</th>
                                         <th>Selesai</th>
-                                        <th>Tiu</th>
+                                        <!-- <th>Tiu</th>
                                         <th>Tkp</th>
                                         <th>Twk</th>
-                                        <th>Total</th>
+                                        <th>Total</th> -->
                                         <th>Durasi</th>
                                         <th>Keterangan</th>
                                         <th>Aksi</th>
@@ -44,14 +44,17 @@ import { showFlashMessage } from '@/global_func.js';
                                     <tr v-for="item in history">
                                         <td>{{ item.mulai }}</td>
                                         <td>{{ item.selesai }}</td>
+                                        <!-- <td>0</td>
                                         <td>0</td>
                                         <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
+                                        <td>0</td> -->
                                         <td>{{ item.durasi }}</td>
                                         <td>gagal</td>
                                         <td>
                                             <Link class="btn btn-info" :href="'/member/tryout/finish/' + item.id">Hasil
+                                            </Link>
+                                            <Link class="btn btn-success ml-2" :href="'/member/tryout/review/' + item.id">
+                                            Review
                                             </Link>
                                         </td>
                                     </tr>

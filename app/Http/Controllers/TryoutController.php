@@ -296,6 +296,21 @@ class TryoutController extends Controller
         ]);
     }
 
+    public function review($segment_tryout_id)
+    {
+
+
+        return Inertia::render('Tryout/Review', [
+            'user' => auth()->user(),
+            // 'tryout_soal' => TryoutSoal::with('soal.pilihan')->with('tryout')->where('tryout_id', $segment_tryout_id)->get(),
+            'kategori_soals' => KategoriSoal::all(),
+            'kelas' => Kelas::all(),
+            'segment_tryout_id' => $segment_tryout_id,
+            'id_tryout' => SegmentTryout::where('id', $segment_tryout_id)->first()->tryout_id,
+        ]);
+    }
+
+
     public function create()
     {
         return Inertia::render('Tryout/Create', [
