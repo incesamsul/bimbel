@@ -46,34 +46,14 @@ import { showFlashMessage } from '@/global_func.js';
                                         <ul class="ml-0 pl-0">
                                             <li type="A" class="pilihan d-flex justify-content-between align-items-center"
                                                 v-for="(pilihan, pilihanIndex) in selectedQuestion.soal.pilihan"
-                                                :key="pilihanIndex" @click="selectAnswer(pilihanIndex)" :class="{
-                                                    'bg-success text-white': isOptionAnswered(selectedQuestionIndex, pilihanIndex),
-                                                    'bg-warning text-white': isOptionFlagged(selectedQuestionIndex, pilihanIndex)
+                                                :key="pilihanIndex" :class="{
+                                                    'bg-success text-white': jawabanKamu(selectedQuestionIndex, pilihanIndex),
+                                                    'bg-primary text-white': kunciJawaban(selectedQuestionIndex, pilihanIndex),
                                                 }">
                                                 <div class="options-warpper">
                                                     {{ ['A', 'B', 'C', 'D', 'E'][pilihanIndex] }}. {{ pilihan.pilihan }}
                                                 </div>
-                                                <template v-if="isOptionAnswered(selectedQuestionIndex, pilihanIndex)">
-                                                    <div class="button-wrapper">
-                                                        <button class="btn btn-transparent "
-                                                            @click="removeQuestion(pilihanIndex, $event)">
-                                                            <i class="fas fa-times text-white"></i>
-                                                        </button>
-                                                        <template
-                                                            v-if="isOptionFlagged(selectedQuestionIndex, pilihanIndex)">
-                                                            <button class="btn btn-transparent ml-2"
-                                                                @click="deleteFlagQuestion(pilihanIndex, $event)">
-                                                                <i class="fas fa-flag text-white"></i>
-                                                            </button>
-                                                        </template>
-                                                        <template v-else>
-                                                            <button class="btn btn-success ml-2"
-                                                                @click="flagQuestion(pilihanIndex, $event)">
-                                                                <i class="fas fa-flag text-white"></i>
-                                                            </button>
-                                                        </template>
-                                                    </div>
-                                                </template>
+
                                             </li>
 
                                         </ul>
@@ -125,11 +105,6 @@ import { showFlashMessage } from '@/global_func.js';
                                                 <button class="btn bg-main text-white mr-2" @click="nextQuestion"
                                                     :disabled="selectedQuestionIndex === tryout_soal.length - 1"> Next <i
                                                         class="fas fa-chevron-right"></i></button>
-                                                <button class="btn bg-warning text-white mr-2"><i class="fas fa-flag"></i>
-                                                    Ragu</button>
-                                                <button data-toggle="modal" data-target="#exampleModal"
-                                                    class="btn btn-success">Selesai <i class="fas fa-check"></i></button>
-
                                             </div>
                                         </div>
                                     </div>
@@ -143,32 +118,65 @@ import { showFlashMessage } from '@/global_func.js';
                                 </div>
                                 <div class="card-body">
 
-                                    <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                                    <div class="alert alert-secondary d-flex justify-content-between align-items-center">
                                         <div class="content">
-                                            <i class="fas fa-flag"></i>
-                                            Ragu
+                                            <i class="fas fa-circle"></i>
+                                            Kosong
                                         </div>
-                                        <span>{{ flaggedQuestions }}</span>
                                     </div>
                                     <div class="alert alert-success d-flex justify-content-between align-items-center">
                                         <div class="content">
                                             <i class="fas fa-check"></i>
-                                            Dijawab
+                                            Jawaban anda
                                         </div>
-                                        <span>{{ answeredQuestions - flaggedQuestions }}</span>
                                     </div>
-                                    <div class="alert alert-danger d-flex justify-content-between align-items-center">
+                                    <div class="alert alert-primary d-flex justify-content-between align-items-center">
                                         <div class="content">
                                             <i class="fas fa-pen"></i>
-                                            Jumlah soal
+                                            Kunci jawaban
                                         </div>
-                                        <span>{{ tryout_soal.length }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="card border-0 mb-4">
+                        <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
+                            <h6 class="m-0 py-3 font-weight-bold text-">Pembahasan</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div>
+                                    <div v-if="selectedQuestion">
+
+                                        <div class="d-flex flex-column">
+                                            <p><strong>Kunci jawaban : {{ ['A', 'B', 'C', 'D',
+                                                'E'][selectedQuestion.soal.jawaban]
+                                            }}</strong></p>
+                                            <p><strong>Jawban Anda : {{ ['A', 'B', 'C', 'D',
+                                                'E'][selectedQuestion.jawaban_tryout ?
+                                                    selectedQuestion.jawaban_tryout.jawaban : ''] }}</strong></p>
+                                            <div class="question d-flex">
+                                                <span v-html="selectedQuestion.soal.pembahasan"></span>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                    <div v-else>
+                                        Loading... <!-- or any other loading indicator/message -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -400,13 +408,13 @@ export default {
                     this.loading = false;
                 });;
         },
-        isOptionFlagged(questionIndex, optionIndex) {
+
+        jawabanKamu(questionIndex, optionIndex) {
             const question = this.tryout_soal[questionIndex];
             let jawaban = question.jawaban_tryout ? question.jawaban_tryout.jawaban : '';
 
-            let ragu = question.jawaban_tryout ? question.jawaban_tryout.ragu : 0;
 
-            if (jawaban === optionIndex.toString() && ragu == '1') {
+            if (jawaban === optionIndex.toString()) {
                 // Option is answered and should be highlighted
                 return true;
             } else {
@@ -414,12 +422,11 @@ export default {
                 return false;
             }
         },
-        isOptionAnswered(questionIndex, optionIndex) {
+
+        kunciJawaban(questionIndex, optionIndex) {
             const question = this.tryout_soal[questionIndex];
-            let jawaban = question.jawaban_tryout ? question.jawaban_tryout.jawaban : '';
 
-
-            if (jawaban === optionIndex.toString()) {
+            if (question.soal.jawaban === optionIndex.toString()) {
                 // Option is answered and should be highlighted
                 return true;
             } else {
@@ -503,19 +510,7 @@ export default {
         answeredQuestions() {
             return this.tryout_soal.filter(question => question.jawaban_tryout !== null).length;
         },
-        flaggedQuestions() {
 
-            let flaggedCount = 0;
-
-            for (let i = 0; i < this.tryout_soal.length; i++) {
-                if (this.isQuestionFlagged(i)) {
-                    flaggedCount++;
-                }
-            }
-
-            return flaggedCount;
-
-        }
 
     }
 
