@@ -16,35 +16,40 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">kategori_soal</h1>
-            <p class="mb-4">Lakukan penambahan/pengeditan kategori_soal dengan mengisi form dibawah ini.</p>
+            <h1 class="h3 mb-2 text-gray-800">materi_text</h1>
+            <p class="mb-4">Lakukan penambahan/pengeditan materi_text dengan mengisi form dibawah ini.</p>
 
             <!-- DataTales Example -->
             <div class="card border-0 mb-4">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Data kategori_soal</h6>
-                    <Link href="/kategori_soal" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
+                    <h6 class="m-0 font-weight-bold text-primary">Data materi_text</h6>
+                    <Link href="/materi_text" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
                 </div>
                 <div class="card-body">
                     <form id="msform">
                         <div class="form-group">
-                            <input v-model="inputId" type="hidden" class="form-control" name="id" id="id">
+                            <input v-model="inputIdMateri" type="hidden" class="form-control" name="id" id="id">
                         </div>
                         <div class="form-group">
-                            <label for="kode">kode</label>
-                            <input v-model="inputKode" type="text" class="form-control" name="kode" id="kode">
+                            <label for="judul_materi">Judul materi</label>
+                            <input v-model="inputJudulMateri" type="text" class="form-control" name="judul_materi"
+                                id="judul_materi">
                         </div>
                         <div class="form-group">
-                            <label for="nama">nama</label>
-                            <input v-model="inputNama" type="text" class="form-control" name="nama" id="nama">
+                            <label for="link_materi">Link Materi</label>
+                            <input v-model="inputLinkMateri" type="text" class="form-control" name="link_materi"
+                                id="link_materi">
+                        </div>
+                        <div class="form-group ">
+                            <label for="kategori">Kategori </label>
+                            <select v-model="inputKategori" name="kategori" id="kategori" class="form-control">
+                                <option value="">-- pilih kategori latihan --</option>
+                                <option :value="data.id" v-for="data in  kategori_soal ">{{ data.nama }}
+                                </option>
+                            </select>
                         </div>
                         <div class="form-group">
-                            <label for="passing_grade">passing_grade</label>
-                            <input v-model="inputPassingGrade" type="text" class="form-control" name="passing_grade"
-                                id="passing_grade">
-                        </div>
-                        <div class="form-group">
-                            <input @click="submitData" type="button" class="btn bg-main text-white" value="simpan"
+                            <input @click="submitmateri_text" type="button" class="btn bg-main text-white" value="simpan"
                                 id="btn-confirm" />
                         </div>
                     </form>
@@ -64,35 +69,36 @@ export default {
     data() {
         return {
             // deadline
-            inputId: '',
-            inputKode: '',
-            inputNama: '',
-            inputPassingGrade: '',
+            inputIdMateri: '',
+            inputJudulMateri: '',
+            inputLinkMateri: '',
+            inputKategori: '',
         };
     },
     props: {
         user: Object,
         users: Object,
         edit: Object,
+        kategori_soal: Object,
     },
 
     methods: {
-        submitData() {
+        submitmateri_text() {
             const formData = {
                 // produk
-                id: this.inputId,
-                nama: this.inputNama,
-                kode: this.inputKode,
-                passing_grade: this.inputPassingGrade,
+                id: this.inputIdMateri,
+                judul_materi: this.inputJudulMateri,
+                link_materi: this.inputLinkMateri,
+                kategori: this.inputKategori,
             }
             // Send the data to the backend server using axios
             if (this.edit) {
-                axios.put('/kategori_soal', formData)
+                axios.put('/materi_text', formData)
                     .then(response => {
                         // Handle success response
                         console.log(response);
                         showFlashMessage(response.data.message);
-                        this.$inertia.visit(route('kategori_soal'));
+                        this.$inertia.visit(route('materi_text'));
 
                     })
                     .catch(error => {
@@ -100,12 +106,12 @@ export default {
                         console.error(error);
                     });
             } else {
-                axios.post('/kategori_soal', formData)
+                axios.post('/materi_text', formData)
                     .then(response => {
                         // Handle success response
                         console.log(response);
                         showFlashMessage(response.data.message);
-                        this.$inertia.visit(route('kategori_soal'));
+                        this.$inertia.visit(route('materi_text'));
 
                     })
                     .catch(error => {
@@ -119,10 +125,8 @@ export default {
     }, mounted() {
         // Import a JavaScript file dynamically
         if (this.edit) {
-            this.inputId = this.edit.id;
-            this.inputNama = this.edit.nama;
-            this.inputKode = this.edit.kode;
-            this.inputPassingGrade = this.edit.passing_grade;
+            this.inputNamamateri_text = this.edit.nama_materi_text;
+            this.inputIdmateri_text = this.edit.id;
         }
 
     }

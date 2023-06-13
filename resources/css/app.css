@@ -3,6 +3,50 @@
 @import url('/resources/template/sbadmin/css/sb-admin-2.min.css');
 @import url('/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.css');
 
+
+.paket-item {
+    transition: .5s;
+}
+
+.paket-item a {
+    color: inherit !important;
+}
+
+.paket-item:hover {
+    background-color: #5555550e;
+    cursor: pointer;
+}
+
+.list-video-item {
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.list-video-item:hover {
+    background-color: #55555535;
+    color: black;
+    cursor: pointer;
+}
+
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+}
+
+.overflow-hidden {
+    overflow: hidden !important;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .hide {
     display: none !important;
 }
@@ -33,6 +77,31 @@
 
 body {
     font-family: 'Nunito' !important;
+}
+
+.folder-col {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: .5s;
+    border-radius: 10px;
+    padding-top: 10px;
+    margin-top: 15px;
+}
+
+.folder-col:hover {
+    color: #cd2c62;
+    background-color: #bbbbbb1e;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+.folder-col i {
+    font-size: 100px;
 }
 
 .ck-editor__editable {
@@ -95,7 +164,9 @@ input:focus {
     background-color: transparent !important;
 }
 
-
+.main-radius {
+    border-radius: 10px !important;
+}
 
 .main-color {
     color: #cd2c62;

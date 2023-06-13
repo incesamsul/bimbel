@@ -16,7 +16,7 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Data soal tryout</h1>
+            <h1 class="h3 mb-2 text-gray-800">Data soal latihan</h1>
             <p class="mb-4">Semua data soal ada dihalaman ini.</p>
 
 
@@ -27,9 +27,6 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                             <h6 class="m-0 py-3 font-weight-bold text-">List soal</h6>
                             <!-- Show loading indicator when loading is true -->
-                            <Link @click="goBack" class="btn btn-light">
-                            <i class="fas fa-arrow-left"></i>
-                            </Link>
                             <div v-if="loading" class="spinner-border text-primary" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -81,7 +78,7 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div class="card-body">
                                     <div class="row ">
                                         <div class="col-sm-12 d-flex flex-wrap ">
-                                            <div v-for="(item, index) in tryout_soal" :key="item.id">
+                                            <div v-for="(item, index) in latihan_soal" :key="item.id">
                                                 <button
                                                     class="text-danger nomor-soal btn mr-2 mt-2 p-3 d-flex justify-content-center align-items-center"
                                                     @click="displayQuestion(index)" :class="{
@@ -106,7 +103,7 @@ import { showFlashMessage } from '@/global_func.js';
                                                         class="fas fa-chevron-left"></i>
                                                     Previous </button>
                                                 <button class="btn bg-main text-white mr-2" @click="nextQuestion"
-                                                    :disabled="selectedQuestionIndex === tryout_soal.length - 1"> Next <i
+                                                    :disabled="selectedQuestionIndex === latihan_soal.length - 1"> Next <i
                                                         class="fas fa-chevron-right"></i></button>
                                             </div>
                                         </div>
@@ -161,8 +158,8 @@ import { showFlashMessage } from '@/global_func.js';
                                                 'E'][selectedQuestion.soal.jawaban]
                                             }}</strong></p>
                                             <p><strong>Jawban Anda : {{ ['A', 'B', 'C', 'D',
-                                                'E'][selectedQuestion.jawaban_tryout ?
-                                                    selectedQuestion.jawaban_tryout.jawaban : ''] }}</strong></p>
+                                                'E'][selectedQuestion.jawaban_latihan ?
+                                                    selectedQuestion.jawaban_latihan.jawaban : ''] }}</strong></p>
                                             <div class="question d-flex">
                                                 <span v-html="selectedQuestion.soal.pembahasan"></span>
                                             </div>
@@ -197,10 +194,10 @@ import { showFlashMessage } from '@/global_func.js';
                     </div>
                     <div class="modal-body">
                         Apakah yakin ingin selesai ?
-                        masih ada <strong>{{ answeredQuestions - tryout_soal.length }}</strong> soal yang belum terjawab
+                        masih ada <strong>{{ answeredQuestions - latihan_soal.length }}</strong> soal yang belum terjawab
                     </div>
                     <div class="modal-footer">
-                        <button @click="finishSegment(segment_tryout_id)" class="btn btn-success">Selesai <i
+                        <button @click="finishSegment(segment_latihan_id)" class="btn btn-success">Selesai <i
                                 class="fas fa-check"></i></button>
                     </div>
                 </div>
@@ -271,11 +268,11 @@ import { showFlashMessage } from '@/global_func.js';
 export default {
     props: {
         user: Object,
-        // tryout_soal: Object,
+        // latihan_soal: Object,
         kelas: Object,
         kategori_soals: Object,
-        id_tryout: Number,
-        segment_tryout_id: Number,
+        id_latihan: Number,
+        segment_latihan_id: Number,
         active_segment: Object,
     },
     data() {
@@ -283,7 +280,7 @@ export default {
 
             timerInterval: null,
 
-            tryout_soal: [],
+            latihan_soal: [],
             selectedAnswerIndex: null,
 
             selectedQuestionIndex: 0,
@@ -293,10 +290,7 @@ export default {
         };
     },
     methods: {
-        goBack() {
-            window.history.back();
-        },
-        finishSegment(tryoutId) {
+        finishSegment(latihanId) {
 
             clearInterval(this.timerInterval);
             localStorage.removeItem('startTime');
@@ -305,7 +299,7 @@ export default {
             // Reset the timer display
             $('#timer').text('00:00');
             this.loading = true;
-            axios.post(`/api/finish_segment/${tryoutId}`, {
+            axios.post(`/api/finish_segment/${latihanId}`, {
                 user_id: this.user.id,
 
             })
@@ -314,7 +308,7 @@ export default {
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
 
-                    this.$inertia.visit(`/member/tryout/finish/${this.segment_tryout_id}`);
+                    this.$inertia.visit(`/member/latihan/finish/${this.segment_latihan_id}`);
 
                 })
                 .catch(error => {
@@ -324,16 +318,16 @@ export default {
                     // Set loading state to false
                     this.loading = false;
                 });
-            // return '/member/tryout/konfirmasi/' + tryoutId;
+            // return '/member/latihan/konfirmasi/' + latihanId;
         },
         isQuestionAnswered(index) {
-            const question = this.tryout_soal[index];
+            const question = this.latihan_soal[index];
 
-            return question.jawaban_tryout !== null;
+            return question.jawaban_latihan !== null;
         },
         isQuestionFlagged(index) {
-            const question = this.tryout_soal[index];
-            const jawaban = question.jawaban_tryout;
+            const question = this.latihan_soal[index];
+            const jawaban = question.jawaban_latihan;
             return jawaban !== null && jawaban.ragu === '1';
         },
         flagQuestion(pilihanIndex, event) {
@@ -343,7 +337,7 @@ export default {
 
             this.loading = true;
 
-            axios.post(`/api/flag-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/flag-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: questionId,
                 user_id: this.user.id,
 
@@ -369,7 +363,7 @@ export default {
 
             this.loading = true;
 
-            axios.post(`/api/delete-flag-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/delete-flag-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: questionId,
                 user_id: this.user.id,
 
@@ -395,7 +389,7 @@ export default {
 
             this.loading = true;
 
-            axios.post(`/api/delete-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/delete-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: questionId,
                 user_id: this.user.id,
 
@@ -416,8 +410,8 @@ export default {
         },
 
         jawabanKamu(questionIndex, optionIndex) {
-            const question = this.tryout_soal[questionIndex];
-            let jawaban = question.jawaban_tryout ? question.jawaban_tryout.jawaban : '';
+            const question = this.latihan_soal[questionIndex];
+            let jawaban = question.jawaban_latihan ? question.jawaban_latihan.jawaban : '';
 
 
             if (jawaban === optionIndex.toString()) {
@@ -430,7 +424,7 @@ export default {
         },
 
         kunciJawaban(questionIndex, optionIndex) {
-            const question = this.tryout_soal[questionIndex];
+            const question = this.latihan_soal[questionIndex];
 
             if (question.soal.jawaban === optionIndex.toString()) {
                 // Option is answered and should be highlighted
@@ -449,7 +443,7 @@ export default {
             this.loading = true;
 
             // Save the selected answer to the database using an API call
-            axios.post(`/api/save-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/save-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: selectedAnswer.soal_id,
                 answer: this.selectedAnswerIndex,
                 user_id: this.user.id,
@@ -469,22 +463,22 @@ export default {
         previousQuestion() {
             if (this.selectedQuestionIndex > 0) {
                 this.selectedQuestionIndex--;
-                this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
+                this.selectedQuestion = this.latihan_soal[this.selectedQuestionIndex];
             }
         },
 
         nextQuestion() {
-            if (this.selectedQuestionIndex < this.tryout_soal.length - 1) {
+            if (this.selectedQuestionIndex < this.latihan_soal.length - 1) {
                 this.selectedQuestionIndex++;
-                this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
+                this.selectedQuestion = this.latihan_soal[this.selectedQuestionIndex];
             }
         },
         fetchDataSoal() {
-            axios.get(`/api/get-soal/${this.id_tryout}/${this.segment_tryout_id}`)
+            axios.get(`/api/get-soal-latihan/${this.id_latihan}/${this.segment_latihan_id}`)
                 .then(response => {
                     // Update the soal data in the component
-                    this.tryout_soal = response.data;
-                    // console.log(this.tryout_soal);
+                    this.latihan_soal = response.data;
+                    // console.log(this.latihan_soal);
 
                     // Set the default selected question
                     this.displayQuestion(this.selectedQuestionIndex);
@@ -496,7 +490,7 @@ export default {
 
         displayQuestion(index) {
             this.selectedQuestionIndex = index;
-            this.selectedQuestion = this.tryout_soal[index];
+            this.selectedQuestion = this.latihan_soal[index];
         },
         isActiveQuestion(index) {
             return this.selectedQuestionIndex === index;
@@ -514,7 +508,7 @@ export default {
     },
     computed: {
         answeredQuestions() {
-            return this.tryout_soal.filter(question => question.jawaban_tryout !== null).length;
+            return this.latihan_soal.filter(question => question.jawaban_latihan !== null).length;
         },
 
 

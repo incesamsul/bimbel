@@ -16,18 +16,14 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">History tryout</h1>
-            <p class="mb-4">Semua data tryout ada dihalaman ini.</p>
+            <h1 class="h3 mb-2 text-gray-800">History latihan</h1>
+            <p class="mb-4">Semua data latihan ada dihalaman ini.</p>
 
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card border-0 pb-4">
-                        <div class="card-header bg-white d-flex justify-content-between">
-                            <h5>History tryout</h5>
-                            <Link @click="goBack" class="btn btn-light">
-                            <i class="fas fa-arrow-left"></i>
-                            </Link>
-
+                        <div class="card-header bg-white">
+                            <h5>History latihan</h5>
                         </div>
                         <div class="card-body p-0">
                             <table class="table">
@@ -55,9 +51,9 @@ import { showFlashMessage } from '@/global_func.js';
                                         <td>{{ item.durasi }}</td>
                                         <td>gagal</td>
                                         <td>
-                                            <Link class="btn btn-info" :href="'/member/tryout/finish/' + item.id">Hasil
+                                            <Link class="btn btn-info" :href="'/member/latihan/finish/' + item.id">Hasil
                                             </Link>
-                                            <Link class="btn btn-success ml-2" :href="'/member/tryout/review/' + item.id">
+                                            <Link class="btn btn-success ml-2" :href="'/member/latihan/review/' + item.id">
                                             Review
                                             </Link>
                                         </td>
@@ -94,9 +90,7 @@ export default {
 
     },
     methods: {
-        goBack() {
-            window.history.back();
-        },
+
     }, mounted() {
         // Initialize DataTables
         $('#dataTable').DataTable({

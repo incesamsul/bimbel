@@ -67,6 +67,24 @@ const showingNavigationDropdown = ref(false);
                     <span>Data Kelas</span></Link>
                 </li>
 
+                <li class="nav-item" :class="{ 'active': isActive('/materi_video') }">
+                    <Link class="nav-link" href="/materi_video">
+                    <i class="far fa-fw fa-file-video"></i>
+                    <span>Materi video</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/paket_video') }">
+                    <Link class="nav-link" href="/paket_video">
+                    <i class="far fa-fw fa-file-video"></i>
+                    <span>Paket video</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/materi_text') }">
+                    <Link class="nav-link" href="/materi_text">
+                    <i class="far fa-fw fa-file"></i>
+                    <span>Materi Text</span></Link>
+                </li>
+
 
                 <li class="nav-item" :class="{ 'active': isActive('/kategori_soal') }">
                     <Link class="nav-link" href="/kategori_soal">
@@ -86,6 +104,19 @@ const showingNavigationDropdown = ref(false);
                     <span>Tryout</span></Link>
                 </li>
 
+                <li class="nav-item" :class="{ 'active': isActive('/latihan') }">
+                    <Link class="nav-link" href="/latihan">
+                    <i class="far fa-fw fa-object-group"></i>
+                    <span>Latihan</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/paket') }">
+                    <Link class="nav-link" href="/paket">
+                    <i class="far fa-fw fa-object-group"></i>
+                    <span>Paket</span></Link>
+                </li>
+
+
             </template>
 
 
@@ -97,11 +128,41 @@ const showingNavigationDropdown = ref(false);
                     <span>Pembayaran</span></Link>
                 </li>
 
-                <li class="nav-item" :class="{ 'active': isActive('/member/tryout') }">
+                <li class="nav-item" :class="{ 'active': isActive('/member/pakets') }">
+                    <Link class="nav-link" href="/member/paket">
+                    <i class="far fa-fw fa-address-card"></i>
+                    <span>Paket</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/member/paket_aktif') }">
+                    <Link class="nav-link" href="/member/paket_aktif">
+                    <i class="far fa-fw fa-folder-open"></i>
+                    <span>Paket Aktif</span></Link>
+                </li>
+
+                <!-- <li class="nav-item" :class="{ 'active': isActive('/member/tryout') }">
                     <Link class="nav-link" href="/member/tryout">
                     <i class="far fa-fw fa-object-group"></i>
                     <span>Tryout</span></Link>
                 </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/member/latihan') }">
+                    <Link class="nav-link" href="/member/latihan">
+                    <i class="far fa-fw fa-object-group"></i>
+                    <span>Latihan</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/member/materi_video') }">
+                    <Link class="nav-link" href="/member/materi_video">
+                    <i class="far fa-fw fa-file-video"></i>
+                    <span>Materi video</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/member/materi_text') }">
+                    <Link class="nav-link" href="/member/materi_text">
+                    <i class="far fa-fw fa-file"></i>
+                    <span>Materi Text</span></Link>
+                </li> -->
 
 
             </template>
@@ -176,64 +237,7 @@ const showingNavigationDropdown = ref(false);
                         </li>
 
 
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
-                                <span class="badge badge-danger badge-counter">3+</span>
-                            </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list  dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
-                                <h6 class="dropdown-header bg-secondary">
-                                    Pemberitahuan terbaru
-                                </h6>
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">December 12, 2019</div>
-                                        <span class="font-weight-bold">Ada orderan baru nih!</span>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                            </div>
-                        </li>
 
-
-                        <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
-                                <span class="badge badge-danger badge-counter">7</span>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header bg-secondary">
-                                    Message Center
-                                </h6>
-
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="dropdown-list-image mr-3">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
-                                        <div class="status-indicator bg-success"></div>
-                                    </div>
-                                    <div>
-                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
-                                            told me that people say this to all dogs, even if they aren't good...</div>
-                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
-                                    </div>
-                                </a>
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
-                            </div>
-                        </li>
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -341,8 +345,9 @@ export default {
             navbar.classList.toggle('toggled');
         },
         isActive(url) {
-            return window.location.pathname === url;
+            return window.location.pathname.startsWith(url);
         }
+
     },
 
 };

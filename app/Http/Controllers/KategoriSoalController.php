@@ -37,6 +37,7 @@ class KategoriSoalController extends Controller
         KategoriSoal::create([
             'nama' => $request->nama,
             'kode' => $request->kode,
+            'passing_grade' => $request->passing_grade,
         ])->id;
 
         return response()->json([
@@ -50,6 +51,7 @@ class KategoriSoalController extends Controller
         KategoriSoal::where('id', $request->id)->update([
             'nama' => $request->nama,
             'kode' => $request->kode,
+            'passing_grade' => $request->passing_grade,
         ]);
 
         return response()->json([

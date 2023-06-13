@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kategori_soal', function (Blueprint $table) {
+        Schema::create('paket', function (Blueprint $table) {
             $table->id();
-            $table->string('kode');
-            $table->string('nama');
-            $table->string('passing_grade')->nullable();
+            $table->string('nama_paket');
+            $table->string('link_telegram');
+            $table->string('paket_video');
+            $table->string('paket_text');
+            $table->string('paket_tryout');
+            $table->string('paket_latihan');
+            $table->integer('harga');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kategori_soals');
+        Schema::dropIfExists('paket');
     }
 };

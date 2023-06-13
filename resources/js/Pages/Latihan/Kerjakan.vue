@@ -16,7 +16,7 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Data soal tryout</h1>
+            <h1 class="h3 mb-2 text-gray-800">Data soal latihan</h1>
             <p class="mb-4">Semua data soal ada dihalaman ini.</p>
 
 
@@ -27,9 +27,6 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                             <h6 class="m-0 py-3 font-weight-bold text-">List soal</h6>
                             <!-- Show loading indicator when loading is true -->
-                            <Link @click="goBack" class="btn btn-light">
-                            <i class="fas fa-arrow-left"></i>
-                            </Link>
                             <div v-if="loading" class="spinner-border text-primary" role="status">
                                 <span class="sr-only">Loading...</span>
                             </div>
@@ -49,14 +46,34 @@ import { showFlashMessage } from '@/global_func.js';
                                         <ul class="ml-0 pl-0">
                                             <li type="A" class="pilihan d-flex justify-content-between align-items-center"
                                                 v-for="(pilihan, pilihanIndex) in selectedQuestion.soal.pilihan"
-                                                :key="pilihanIndex" :class="{
-                                                    'bg-success text-white': jawabanKamu(selectedQuestionIndex, pilihanIndex),
-                                                    'bg-primary text-white': kunciJawaban(selectedQuestionIndex, pilihanIndex),
+                                                :key="pilihanIndex" @click="selectAnswer(pilihanIndex)" :class="{
+                                                    'bg-success text-white': isOptionAnswered(selectedQuestionIndex, pilihanIndex),
+                                                    'bg-warning text-white': isOptionFlagged(selectedQuestionIndex, pilihanIndex)
                                                 }">
                                                 <div class="options-warpper">
                                                     {{ ['A', 'B', 'C', 'D', 'E'][pilihanIndex] }}. {{ pilihan.pilihan }}
                                                 </div>
-
+                                                <template v-if="isOptionAnswered(selectedQuestionIndex, pilihanIndex)">
+                                                    <div class="button-wrapper">
+                                                        <button class="btn btn-transparent "
+                                                            @click="removeQuestion(pilihanIndex, $event)">
+                                                            <i class="fas fa-times text-white"></i>
+                                                        </button>
+                                                        <template
+                                                            v-if="isOptionFlagged(selectedQuestionIndex, pilihanIndex)">
+                                                            <button class="btn btn-transparent ml-2"
+                                                                @click="deleteFlagQuestion(pilihanIndex, $event)">
+                                                                <i class="fas fa-flag text-white"></i>
+                                                            </button>
+                                                        </template>
+                                                        <template v-else>
+                                                            <button class="btn btn-success ml-2"
+                                                                @click="flagQuestion(pilihanIndex, $event)">
+                                                                <i class="fas fa-flag text-white"></i>
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                </template>
                                             </li>
 
                                         </ul>
@@ -72,7 +89,26 @@ import { showFlashMessage } from '@/global_func.js';
                 </div>
                 <div class="col-sm-4">
                     <div class="row">
-
+                        <div class="col-sm-12">
+                            <div class="card border-0 mb-4">
+                                <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-">Sisa Waktu</h6>
+                                    <h6><i class="far fa-hourglass"></i></h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row ">
+                                        <div class="col-sm-12 d-flex justify-content-center">
+                                            <h3>
+                                                <strong>
+                                                    <div id="timer"></div>
+                                                    <div id="ket"></div>
+                                                </strong>
+                                            </h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-12">
                             <div class="card border-0 mb-4">
                                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
@@ -81,7 +117,7 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div class="card-body">
                                     <div class="row ">
                                         <div class="col-sm-12 d-flex flex-wrap ">
-                                            <div v-for="(item, index) in tryout_soal" :key="item.id">
+                                            <div v-for="(item, index) in latihan_soal" :key="item.id">
                                                 <button
                                                     class="text-danger nomor-soal btn mr-2 mt-2 p-3 d-flex justify-content-center align-items-center"
                                                     @click="displayQuestion(index)" :class="{
@@ -106,8 +142,13 @@ import { showFlashMessage } from '@/global_func.js';
                                                         class="fas fa-chevron-left"></i>
                                                     Previous </button>
                                                 <button class="btn bg-main text-white mr-2" @click="nextQuestion"
-                                                    :disabled="selectedQuestionIndex === tryout_soal.length - 1"> Next <i
+                                                    :disabled="selectedQuestionIndex === latihan_soal.length - 1"> Next <i
                                                         class="fas fa-chevron-right"></i></button>
+                                                <button class="btn bg-warning text-white mr-2"><i class="fas fa-flag"></i>
+                                                    Ragu</button>
+                                                <button data-toggle="modal" data-target="#exampleModal"
+                                                    class="btn btn-success">Selesai <i class="fas fa-check"></i></button>
+
                                             </div>
                                         </div>
                                     </div>
@@ -121,65 +162,32 @@ import { showFlashMessage } from '@/global_func.js';
                                 </div>
                                 <div class="card-body">
 
-                                    <div class="alert alert-secondary d-flex justify-content-between align-items-center">
+                                    <div class="alert alert-warning d-flex justify-content-between align-items-center">
                                         <div class="content">
-                                            <i class="fas fa-circle"></i>
-                                            Kosong
+                                            <i class="fas fa-flag"></i>
+                                            Ragu
                                         </div>
+                                        <span>{{ flaggedQuestions }}</span>
                                     </div>
                                     <div class="alert alert-success d-flex justify-content-between align-items-center">
                                         <div class="content">
                                             <i class="fas fa-check"></i>
-                                            Jawaban anda
+                                            Dijawab
                                         </div>
+                                        <span>{{ answeredQuestions - flaggedQuestions }}</span>
                                     </div>
-                                    <div class="alert alert-primary d-flex justify-content-between align-items-center">
+                                    <div class="alert alert-danger d-flex justify-content-between align-items-center">
                                         <div class="content">
                                             <i class="fas fa-pen"></i>
-                                            Kunci jawaban
+                                            Jumlah soal
                                         </div>
+                                        <span>{{ latihan_soal.length }}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-8">
-                    <div class="card border-0 mb-4">
-                        <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 py-3 font-weight-bold text-">Pembahasan</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div>
-                                    <div v-if="selectedQuestion">
-
-                                        <div class="d-flex flex-column">
-                                            <p><strong>Kunci jawaban : {{ ['A', 'B', 'C', 'D',
-                                                'E'][selectedQuestion.soal.jawaban]
-                                            }}</strong></p>
-                                            <p><strong>Jawban Anda : {{ ['A', 'B', 'C', 'D',
-                                                'E'][selectedQuestion.jawaban_tryout ?
-                                                    selectedQuestion.jawaban_tryout.jawaban : ''] }}</strong></p>
-                                            <div class="question d-flex">
-                                                <span v-html="selectedQuestion.soal.pembahasan"></span>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div v-else>
-                                        Loading... <!-- or any other loading indicator/message -->
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -197,10 +205,10 @@ import { showFlashMessage } from '@/global_func.js';
                     </div>
                     <div class="modal-body">
                         Apakah yakin ingin selesai ?
-                        masih ada <strong>{{ answeredQuestions - tryout_soal.length }}</strong> soal yang belum terjawab
+                        masih ada <strong>{{ answeredQuestions - latihan_soal.length }}</strong> soal yang belum terjawab
                     </div>
                     <div class="modal-footer">
-                        <button @click="finishSegment(segment_tryout_id)" class="btn btn-success">Selesai <i
+                        <button @click="finishSegment(segment_latihan_id)" class="btn btn-success">Selesai <i
                                 class="fas fa-check"></i></button>
                     </div>
                 </div>
@@ -271,11 +279,11 @@ import { showFlashMessage } from '@/global_func.js';
 export default {
     props: {
         user: Object,
-        // tryout_soal: Object,
+        // latihan_soal: Object,
         kelas: Object,
         kategori_soals: Object,
-        id_tryout: Number,
-        segment_tryout_id: Number,
+        id_latihan: Number,
+        segment_latihan_id: Number,
         active_segment: Object,
     },
     data() {
@@ -283,7 +291,7 @@ export default {
 
             timerInterval: null,
 
-            tryout_soal: [],
+            latihan_soal: [],
             selectedAnswerIndex: null,
 
             selectedQuestionIndex: 0,
@@ -293,10 +301,7 @@ export default {
         };
     },
     methods: {
-        goBack() {
-            window.history.back();
-        },
-        finishSegment(tryoutId) {
+        finishSegment(latihanId) {
 
             clearInterval(this.timerInterval);
             localStorage.removeItem('startTime');
@@ -305,7 +310,7 @@ export default {
             // Reset the timer display
             $('#timer').text('00:00');
             this.loading = true;
-            axios.post(`/api/finish_segment/${tryoutId}`, {
+            axios.post(`/api/finish_segment_latihan/${latihanId}`, {
                 user_id: this.user.id,
 
             })
@@ -314,7 +319,7 @@ export default {
                     $('body').removeClass('modal-open');
                     $('.modal-backdrop').remove();
 
-                    this.$inertia.visit(`/member/tryout/finish/${this.segment_tryout_id}`);
+                    this.$inertia.visit(`/member/latihan/finish/${this.segment_latihan_id}`);
 
                 })
                 .catch(error => {
@@ -324,16 +329,16 @@ export default {
                     // Set loading state to false
                     this.loading = false;
                 });
-            // return '/member/tryout/konfirmasi/' + tryoutId;
+            // return '/member/latihan/konfirmasi/' + latihanId;
         },
         isQuestionAnswered(index) {
-            const question = this.tryout_soal[index];
+            const question = this.latihan_soal[index];
 
-            return question.jawaban_tryout !== null;
+            return question.jawaban_latihan !== null;
         },
         isQuestionFlagged(index) {
-            const question = this.tryout_soal[index];
-            const jawaban = question.jawaban_tryout;
+            const question = this.latihan_soal[index];
+            const jawaban = question.jawaban_latihan;
             return jawaban !== null && jawaban.ragu === '1';
         },
         flagQuestion(pilihanIndex, event) {
@@ -343,7 +348,7 @@ export default {
 
             this.loading = true;
 
-            axios.post(`/api/flag-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/flag-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: questionId,
                 user_id: this.user.id,
 
@@ -369,7 +374,7 @@ export default {
 
             this.loading = true;
 
-            axios.post(`/api/delete-flag-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/delete-flag-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: questionId,
                 user_id: this.user.id,
 
@@ -395,7 +400,7 @@ export default {
 
             this.loading = true;
 
-            axios.post(`/api/delete-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/delete-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: questionId,
                 user_id: this.user.id,
 
@@ -414,13 +419,13 @@ export default {
                     this.loading = false;
                 });;
         },
+        isOptionFlagged(questionIndex, optionIndex) {
+            const question = this.latihan_soal[questionIndex];
+            let jawaban = question.jawaban_latihan ? question.jawaban_latihan.jawaban : '';
 
-        jawabanKamu(questionIndex, optionIndex) {
-            const question = this.tryout_soal[questionIndex];
-            let jawaban = question.jawaban_tryout ? question.jawaban_tryout.jawaban : '';
+            let ragu = question.jawaban_latihan ? question.jawaban_latihan.ragu : 0;
 
-
-            if (jawaban === optionIndex.toString()) {
+            if (jawaban === optionIndex.toString() && ragu == '1') {
                 // Option is answered and should be highlighted
                 return true;
             } else {
@@ -428,11 +433,12 @@ export default {
                 return false;
             }
         },
+        isOptionAnswered(questionIndex, optionIndex) {
+            const question = this.latihan_soal[questionIndex];
+            let jawaban = question.jawaban_latihan ? question.jawaban_latihan.jawaban : '';
 
-        kunciJawaban(questionIndex, optionIndex) {
-            const question = this.tryout_soal[questionIndex];
 
-            if (question.soal.jawaban === optionIndex.toString()) {
+            if (jawaban === optionIndex.toString()) {
                 // Option is answered and should be highlighted
                 return true;
             } else {
@@ -449,7 +455,7 @@ export default {
             this.loading = true;
 
             // Save the selected answer to the database using an API call
-            axios.post(`/api/save-tryout-answer/${this.segment_tryout_id}`, {
+            axios.post(`/api/save-latihan-answer/${this.segment_latihan_id}`, {
                 questionId: selectedAnswer.soal_id,
                 answer: this.selectedAnswerIndex,
                 user_id: this.user.id,
@@ -469,22 +475,22 @@ export default {
         previousQuestion() {
             if (this.selectedQuestionIndex > 0) {
                 this.selectedQuestionIndex--;
-                this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
+                this.selectedQuestion = this.latihan_soal[this.selectedQuestionIndex];
             }
         },
 
         nextQuestion() {
-            if (this.selectedQuestionIndex < this.tryout_soal.length - 1) {
+            if (this.selectedQuestionIndex < this.latihan_soal.length - 1) {
                 this.selectedQuestionIndex++;
-                this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
+                this.selectedQuestion = this.latihan_soal[this.selectedQuestionIndex];
             }
         },
         fetchDataSoal() {
-            axios.get(`/api/get-soal/${this.id_tryout}/${this.segment_tryout_id}`)
+            axios.get(`/api/get-soal-latihan/${this.id_latihan}/${this.segment_latihan_id}`)
                 .then(response => {
                     // Update the soal data in the component
-                    this.tryout_soal = response.data;
-                    // console.log(this.tryout_soal);
+                    this.latihan_soal = response.data;
+                    // console.log(this.latihan_soal);
 
                     // Set the default selected question
                     this.displayQuestion(this.selectedQuestionIndex);
@@ -496,7 +502,7 @@ export default {
 
         displayQuestion(index) {
             this.selectedQuestionIndex = index;
-            this.selectedQuestion = this.tryout_soal[index];
+            this.selectedQuestion = this.latihan_soal[index];
         },
         isActiveQuestion(index) {
             return this.selectedQuestionIndex === index;
@@ -504,19 +510,78 @@ export default {
     },
     mounted() {
 
+        let durasi_menit = this.active_segment.latihan.durasi;
+        let durasi_seconds = durasi_menit * 60;
+
+        let self = this;
 
         this.fetchDataSoal();
 
         const navbar = document.querySelector('.navbar-nav');
         navbar.classList.add('toggled');
 
+        // Check if the timer is already running
+        var startTime = localStorage.getItem('startTime');
+        var duration = localStorage.getItem('duration');
+        var interval;
+
+        if (startTime && duration) {
+            // Calculate the remaining time
+            var elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+            var remainingTime = Math.max(duration - elapsedTime, 0);
+            startTimer(remainingTime);
+        } else {
+            // Set the exam duration in seconds (e.g., 10 minutes = 600 seconds)
+            var examDuration = durasi_seconds;
+            startTimer(examDuration);
+        }
+
+        function startTimer(seconds) {
+            // Store the start time and duration
+            localStorage.setItem('startTime', Date.now());
+            localStorage.setItem('duration', seconds);
+
+            // Start the countdown
+            self.timerInterval = setInterval(function () {
+                // Update the display
+                var minutes = Math.floor(seconds / 60);
+                var remainingSeconds = seconds % 60;
+                $('#timer').text(minutes + ':' + remainingSeconds.toString().padStart(2, '0'));
+
+                // Check if the timer has reached zero
+                if (seconds <= 0) {
+                    clearInterval(self.timerInterval);
+                    $('#timer').text('Time is up!');
+                    localStorage.removeItem('startTime');
+                    localStorage.removeItem('duration');
+                    self.finishSegment(self.segment_latihan_id);
+                    // Perform actions when time is up (e.g., close the exam)
+                    // ...
+
+                }
+
+                seconds--;
+            }, 1000);
+        }
 
     },
     computed: {
         answeredQuestions() {
-            return this.tryout_soal.filter(question => question.jawaban_tryout !== null).length;
+            return this.latihan_soal.filter(question => question.jawaban_latihan !== null).length;
         },
+        flaggedQuestions() {
 
+            let flaggedCount = 0;
+
+            for (let i = 0; i < this.latihan_soal.length; i++) {
+                if (this.isQuestionFlagged(i)) {
+                    flaggedCount++;
+                }
+            }
+
+            return flaggedCount;
+
+        }
 
     }
 

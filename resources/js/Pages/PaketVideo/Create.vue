@@ -16,35 +16,27 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">kategori_soal</h1>
-            <p class="mb-4">Lakukan penambahan/pengeditan kategori_soal dengan mengisi form dibawah ini.</p>
+            <h1 class="h3 mb-2 text-gray-800">paket_video</h1>
+            <p class="mb-4">Lakukan penambahan/pengeditan paket_video dengan mengisi form dibawah ini.</p>
 
             <!-- DataTales Example -->
             <div class="card border-0 mb-4">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Data kategori_soal</h6>
-                    <Link href="/kategori_soal" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
+                    <h6 class="m-0 font-weight-bold text-primary">Data paket_video</h6>
+                    <Link href="/paket_video" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
                 </div>
                 <div class="card-body">
                     <form id="msform">
                         <div class="form-group">
-                            <input v-model="inputId" type="hidden" class="form-control" name="id" id="id">
+                            <input v-model="inputIdVideo" type="hidden" class="form-control" name="id" id="id">
                         </div>
                         <div class="form-group">
-                            <label for="kode">kode</label>
-                            <input v-model="inputKode" type="text" class="form-control" name="kode" id="kode">
+                            <label for="nama_paket_video">nama paket</label>
+                            <input v-model="inputNamaPaket" type="text" class="form-control" name="nama_paket_video"
+                                id="nama_paket_video">
                         </div>
                         <div class="form-group">
-                            <label for="nama">nama</label>
-                            <input v-model="inputNama" type="text" class="form-control" name="nama" id="nama">
-                        </div>
-                        <div class="form-group">
-                            <label for="passing_grade">passing_grade</label>
-                            <input v-model="inputPassingGrade" type="text" class="form-control" name="passing_grade"
-                                id="passing_grade">
-                        </div>
-                        <div class="form-group">
-                            <input @click="submitData" type="button" class="btn bg-main text-white" value="simpan"
+                            <input @click="submitpaket_video" type="button" class="btn bg-main text-white" value="simpan"
                                 id="btn-confirm" />
                         </div>
                     </form>
@@ -64,10 +56,8 @@ export default {
     data() {
         return {
             // deadline
-            inputId: '',
-            inputKode: '',
-            inputNama: '',
-            inputPassingGrade: '',
+            inputIdVideo: '',
+            inputNamaPaket: '',
         };
     },
     props: {
@@ -77,22 +67,20 @@ export default {
     },
 
     methods: {
-        submitData() {
+        submitpaket_video() {
             const formData = {
                 // produk
-                id: this.inputId,
-                nama: this.inputNama,
-                kode: this.inputKode,
-                passing_grade: this.inputPassingGrade,
+                id: this.inputIdVideo,
+                nama_paket: this.inputNamaPaket,
             }
             // Send the data to the backend server using axios
             if (this.edit) {
-                axios.put('/kategori_soal', formData)
+                axios.put('/paket_video', formData)
                     .then(response => {
                         // Handle success response
                         console.log(response);
                         showFlashMessage(response.data.message);
-                        this.$inertia.visit(route('kategori_soal'));
+                        this.$inertia.visit(route('paket_video'));
 
                     })
                     .catch(error => {
@@ -100,12 +88,12 @@ export default {
                         console.error(error);
                     });
             } else {
-                axios.post('/kategori_soal', formData)
+                axios.post('/paket_video', formData)
                     .then(response => {
                         // Handle success response
                         console.log(response);
                         showFlashMessage(response.data.message);
-                        this.$inertia.visit(route('kategori_soal'));
+                        this.$inertia.visit(route('paket_video'));
 
                     })
                     .catch(error => {
@@ -119,10 +107,8 @@ export default {
     }, mounted() {
         // Import a JavaScript file dynamically
         if (this.edit) {
-            this.inputId = this.edit.id;
-            this.inputNama = this.edit.nama;
-            this.inputKode = this.edit.kode;
-            this.inputPassingGrade = this.edit.passing_grade;
+            this.inputNamapaket_video = this.edit.nama_paket_video;
+            this.inputIdVideo = this.edit.id;
         }
 
     }

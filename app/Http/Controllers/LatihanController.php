@@ -2,60 +2,62 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JawabanTryout;
+use App\Models\JawabanLatihan;
 use App\Models\KategoriSoal;
 use App\Models\Kelas;
-use App\Models\SegmentTryout;
-use App\Models\Tryout;
-use App\Models\TryoutSoal;
+use App\Models\SegmentLatihan;
+use App\Models\Latihan;
+use App\Models\LatihanSoal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class TryoutController extends Controller
+class LatihanController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Tryout/Index', [
+        return Inertia::render('Latihan/Index', [
             'user' => auth()->user(),
-            'tryout' => Tryout::with('kelas')->with('tryout_soal')->get(),
+            'latihan' => Latihan::with('kelas')->with('latihan_soal')->with('kategori_soal')->get(),
         ]);
     }
 
     public function member()
     {
-        $activeSegment = SegmentTryout::with('tryout.kelas')
-            ->with('tryout.tryout_soal')
-            ->with('tryout.segment_tryout')
+
+        $activeSegment = SegmentLatihan::with('latihan.kelas')
+            ->with('latihan.latihan_soal')
+            ->with('latihan.segment_latihan')
             ->where('user_id', auth()->user()->id)
             ->where('status', '0')
             ->first();
 
         if ($activeSegment) {
             // Perform the redirect to the desired route or URL
-            return redirect('/member/tryout/konfirmasi');
+            return redirect()->route('latihan.konfirmasi');
         }
 
-        return Inertia::render('Tryout/Member', [
+        return Inertia::render('Latihan/Member', [
             'user' => auth()->user(),
-            'tryout' => Tryout::with('kelas')->with('tryout_soal')->get(),
+            'latihan' => Latihan::with('kelas')->with('latihan_soal')->get(),
+
         ]);
     }
 
-    public function history($tryoutId)
+    public function history($latihanId)
     {
 
-        return Inertia::render('Tryout/History', [
+        return Inertia::render('Latihan/History', [
             'user' => auth()->user(),
-            'history' => SegmentTryout::where('tryout_id', $tryoutId)->where('user_id', auth()->user()->id)->get()
+            'history' => SegmentLatihan::where('latihan_id', $latihanId)->where('user_id', auth()->user()->id)->get()
         ]);
     }
 
 
     public function konfirmasi()
     {
-        $activeSegment = SegmentTryout::with('tryout.kelas')
-            ->with('tryout.tryout_soal')
-            ->with('tryout.segment_tryout')
+        $activeSegment = SegmentLatihan::with('latihan.kelas')
+            ->with('latihan.latihan_soal')
+            ->with('latihan.segment_latihan')
             ->where('user_id', auth()->user()->id)
             ->where('status', '0')
             ->latest('created_at')
@@ -63,34 +65,34 @@ class TryoutController extends Controller
 
         if (!$activeSegment) {
             // Perform the redirect to the desired route or URL
-            return redirect('/member/tryout');
+            return redirect()->route('latihan.konfirmasi');
         }
-        return Inertia::render('Tryout/Konfirmasi', [
+        return Inertia::render('Latihan/Konfirmasi', [
             'user' => auth()->user(),
-            // 'tryout' => Tryout::with('kelas')->with('tryout_soal')->with('segment_tryout')->where('id', $idTryout)->first(),
-            'segment_tryout' => $activeSegment
+            // 'latihan' => Latihan::with('kelas')->with('latihan_soal')->with('segment_latihan')->where('id', $idlatihan)->first(),
+            'segment_latihan' => $activeSegment
         ]);
     }
 
-    public function finish($segment_tryout_id)
+    public function finish($segment_latihan_id)
     {
-        $finishedSegment = SegmentTryout::with('tryout.kelas')
-            ->with('tryout.tryout_soal.soal')
-            ->with('tryout.segment_tryout')
+        $finishedSegment = SegmentLatihan::with('latihan.kelas')
+            ->with('latihan.latihan_soal.soal')
+            ->with('latihan.segment_latihan')
             ->where('user_id', auth()->user()->id)
             ->where('status', '1')
-            ->where('id', $segment_tryout_id)
+            ->where('id', $segment_latihan_id)
             ->latest('created_at')
             ->first();
-        $tryoutSoal = $finishedSegment->tryout->tryout_soal;
-        $jumlahSoal = count($tryoutSoal);
+        $latihanSoal = $finishedSegment->latihan->latihan_soal;
+        $jumlahSoal = count($latihanSoal);
         // 1 = tiu
         // 2 = tkp
         // 3 = twk
         $totalTiu = 0;
         $totalTkp = 0;
         $totalTwk = 0;
-        foreach ($tryoutSoal as $row) {
+        foreach ($latihanSoal as $row) {
             if ($row->soal->kategori_soal_id == 1) {
                 $totalTiu++;
             } else if ($row->soal->kategori_soal_id == 2) {
@@ -117,15 +119,15 @@ class TryoutController extends Controller
         $poinTkp2 = 0;
         $poinTkp1 = 0;
 
-        $jawabanTryout = JawabanTryout::with('segment_tryout.tryout.tryout_soal.soal')
+        $jawabanlatihan = JawabanLatihan::with('segment_latihan.latihan.latihan_soal.soal')
             ->where('user_id', auth()->user()->id)
-            ->where('segment_tryout_id', $segment_tryout_id)
+            ->where('segment_latihan_id', $segment_latihan_id)
             ->get();
 
         $soalIds = []; // Array to store the IDs of questions that have been counted
 
-        foreach ($jawabanTryout as $row) {
-            $soalTerjawab = $row->segment_tryout->tryout->tryout_soal;
+        foreach ($jawabanlatihan as $row) {
+            $soalTerjawab = $row->segment_latihan->latihan->latihan_soal;
 
             foreach ($soalTerjawab as $index => $soal) {
 
@@ -133,8 +135,8 @@ class TryoutController extends Controller
                 if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 1) {
                     $tiuTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-                    if (isset($jawabanTryout[$index])) {
-                        if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
+                    if (isset($jawabanlatihan[$index])) {
+                        if ($soal->soal->jawaban == $jawabanlatihan[$index]->jawaban) {
                             $tiuTerjawabBenar++;
                         } else {
                             $tiuTerjawabSalah++;
@@ -145,20 +147,20 @@ class TryoutController extends Controller
                     $tkpTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
 
-                    if (isset($jawabanTryout[$index])) {
-                        if ($jawabanTryout[$index]->jawaban == 0) {
+                    if (isset($jawabanlatihan[$index])) {
+                        if ($jawabanlatihan[$index]->jawaban == 0) {
                             $poinTkp3++;
                         }
-                        if ($jawabanTryout[$index]->jawaban == 1) {
+                        if ($jawabanlatihan[$index]->jawaban == 1) {
                             $poinTkp5++;
                         }
-                        if ($jawabanTryout[$index]->jawaban == 2) {
+                        if ($jawabanlatihan[$index]->jawaban == 2) {
                             $poinTkp4++;
                         }
-                        if ($jawabanTryout[$index]->jawaban == 3) {
+                        if ($jawabanlatihan[$index]->jawaban == 3) {
                             $poinTkp2++;
                         }
-                        if ($jawabanTryout[$index]->jawaban == 4) {
+                        if ($jawabanlatihan[$index]->jawaban == 4) {
                             $poinTkp1++;
                         }
                     }
@@ -172,8 +174,8 @@ class TryoutController extends Controller
                 if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 3) {
                     $twkTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-                    if (isset($jawabanTryout[$index])) {
-                        if ($soal->soal->jawaban == $jawabanTryout[$index]) {
+                    if (isset($jawabanlatihan[$index])) {
+                        if ($soal->soal->jawaban == $jawabanlatihan[$index]) {
                             $twkTerjawabBenar++;
                         } else {
                             $twkTerjawabSalah++;
@@ -229,8 +231,7 @@ class TryoutController extends Controller
 
         // echo "poin tkp   : " . (($poinTkp5 * 5) + ($poinTkp4 * 4) + ($poinTkp3 * 3) + ($poinTkp2 * 2) + ($poinTkp1 * 1)) . "<br>";
 
-
-        $hasilTryout = [
+        $hasillatihan = [
             'total_soal_tiu' => $totalTiu,
             'total_soal_twk' => $totalTwk,
             'total_soal_tkp' => $totalTkp,
@@ -264,21 +265,21 @@ class TryoutController extends Controller
 
         if (!$finishedSegment) {
             // Perform the redirect to the desired route or URL
-            return redirect('/member/tryout');
+            return redirect()->route('latihan.konfirmasi');
         }
-        return Inertia::render('Tryout/Finish', [
+        return Inertia::render('Latihan/Finish', [
             'user' => auth()->user(),
-            // 'tryout' => Tryout::with('kelas')->with('tryout_soal')->with('segment_tryout')->where('id', $idTryout)->first(),
-            'segment_tryout' => $finishedSegment,
-            'hasil_tryout' => json_encode($hasilTryout),
+            // 'latihan' => Latihan::with('kelas')->with('latihan_soal')->with('segment_latihan')->where('id', $idlatihan)->first(),
+            'segment_latihan' => $finishedSegment,
+            'hasil_latihan' => json_encode($hasillatihan),
         ]);
     }
 
-    public function kerjakan($segment_tryout_id)
+    public function kerjakan($segment_latihan_id)
     {
-        $activeSegment = SegmentTryout::with('tryout.kelas')
-            ->with('tryout.tryout_soal')
-            ->with('tryout.segment_tryout')
+        $activeSegment = SegmentLatihan::with('latihan.kelas')
+            ->with('latihan.latihan_soal')
+            ->with('latihan.segment_latihan')
             ->where('user_id', auth()->user()->id)
             ->where('status', '0')
             ->latest('created_at')
@@ -286,47 +287,48 @@ class TryoutController extends Controller
 
         if (!$activeSegment) {
             // Perform the redirect to the desired route or URL
-            return redirect('/member/tryout');
+            return redirect()->route('latihan.konfirmasi');
         }
-        return Inertia::render('Tryout/Kerjakan', [
+        return Inertia::render('Latihan/Kerjakan', [
             'user' => auth()->user(),
-            // 'tryout_soal' => TryoutSoal::with('soal.pilihan')->with('tryout')->where('tryout_id', $segment_tryout_id)->get(),
+            // 'latihan_soal' => latihanSoal::with('soal.pilihan')->with('latihan')->where('latihan_id', $segment_latihan_id)->get(),
             'kategori_soals' => KategoriSoal::all(),
             'kelas' => Kelas::all(),
-            'segment_tryout_id' => $segment_tryout_id,
-            'id_tryout' => SegmentTryout::where('id', $segment_tryout_id)->first()->tryout_id,
+            'segment_latihan_id' => $segment_latihan_id,
+            'id_latihan' => SegmentLatihan::where('id', $segment_latihan_id)->first()->latihan_id,
             'active_segment' => $activeSegment,
         ]);
     }
 
-    public function review($segment_tryout_id)
+    public function review($segment_latihan_id)
     {
 
 
-        return Inertia::render('Tryout/Review', [
+        return Inertia::render('Latihan/Review', [
             'user' => auth()->user(),
-            // 'tryout_soal' => TryoutSoal::with('soal.pilihan')->with('tryout')->where('tryout_id', $segment_tryout_id)->get(),
+            // 'latihan_soal' => latihanSoal::with('soal.pilihan')->with('latihan')->where('latihan_id', $segment_latihan_id)->get(),
             'kategori_soals' => KategoriSoal::all(),
             'kelas' => Kelas::all(),
-            'segment_tryout_id' => $segment_tryout_id,
-            'id_tryout' => SegmentTryout::where('id', $segment_tryout_id)->first()->tryout_id,
+            'segment_latihan_id' => $segment_latihan_id,
+            'id_latihan' => SegmentLatihan::where('id', $segment_latihan_id)->first()->latihan_id,
         ]);
     }
 
 
     public function create()
     {
-        return Inertia::render('Tryout/Create', [
+        return Inertia::render('Latihan/Create', [
             'user' => auth()->user(),
             'kelas' => Kelas::all(),
+            'kategori_soal' => KategoriSoal::all(),
         ]);
     }
 
     public function edit($idKelas)
     {
-        return Inertia::render('Tryout/Create', [
+        return Inertia::render('Latihan/Create', [
             'user' => auth()->user(),
-            'edit' => Tryout::where('id', $idKelas)->first(),
+            'edit' => Latihan::where('id', $idKelas)->first(),
             'kelas' => Kelas::all(),
         ]);
     }
@@ -334,38 +336,39 @@ class TryoutController extends Controller
     public function store(Request $request)
     {
 
-        Tryout::create([
-            'nama_tryout' => $request->nama_tryout,
+        Latihan::create([
+            'nama_latihan' => $request->nama_latihan,
             'kelas_id' => $request->kelas_id,
             'durasi' => $request->durasi,
             'mulai' => $request->mulai,
+            'kategori_soal_id' => $request->kategori_soal_id,
         ])->id;
 
         return response()->json([
-            'message' => 'Tryout berhasil dibuat',
+            'message' => 'latihan berhasil dibuat',
         ]);
     }
 
     public function update(Request $request)
     {
 
-        Tryout::where('id', $request->id)->update([
-            'nama_tryout' => $request->nama_tryout,
+        Latihan::where('id', $request->id)->update([
+            'nama_latihan' => $request->nama_latihan,
             'kelas_id' => $request->kelas_id,
             'durasi' => $request->durasi,
             'mulai' => $request->mulai,
         ]);
 
         return response()->json([
-            'message' => 'Tryout berhasil dibuah',
+            'message' => 'latihan berhasil dibuah',
         ]);
     }
 
     public function delete($idKelas)
     {
-        Tryout::where('id', $idKelas)->delete();
+        Latihan::where('id', $idKelas)->delete();
         return response()->json([
-            'message' => 'Tryout berhasil dihapus',
+            'message' => 'latihan berhasil dihapus',
         ]);
     }
 }

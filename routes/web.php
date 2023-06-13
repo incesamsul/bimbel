@@ -4,9 +4,17 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\KategoriSoalController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\LatihanController;
+use App\Http\Controllers\LatihanSoalController;
+use App\Http\Controllers\MateriTextController;
+use App\Http\Controllers\MateriVideoController;
+use App\Http\Controllers\PaketController;
+use App\Http\Controllers\PaketVideoController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SoalController;
 use App\Http\Controllers\SubKategoriSoalController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TryoutController;
 use App\Http\Controllers\TryoutSoalController;
 use App\Http\Controllers\UserController;
@@ -49,6 +57,18 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
 
 
     Route::group(['prefix' => 'member'], function () {
+
+        Route::get('/pembayaran', [PembayaranController::class, 'index']);
+        Route::get('/buat_pembayaran', [TransaksiController::class, 'store']);
+
+        Route::get('/paket', [PaketController::class, 'member']);
+        Route::get('/paket_aktif', [PaketController::class, 'aktif']);
+        Route::get('/paket_aktif/{id_paket}', [PaketController::class, 'content']);
+        Route::get('/paket_aktif/{id_paket}/video', [PaketController::class, 'contentVideo']);
+        Route::get('/paket_aktif/{id_paket}/video/{id_paket_video}', [PaketController::class, 'videos']);
+
+        Route::get('/paket_aktif/{id_paket}/tryout', [PaketController::class, 'contentTryout']);
+
         // GET REQUEST
         Route::get('/tryout', [TryoutController::class, 'member']);
         Route::get('/tryout/konfirmasi', [TryoutController::class, 'konfirmasi']);
@@ -56,6 +76,17 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
         Route::get('/tryout/review/{segment_tryout_id}', [TryoutController::class, 'review']);
         Route::get('/tryout/finish/{segment_tryout_id}', [TryoutController::class, 'finish']);
         Route::get('/tryout/history/{tryout_id}', [TryoutController::class, 'history']);
+
+        // GET REQUEST
+        Route::get('/latihan', [LatihanController::class, 'member']);
+        Route::get('/latihan/konfirmasi', [LatihanController::class, 'konfirmasi'])->name('latihan.konfirmasi');
+        Route::get('/latihan/kerjakan/{segment_latihan_id}', [LatihanController::class, 'kerjakan']);
+        Route::get('/latihan/review/{segment_latihan_id}', [LatihanController::class, 'review']);
+        Route::get('/latihan/finish/{segment_latihan_id}', [LatihanController::class, 'finish']);
+        Route::get('/latihan/history/{latihan_id}', [LatihanController::class, 'history']);
+
+        Route::get('/materi_video', [MateriVideoController::class, 'member']);
+        Route::get('/materi_text', [MateriTextController::class, 'member']);
     });
 });
 
@@ -69,6 +100,35 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::put('/kelas', [KelasController::class, 'update']);
     Route::get('/kelas/edit/{id_kelas}', [KelasController::class, 'edit']);
     Route::delete('/kelas/{id_kelas}', [KelasController::class, 'delete'])->name('kelas.delete');
+
+    Route::get('/paket', [PaketController::class, 'index'])->name('paket');
+    Route::get('/paket/create', [PaketController::class, 'create']);
+    Route::post('/paket', [PaketController::class, 'store']);
+    Route::put('/paket', [PaketController::class, 'update']);
+    Route::get('/paket/edit/{id_paket}', [PaketController::class, 'edit']);
+    Route::delete('/paket/{id_paket}', [PaketController::class, 'delete'])->name('paket.delete');
+
+    Route::get('/paket_video', [PaketVideoController::class, 'index'])->name('paket_video');
+    Route::get('/paket_video/create', [PaketVideoController::class, 'create']);
+    Route::get('/paket_video/{id_paket}', [PaketVideoController::class, 'videos']);
+    Route::post('/paket_video', [PaketVideoController::class, 'store']);
+    Route::put('/paket_video', [PaketVideoController::class, 'update']);
+    Route::get('/paket_video/edit/{id_paket}', [PaketVideoController::class, 'edit']);
+    Route::delete('/paket_video/{id_paket}', [PaketVideoController::class, 'delete'])->name('paket_video.delete');
+
+    Route::get('/materi_video', [MateriVideoController::class, 'index'])->name('materi_video');
+    Route::get('/materi_video/create', [MateriVideoController::class, 'create']);
+    Route::post('/materi_video', [MateriVideoController::class, 'store']);
+    Route::put('/materi_video', [MateriVideoController::class, 'update']);
+    Route::get('/materi_video/edit/{id_materi_video}', [MateriVideoController::class, 'edit']);
+    Route::delete('/materi_video/{id_materi_video}', [MateriVideoController::class, 'delete'])->name('materi_video.delete');
+
+    Route::get('/materi_text', [MateriTextController::class, 'index'])->name('materi_text');
+    Route::get('/materi_text/create', [MateriTextController::class, 'create']);
+    Route::post('/materi_text', [MateriTextController::class, 'store']);
+    Route::put('/materi_text', [MateriTextController::class, 'update']);
+    Route::get('/materi_text/edit/{id_materi_text}', [MateriTextController::class, 'edit']);
+    Route::delete('/materi_text/{id_materi_text}', [MateriTextController::class, 'delete'])->name('materi_text.delete');
 
     Route::get('/soal', [SoalController::class, 'index'])->name('soal');
     Route::get('/soal/create', [SoalController::class, 'create']);
@@ -99,6 +159,15 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::delete('/tryout/{id_soal}', [TryoutController::class, 'delete'])->name('tryout.delete');
 
     Route::get('/tryout_soal/{id_tryout}', [TryoutSoalController::class, 'index'])->name('tryout_soal');
+
+    Route::get('/latihan', [LatihanController::class, 'index'])->name('latihan');
+    Route::get('/latihan/create', [LatihanController::class, 'create']);
+    Route::post('/latihan', [LatihanController::class, 'store']);
+    Route::put('/latihan', [LatihanController::class, 'update']);
+    Route::get('/latihan/edit/{id_soal}', [LatihanController::class, 'edit']);
+    Route::delete('/latihan/{id_soal}', [LatihanController::class, 'delete'])->name('latihan.delete');
+
+    Route::get('/latihan_soal/{id_latihan}', [LatihanSoalController::class, 'index'])->name('latihan_soal');
 
 
     Route::group(['prefix' => 'admin'], function () {

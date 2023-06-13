@@ -16,14 +16,14 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Data kategori_soal</h1>
-            <p class="mb-4">Semua data kategori_soal ada dihalaman ini.</p>
+            <h1 class="h3 mb-2 text-gray-800">Data latihan</h1>
+            <p class="mb-4">Semua data latihan ada dihalaman ini.</p>
 
             <!-- DataTales Example -->
             <div class="card border-0 mb-4">
                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-">Data kategori_soal</h6>
-                    <Link href="/kategori_soal/create" class="btn btn-light"> <i class="fas fa-plus"></i></Link>
+                    <h6 class="m-0 font-weight-bold text-">Data latihan</h6>
+                    <Link href="/latihan/create" class="btn btn-light"> <i class="fas fa-plus"></i></Link>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -31,24 +31,32 @@ import { showFlashMessage } from '@/global_func.js';
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>kode</th>
-                                    <th>Nama kategori_soal</th>
-                                    <th>passing grade</th>
+                                    <th>Nama latihan</th>
+                                    <th>Kategori </th>
+                                    <th>Kelas</th>
+                                    <th>mulai</th>
+                                    <th>durasi</th>
+                                    <th>soal</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="kategori_soal in kategori_soal">
-                                    <td>{{ kategori_soal.id }}</td>
-                                    <td>{{ kategori_soal.kode }}</td>
-                                    <td>{{ kategori_soal.nama }}</td>
-                                    <td>{{ kategori_soal.passing_grade }}</td>
+                                <tr v-for="latihan in latihan">
+                                    <td>{{ latihan.id }}</td>
+                                    <td>{{ latihan.nama_latihan }}</td>
+                                    <td>{{ latihan.kategori_soal.nama }}</td>
+                                    <td>{{ latihan.kelas.nama_kelas }}</td>
+                                    <td>{{ latihan.mulai }}</td>
+                                    <td>{{ latihan.durasi }} m</td>
                                     <td>
-                                        <span @click="deleteKategori(kategori_soal.id)"
-                                            class="badge badge-danger cursor-pointer">
+                                        {{ latihan.latihan_soal.length }}
+                                        <Link :href="'/latihan_soal/' + latihan.id" class="badge badge-primary">Lihat</Link>
+                                    </td>
+                                    <td>
+                                        <span @click="deletelatihan(latihan.id)" class="badge badge-danger cursor-pointer">
                                             <i class="fas fa-trash"></i>
                                         </span>
-                                        <Link :href="'kategori_soal/edit/' + kategori_soal.id"
+                                        <Link :href="'latihan/edit/' + latihan.id"
                                             class="badge badge-warning cursor-pointer ml-2">
                                         <i class="fas fa-pen"></i>
                                         </Link>
@@ -73,20 +81,20 @@ export default {
     props: {
         user: Object,
         users: Object,
-        kategori_soal: Object,
+        latihan: Object,
     },
     computed: {
 
     },
     methods: {
-        deleteKategori(kategori_soal) {
+        deletelatihan(id_latihan) {
             if (confirm('yakin ingin menghapus data ?')) {
-                axios.delete(`/kategori_soal/${kategori_soal}`)
+                axios.delete(`/latihan/${id_latihan}`)
                     .then(response => {
                         // Handle success response
                         console.log(response);
                         showFlashMessage(response.data.message);
-                        this.$inertia.visit(route('kategori_soal'));
+                        this.$inertia.visit(route('latihan'));
 
                     })
                     .catch(error => {
