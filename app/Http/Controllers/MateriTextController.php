@@ -77,4 +77,10 @@ class MateriTextController extends Controller
             'message' => 'kelas berhasil dihapus',
         ]);
     }
+
+    public function getTexts()
+    {
+        $text = MateriText::with('kategori')->get();
+        return response()->json($text);
+    }
 }

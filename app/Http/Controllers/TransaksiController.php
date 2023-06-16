@@ -4,46 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Payment\TripayController;
 use App\Models\Cart;
+use App\Models\Paket;
 use App\Models\PrintList;
 use App\Models\ProdukModel;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransaksiController extends Controller
 {
     public function store(Request $request)
     {
         $tripay = new TripayController();
-        $cart = Cart::where('id_cart', $request->id_cart)->first();
+        $paket = Paket::where('id', $request->id_paket)->first();
 
-        $transaksi = $tripay->requestTransaksi($request->method, $cart, $request->total_pembayaran);
-
-        $printlist = PrintList::create([
-            'id_user' => auth()->user()->id,
-            'id_produk' => $cart->id_produk,
-            'file' => $cart->file,
-        ]);
+        $transaksi = $tripay->requestTransaksi($request->method, $paket, $request->total_pembayaran);
 
         Transaksi::create([
             'id_user' => auth()->user()->id,
-            'id_print_list' => $printlist->id,
+            'id_paket' => $paket->id,
+            'total_amount' => $transaksi->amount,
             'reference' => $transaksi->reference,
             'merchant_reference' => $transaksi->merchant_ref,
-            'total_amount' => $transaksi->amount,
             'status' => $transaksi->status,
         ]);
 
-        Cart::where('id_cart', $request->id_cart)->delete();
-
-
-        return redirect('/detail_transaksi/' . $transaksi->reference);
+        return response()->json([
+            'message' => 'transaksi berhasil di buat',
+            'reference' => $transaksi->reference,
+        ]);
     }
 
     public function detailTransaksi($reference)
     {
 
         $tripay = new TripayController();
-        $data['detail_transaksi'] = $tripay->detailTransaksi($reference);
-        return view('pages.halaman_depan.detail_transaksi', $data);
+        $detail_transaksi = $tripay->detailTransaksi($reference);
+        return Inertia::render('Pembayaran/Detail', [
+            'user' => auth()->user(),
+            'detail_transaksi' => $detail_transaksi
+        ]);
+        // return view('pages.halaman_depan.detail_transaksi', $data);
+    }
+
+
+    public function pembayaran()
+    {
+        return Inertia::render('Pembayaran/List', [
+            'user' => auth()->user(),
+            'transaksi' => Transaksi::with('paket')->where('id_user', auth()->user()->id)->get(),
+        ]);
     }
 }

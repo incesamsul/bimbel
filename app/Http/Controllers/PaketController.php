@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Latihan;
 use App\Models\Paket;
+use App\Models\PaketText;
 use App\Models\PaketVideo;
+use App\Models\SegmentLatihan;
 use App\Models\SegmentTryout;
 use App\Models\Transaksi;
 use App\Models\Tryout;
@@ -80,6 +83,36 @@ class PaketController extends Controller
         ]);
     }
 
+    public function contentText($idPaket)
+    {
+
+        $transaksi = Transaksi::with('paket')
+            ->whereHas('paket', function ($query) use ($idPaket) {
+                $query->where('id', $idPaket);
+            })
+            ->where('id_user', auth()->user()->id)
+            ->where('status', 'paid')
+            ->first();
+        $paket = $transaksi->paket;
+        $arrPaket = explode(",", $paket->paket_video);
+        $paketData = [];
+
+        foreach ($arrPaket as $paketId) {
+            $paketName = PaketText::select('nama_paket')->where('id', $paketId)->first();
+            $paketData[] = [
+                'id' => $paketId,
+                'nama_paket' => $paketName ? $paketName->nama_paket : '',
+            ];
+        }
+
+        return Inertia::render('Paket/ContentText', [
+            'user' => auth()->user(),
+            'paket' => $paket,
+            'paket_text' => json_encode($paketData),
+        ]);
+    }
+
+
     public function contentTryout($idPaket)
     {
 
@@ -116,6 +149,42 @@ class PaketController extends Controller
         ]);
     }
 
+    public function contentLatihan($idPaket)
+    {
+
+        $activeSegment = SegmentLatihan::with('latihan.kelas')
+            ->with('latihan.latihan_soal')
+            ->with('latihan.segment_latihan')
+            ->where('user_id', auth()->user()->id)
+            ->where('status', '0')
+            ->first();
+
+        if ($activeSegment) {
+            // Perform the redirect to the desired route or URL
+            return redirect()->route('latihan.konfirmasi');
+        }
+        $transaksi = Transaksi::with('paket')
+            ->whereHas('paket', function ($query) use ($idPaket) {
+                $query->where('id', $idPaket);
+            })
+            ->where('id_user', auth()->user()->id)
+            ->where('status', 'paid')
+            ->first();
+        $paket = $transaksi->paket;
+        $arrPaket = explode(",", $paket->paket_latihan);
+        $paketData = [];
+
+        foreach ($arrPaket as $paketId) {
+            $paketData[] = Latihan::where('id', $paketId)->first();
+        }
+
+        return Inertia::render('Paket/ContentLatihan', [
+            'user' => auth()->user(),
+            'paket' => $paket,
+            'latihan' => json_encode($paketData),
+        ]);
+    }
+
 
     public function videos($idPaket, $idPaketVideo)
     {
@@ -126,11 +195,24 @@ class PaketController extends Controller
         ]);
     }
 
+    public function texts($idPaket, $idPaketText)
+    {
+        return Inertia::render('Paket/Texts', [
+            'user' => auth()->user(),
+            'id_paket_text' => $idPaketText,
+            'id_paket' => $idPaket,
+        ]);
+    }
+
 
     public function create()
     {
         return Inertia::render('Paket/Create', [
             'user' => auth()->user(),
+            'paket_video' => PaketVideo::all(),
+            'paket_text' => PaketText::all(),
+            'paket_tryout' => Tryout::all(),
+            'paket_latihan' => Latihan::all(),
         ]);
     }
 
@@ -138,7 +220,11 @@ class PaketController extends Controller
     {
         return Inertia::render('Paket/Create', [
             'user' => auth()->user(),
-            'edit' => Paket::where('id', $idKelas)->first()
+            'edit' => Paket::where('id', $idKelas)->first(),
+            'paket_video' => PaketVideo::all(),
+            'paket_text' => PaketText::all(),
+            'paket_tryout' => Tryout::all(),
+            'paket_latihan' => Latihan::all(),
         ]);
     }
 
@@ -153,6 +239,7 @@ class PaketController extends Controller
             'paket_tryout' => $request->paket_tryout,
             'paket_latihan' => $request->paket_latihan,
             'harga' => $request->harga,
+            'list_paket' => $request->list_paket,
         ])->id;
 
         return response()->json([
@@ -171,6 +258,7 @@ class PaketController extends Controller
             'paket_tryout' => $request->paket_tryout,
             'paket_latihan' => $request->paket_latihan,
             'harga' => $request->harga,
+            'list_paket' => $request->list_paket,
         ]);
 
         return response()->json([

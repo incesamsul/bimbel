@@ -36,7 +36,7 @@ import { showFlashMessage } from '@/global_func.js';
                         <h2><strong>{{ item.nama_paket }}</strong></h2>
                         <h4 class="main-color"><strong>Rp. {{ Number(item.harga).toLocaleString() }}</strong></h4>
                         <div class="list mt-3">
-                            <p v-for="paket in listPaket(item.paket_video)"><i class="fas fa-check text-success"></i> {{
+                            <p v-for="paket in listPaket(item.list_paket)"><i class="fas fa-check text-success"></i> {{
                                 paket }}
                             </p>
                         </div>
@@ -49,10 +49,6 @@ import { showFlashMessage } from '@/global_func.js';
                             <i class="fas fa-pen"></i>
                             edit
                             </Link>
-                            <span class="btn btn-primary cursor-pointer ml-2">
-                                <i class="fab fa-telegram-plane"></i>
-                                Telegram
-                            </span>
                         </div>
                     </div>
                 </div>

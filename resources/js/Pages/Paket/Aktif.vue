@@ -21,7 +21,9 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
                         <h2><strong>{{ item.paket.nama_paket }}</strong></h2>
                         <h4 class="main-color"><strong>Rp. {{ Number(item.paket.harga).toLocaleString() }}</strong></h4>
                         <div class="list mt-3">
-                            <p><i class="fas fa-check text-success"></i> video
+                            <p v-for="paket in listPaket(item.paket.list_paket)"><i class="fas fa-check text-success"></i>
+                                {{
+                                    paket }}
                             </p>
                         </div>
                         <div>
@@ -43,6 +45,11 @@ export default {
     props: {
         user: Object,
         paket: Object,
+    },
+    methods: {
+        listPaket(paket) {
+            return paket.split(',');
+        },
     }
 }
 </script>

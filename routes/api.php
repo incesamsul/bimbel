@@ -4,7 +4,10 @@ use App\Http\Controllers\JawabanLatihanController;
 use App\Http\Controllers\JawabanTryoutController;
 use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\LatihanSoalController;
+use App\Http\Controllers\MateriTextController;
 use App\Http\Controllers\MateriVideoController;
+use App\Http\Controllers\PaketTextController;
+use App\Http\Controllers\PaketTextRelasiController;
 use App\Http\Controllers\PaketVideoController;
 use App\Http\Controllers\PaketVideoRelasiController;
 use App\Http\Controllers\SegmentLatihanController;
@@ -46,6 +49,17 @@ Route::get('/get-video-paket/{id_paket}', [PaketVideoRelasiController::class, 'g
 
 Route::post('/paket-video/add-video', [PaketVideoRelasiController::class, 'addVideo']);
 Route::delete('/paket-video/delete-video/{id_video}', [PaketVideoRelasiController::class, 'deleteVideo']);
+
+Route::get('/get-texts', [MateriTextController::class, 'getTexts']);
+Route::get('/get-paket-text-name/{id_paket_text}', [PaketTextController::class, 'getPaketTextName']);
+
+Route::get('/get-text-paket/{id_paket}', [PaketTextRelasiController::class, 'getTextPaket']);
+
+
+Route::post('/paket-text/add-text', [PaketTextRelasiController::class, 'addText']);
+Route::delete('/paket-text/delete-text/{id_text}', [PaketTextRelasiController::class, 'deleteText']);
+
+
 
 Route::delete('/delete-soal/{id_tryout_soal}', [TryoutSoalController::class, 'deleteSoal']);
 

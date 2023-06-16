@@ -14,7 +14,7 @@ const showingNavigationDropdown = ref(false);
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center mt-4" href="">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-book main-color"></i>
+                    <!-- <i class="fas fa-book main-color"></i> -->
                 </div>
                 <div class="sidebar-brand-text main-color mx-3">
                     <img src="/assets/img/logo.png" alt="" width="100" class="ml-0">
@@ -77,6 +77,12 @@ const showingNavigationDropdown = ref(false);
                     <Link class="nav-link" href="/paket_video">
                     <i class="far fa-fw fa-file-video"></i>
                     <span>Paket video</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/paket_text') }">
+                    <Link class="nav-link" href="/paket_text">
+                    <i class="far fa-fw fa-file"></i>
+                    <span>Paket Text</span></Link>
                 </li>
 
                 <li class="nav-item" :class="{ 'active': isActive('/materi_text') }">

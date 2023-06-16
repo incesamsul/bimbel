@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Link, Head } from '@inertiajs/vue3';
 
 </script>
 
@@ -12,7 +12,7 @@ import { Head } from '@inertiajs/vue3';
 
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 main-color">pembayaran</h1>
+                <h1 class="h3 mb-0 main-color">Daftar Paket tersedia</h1>
             </div>
             <div class="row">
                 <div class="col-sm-4" v-for="item in paket">
@@ -20,14 +20,16 @@ import { Head } from '@inertiajs/vue3';
                         <h2><strong>{{ item.nama_paket }}</strong></h2>
                         <h4 class="main-color"><strong>Rp. {{ Number(item.harga).toLocaleString() }}</strong></h4>
                         <div class="list mt-3">
-                            <p><i class="fas fa-check text-success"></i> video
+                            <p v-for="paket in listPaket(item.list_paket)"><i class="fas fa-check text-success"></i> {{
+                                paket }}
                             </p>
                         </div>
                         <div>
-                            <span class="btn btn-primary cursor-pointer ml-2">
-                                <i class="fab fa-telegram-plane"></i>
-                                Telegram
-                            </span>
+                            <Link :href="'/member/paket/' + item.id + '/pembayaran'"
+                                class="btn bg-main text-white cursor-pointer ">
+                            <i class="fas fa-credit-card"></i>
+                            Beli Paket
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -42,6 +44,11 @@ export default {
     props: {
         user: Object,
         paket: Object,
+    },
+    methods: {
+        listPaket(paket) {
+            return paket.split(',');
+        },
     }
 }
 </script>

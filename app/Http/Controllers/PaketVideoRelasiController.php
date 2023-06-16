@@ -19,7 +19,7 @@ class PaketVideoRelasiController extends Controller
         }
 
         // Return a response to the client
-        return response()->json(['message' => 'Data soal berhasil di tambah']);
+        return response()->json(['message' => 'Data  berhasil di tambah']);
     }
 
     public function deleteVideo($idVideo)

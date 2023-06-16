@@ -9,6 +9,7 @@ use App\Http\Controllers\LatihanSoalController;
 use App\Http\Controllers\MateriTextController;
 use App\Http\Controllers\MateriVideoController;
 use App\Http\Controllers\PaketController;
+use App\Http\Controllers\PaketTextController;
 use App\Http\Controllers\PaketVideoController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ProfileController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\TryoutController;
 use App\Http\Controllers\TryoutSoalController;
 use App\Http\Controllers\UserController;
+use App\Models\Paket;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +41,7 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'paket' => Paket::all(),
     ]);
 });
 
@@ -58,8 +61,10 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
 
     Route::group(['prefix' => 'member'], function () {
 
-        Route::get('/pembayaran', [PembayaranController::class, 'index']);
-        Route::get('/buat_pembayaran', [TransaksiController::class, 'store']);
+        Route::get('/paket/{id_paket}/pembayaran', [PembayaranController::class, 'index']);
+        Route::post('/request_pembayaran', [TransaksiController::class, 'store']);
+        Route::get('/pembayaran', [TransaksiController::class, 'pembayaran']);
+        Route::get('/detail_transaksi/{reference}', [TransaksiController::class, 'detailTransaksi']);
 
         Route::get('/paket', [PaketController::class, 'member']);
         Route::get('/paket_aktif', [PaketController::class, 'aktif']);
@@ -67,7 +72,11 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
         Route::get('/paket_aktif/{id_paket}/video', [PaketController::class, 'contentVideo']);
         Route::get('/paket_aktif/{id_paket}/video/{id_paket_video}', [PaketController::class, 'videos']);
 
+        Route::get('/paket_aktif/{id_paket}/text', [PaketController::class, 'contentText']);
+        Route::get('/paket_aktif/{id_paket}/text/{id_paket_text}', [PaketController::class, 'texts']);
+
         Route::get('/paket_aktif/{id_paket}/tryout', [PaketController::class, 'contentTryout']);
+        Route::get('/paket_aktif/{id_paket}/latihan', [PaketController::class, 'contentLatihan']);
 
         // GET REQUEST
         Route::get('/tryout', [TryoutController::class, 'member']);
@@ -115,6 +124,14 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::put('/paket_video', [PaketVideoController::class, 'update']);
     Route::get('/paket_video/edit/{id_paket}', [PaketVideoController::class, 'edit']);
     Route::delete('/paket_video/{id_paket}', [PaketVideoController::class, 'delete'])->name('paket_video.delete');
+
+    Route::get('/paket_text', [PaketTextController::class, 'index'])->name('paket_text');
+    Route::get('/paket_text/create', [PaketTextController::class, 'create']);
+    Route::get('/paket_text/{id_paket}', [PaketTextController::class, 'texts']);
+    Route::post('/paket_text', [PaketTextController::class, 'store']);
+    Route::put('/paket_text', [PaketTextController::class, 'update']);
+    Route::get('/paket_text/edit/{id_paket}', [PaketTextController::class, 'edit']);
+    Route::delete('/paket_text/{id_paket}', [PaketTextController::class, 'delete'])->name('paket_text.delete');
 
     Route::get('/materi_video', [MateriVideoController::class, 'index'])->name('materi_video');
     Route::get('/materi_video/create', [MateriVideoController::class, 'create']);

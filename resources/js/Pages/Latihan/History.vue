@@ -22,8 +22,11 @@ import { showFlashMessage } from '@/global_func.js';
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card border-0 pb-4">
-                        <div class="card-header bg-white">
+                        <div class="card-header bg-white d-flex justify-content-between">
                             <h5>History latihan</h5>
+                            <Link @click="goBack" class="btn btn-light">
+                            <i class="fas fa-arrow-left"></i>
+                            </Link>
                         </div>
                         <div class="card-body p-0">
                             <table class="table">
@@ -90,7 +93,9 @@ export default {
 
     },
     methods: {
-
+        goBack() {
+            window.history.back();
+        },
     }, mounted() {
         // Initialize DataTables
         $('#dataTable').DataTable({

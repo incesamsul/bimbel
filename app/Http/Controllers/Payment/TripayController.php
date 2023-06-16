@@ -36,26 +36,25 @@ class TripayController extends Controller
         return $response ? $response : $error;
     }
 
-    public function requestTransaksi($method, $produk, $totalPembayaran)
+    public function requestTransaksi($method, $paket, $totalPembayaran)
     {
-
 
         $apiKey       = env('TRIPAY_API_KEY');
         $privateKey   = env('TRIPAY_PRIVATE_KEY');
         $merchantCode = env('TRIPAY_MERCHANT_CODE');
         $merchantRef  = 'SAM-' . time();
-        $amount       = 10000;
+        $amount       = $totalPembayaran;
         $user = auth()->user();
         $data = [
-            'method'         => 'POST',
+            'method'         => $method,
             'merchant_ref'   => $merchantRef,
             'amount'         => $amount,
             'customer_name'  => $user->name,
             'customer_email' => $user->email,
             'order_items'    => [
                 [
-                    'name'        => 'test',
-                    'price'       => 10000,
+                    'name'        => $paket->nama_paket,
+                    'price'       => $totalPembayaran,
                     'quantity'    => 1,
                 ]
             ],

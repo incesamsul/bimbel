@@ -19,7 +19,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 
                 <div class="col-sm-2">
                     <div class="card border-0 paket-item">
-                        <Link :href="'/member/paket_aktif/' + transaksi.paket.id + '/video'"
+                        <Link :href="'/member/paket_aktif/' + transaksi.paket.id + '/text'"
                             class="card-body d-flex align-items-center flex-column pt-5">
                         <img src="/assets/img/svg/text_file.svg" alt="Example Image" width="100">
                         <p class="mt-3">Materi text</p>
@@ -46,7 +46,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
                 </div>
                 <div class="col-sm-2">
                     <div class="card border-0 paket-item">
-                        <Link :href="'/member/paket_aktif/' + transaksi.paket.id + '/video'"
+                        <Link :href="'/member/paket_aktif/' + transaksi.paket.id + '/latihan'"
                             class="card-body d-flex align-items-center flex-column pt-5">
                         <img src="/assets/img/svg/learn.svg" alt="Example Image" width="80">
                         <p class="mt-3">Latihan</p>
