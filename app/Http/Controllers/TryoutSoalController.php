@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\KategoriSoal;
 use App\Models\Kelas;
+use App\Models\PaketSoal;
+use App\Models\PaketSoalRelasi;
 use App\Models\Soal;
 use App\Models\TryoutSoal;
 use Illuminate\Http\Request;
@@ -18,6 +20,7 @@ class TryoutSoalController extends Controller
             'tryout_soal' => TryoutSoal::with('soal.pilihan')->with('tryout')->where('tryout_id', $idTryout)->get(),
             'kategori_soals' => KategoriSoal::all(),
             'kelas' => Kelas::all(),
+            'paket_soal' => PaketSoal::all(),
             'id_tryout' => $idTryout,
         ]);
     }
@@ -25,28 +28,47 @@ class TryoutSoalController extends Controller
 
     public function searchSoal(Request $request)
     {
-        $kategoriSoalId = $request->input('kategoriSoalId');
-        $kelasId = $request->input('kelasId');
-        $subKategoriSoalId = $request->input('subKategoriSoalId');
+        // $kategoriSoalId = $request->input('kategoriSoalId');
+        // $kelasId = $request->input('kelasId');
+        // $subKategoriSoalId = $request->input('subKategoriSoalId');
+        $paketSoal = $request->paket_soal;
+        if ($paketSoal) {
+            $paket = PaketSoal::where('id', $paketSoal)->first();
+            $paket = PaketSoal::where('id', $paketSoal)->with('relasi_soal.soal')->first();
 
-        // Build your query based on the provided search parameters
-        $query = Soal::query();
+            // Access the related data
+            $relasiSoal = $paket->relasi_soal;
 
-        if ($kategoriSoalId) {
-            $query->where('kategori_soal_id', $kategoriSoalId);
+            // Access the nested related data
+            foreach ($relasiSoal as $soal) {
+                $soalData = $soal->soal;
+                // Access the attributes of the Soal model
+                $soalId = $soalData->id;
+                $soalTitle = $soalData->title;
+                // ...
+            }
+            $searchResults = $relasiSoal;
         }
+        // else {
 
-        if ($kelasId) {
-            $query->where('kelas_id', $kelasId);
-        }
+        //     // Build your query based on the provided search parameters
+        //     $query = Soal::query();
 
-        if ($subKategoriSoalId) {
-            $query->where('sub_kategori_soal_id', $subKategoriSoalId);
-        }
+        //     if ($kategoriSoalId) {
+        //         $query->where('kategori_soal_id', $kategoriSoalId);
+        //     }
 
-        // Execute the query to get the search results
-        $searchResults = $query->get();
+        //     if ($kelasId) {
+        //         $query->where('kelas_id', $kelasId);
+        //     }
 
+        //     if ($subKategoriSoalId) {
+        //         $query->where('sub_kategori_soal_id', $subKategoriSoalId);
+        //     }
+
+        //     // Execute the query to get the search results
+        //     $searchResults = $query->get();
+        // }
         // Return the search results as a JSON response
         return response()->json($searchResults);
     }

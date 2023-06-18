@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KategoriSoal;
 use App\Models\Kelas;
 use App\Models\LatihanSoal;
+use App\Models\PaketSoal;
 use App\Models\Soal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -19,34 +20,52 @@ class LatihanSoalController extends Controller
             'kategori_soals' => KategoriSoal::all(),
             'kelas' => Kelas::all(),
             'id_latihan' => $idLatihan,
+            'paket_soal' => PaketSoal::all(),
         ]);
     }
 
 
     public function searchSoal(Request $request)
     {
-        $kategoriSoalId = $request->input('kategoriSoalId');
-        $kelasId = $request->input('kelasId');
-        $subKategoriSoalId = $request->input('subKategoriSoalId');
+        // $kategoriSoalId = $request->input('kategoriSoalId');
+        // $kelasId = $request->input('kelasId');
+        // $subKategoriSoalId = $request->input('subKategoriSoalId');
 
-        // Build your query based on the provided search parameters
-        $query = Soal::query();
+        // // Build your query based on the provided search parameters
+        // $query = Soal::query();
 
-        if ($kategoriSoalId) {
-            $query->where('kategori_soal_id', $kategoriSoalId);
+        // if ($kategoriSoalId) {
+        //     $query->where('kategori_soal_id', $kategoriSoalId);
+        // }
+
+        // if ($kelasId) {
+        //     $query->where('kelas_id', $kelasId);
+        // }
+
+        // if ($subKategoriSoalId) {
+        //     $query->where('sub_kategori_soal_id', $subKategoriSoalId);
+        // }
+
+        // // Execute the query to get the search results
+        // $searchResults = $query->get();
+        $paketSoal = $request->paket_soal;
+        if ($paketSoal) {
+            $paket = PaketSoal::where('id', $paketSoal)->first();
+            $paket = PaketSoal::where('id', $paketSoal)->with('relasi_soal.soal')->first();
+
+            // Access the related data
+            $relasiSoal = $paket->relasi_soal;
+
+            // Access the nested related data
+            foreach ($relasiSoal as $soal) {
+                $soalData = $soal->soal;
+                // Access the attributes of the Soal model
+                $soalId = $soalData->id;
+                $soalTitle = $soalData->title;
+                // ...
+            }
+            $searchResults = $relasiSoal;
         }
-
-        if ($kelasId) {
-            $query->where('kelas_id', $kelasId);
-        }
-
-        if ($subKategoriSoalId) {
-            $query->where('sub_kategori_soal_id', $subKategoriSoalId);
-        }
-
-        // Execute the query to get the search results
-        $searchResults = $query->get();
-
         // Return the search results as a JSON response
         return response()->json($searchResults);
     }

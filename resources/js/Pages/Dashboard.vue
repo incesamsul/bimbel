@@ -16,17 +16,95 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Summary tryout</h1>
-            <p class="mb-4">Berikut hasil tryout anda.</p>
+            <h1 class="h3 mb-2 text-gray-800">Dashboard</h1>
+            <p class="mb-4">Overview data member.</p>
 
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="card border-0">
-                        <div class="card-body text-center">
-                            <h4>Maaf, Anda tidak lulus</h4>
+                <template v-if="user.role == 'admin'">
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-users"></h1>
+                                <h4>Total Member</h4>
+                                <h6>{{ member.length }}</h6>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-chalkboard"></h1>
+                                <h4>Total Paket</h4>
+                                <h6>{{ total_paket.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-file-video"></h1>
+                                <h4>Paket video</h4>
+                                <h6>{{ total_paket_video.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-file-video"></h1>
+                                <h4>Paket latihan</h4>
+                                <h6>{{ total_paket_latihan.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-file"></h1>
+                                <h4>Paket text</h4>
+                                <h6>{{ total_paket_text.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-file"></h1>
+                                <h4>Total transaksi</h4>
+                                <h6>Rp. {{ Number(totalTransaksi(total_transaksi)).toLocaleString() }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template v-if="user.role == 'member'">
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-folder-open "></h1>
+                                <h4>Paket aktif</h4>
+                                <h6>{{ paket_aktif.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-credit-card "></h1>
+                                <h4>Transaksi terbayar</h4>
+                                <h6>{{ transaksi_paid.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4 mt-3">
+                        <div class="card border-0 pt-3">
+                            <div class="card-body text-center">
+                                <h1 class="fas fa-credit-card "></h1>
+                                <h4>Transaksi belum terbayar</h4>
+                                <h6>{{ transaksi_unpaid.length }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                </template>
             </div>
 
         </div>
@@ -43,136 +121,36 @@ export default {
     props: {
         user: Object,
         segment_tryout: Object,
+        paket_aktif: Object,
+        transaksi_paid: Object,
+        transaksi_unpaid: Object,
+        member: Object,
+        total_transaksi: Object,
+        total_paket: Object,
+        total_tryout: Object,
+        total_latihan: Object,
+        total_paket_video: Object,
+        total_paket_text: Object,
+        total_paket_latihan: Object,
+        total_paket_soal: Object,
     },
     computed: {
 
     },
     methods: {
-
+        totalTransaksi(transaksi) {
+            let total = 0;
+            transaksi.forEach(el => {
+                total += el.total_amount;
+            });
+            return total;
+        }
     }, mounted() {
         // Initialize DataTables
         $('#dataTable').DataTable({
             // DataTables configuration options
         });
 
-        let total = [10, 30, 5];
-        let tiu = [24, 30, 5];
-        let tkp = [77, 30, 5];
-        let twk = [0, 0, 25];
-
-        var ctx = document.getElementById("totalChart");
-        if (ctx) {
-            var myChart = new Chart(ctx, {
-                aspectRatio: 1,
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: total,
-                        backgroundColor: [
-                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
-                        ],
-                        label: 'Dataset 1'
-                    }],
-                    labels: [
-                        'tiu',
-                        'tkp',
-                        'twk'
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'bottom',
-                    },
-                }
-            });
-        }
-
-        var ctx = document.getElementById("tiuChart");
-        if (ctx) {
-            var myChart = new Chart(ctx, {
-                aspectRatio: 1,
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: tiu,
-                        backgroundColor: [
-                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
-                        ],
-                        label: 'Dataset 1'
-                    }],
-                    labels: [
-                        'benar',
-                        'salah',
-                        'kosong'
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'bottom',
-                    },
-                }
-            });
-        }
-
-
-        var ctx = document.getElementById("tkpChart");
-        if (ctx) {
-            var myChart = new Chart(ctx, {
-                aspectRatio: 1,
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: tkp,
-                        backgroundColor: [
-                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
-                        ],
-                        label: 'Dataset 1'
-                    }],
-                    labels: [
-                        'benar',
-                        'salah',
-                        'kosong'
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'bottom',
-                    },
-                }
-            });
-        }
-
-
-        var ctx = document.getElementById("twkChart");
-        if (ctx) {
-            var myChart = new Chart(ctx, {
-                aspectRatio: 1,
-                type: 'doughnut',
-                data: {
-                    datasets: [{
-                        data: twk,
-                        backgroundColor: [
-                            '#6777ef', '#63ed7a', '#ffa426', '#fc544b', '#6777ef',
-                        ],
-                        label: 'Dataset 1'
-                    }],
-                    labels: [
-                        'benar',
-                        'salah',
-                        'kosong'
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    legend: {
-                        position: 'bottom',
-                    },
-                }
-            });
-        }
 
 
     }

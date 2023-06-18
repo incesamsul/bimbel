@@ -35,7 +35,8 @@ import { showFlashMessage } from '@/global_func.js';
                                         </strong>
                                     </h5>
                                     <p class="badge badge-info mt-4">Premium</p>
-                                    <p>Jumlah soal : 100</p>
+                                    <p>Jumlah soal : {{ segment_latihan.latihan.latihan_soal.length }}</p>
+                                    <p>Durasi : {{ segment_latihan.latihan.durasi }} Menit</p>
                                     <!-- <Link :href="'/member/latihan/kerjakan/' + segment_latihan.id"
                                         class="btn bg-main text-white"><i class="fas fa-play-circle"></i> Mulai</Link> -->
                                     <button @click="startSegment(segment_latihan.latihan.id)"

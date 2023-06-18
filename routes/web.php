@@ -9,6 +9,7 @@ use App\Http\Controllers\LatihanSoalController;
 use App\Http\Controllers\MateriTextController;
 use App\Http\Controllers\MateriVideoController;
 use App\Http\Controllers\PaketController;
+use App\Http\Controllers\PaketSoalController;
 use App\Http\Controllers\PaketTextController;
 use App\Http\Controllers\PaketVideoController;
 use App\Http\Controllers\PembayaranController;
@@ -117,6 +118,15 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::get('/paket/edit/{id_paket}', [PaketController::class, 'edit']);
     Route::delete('/paket/{id_paket}', [PaketController::class, 'delete'])->name('paket.delete');
 
+    Route::get('/paket_soal', [PaketSoalController::class, 'index'])->name('paket_soal');
+    Route::get('/paket_soal/create', [PaketSoalController::class, 'create']);
+    Route::get('/paket_soal/{id_paket}', [PaketSoalController::class, 'soals']);
+    Route::post('/paket_soal', [PaketSoalController::class, 'store']);
+    Route::put('/paket_soal', [PaketSoalController::class, 'update']);
+    Route::get('/paket_soal/edit/{id_paket}', [PaketSoalController::class, 'edit']);
+    Route::delete('/paket_soal/{id_paket}', [PaketSoalController::class, 'delete'])->name('paket_soal.delete');
+
+
     Route::get('/paket_video', [PaketVideoController::class, 'index'])->name('paket_video');
     Route::get('/paket_video/create', [PaketVideoController::class, 'create']);
     Route::get('/paket_video/{id_paket}', [PaketVideoController::class, 'videos']);
@@ -153,6 +163,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::put('/soal', [SoalController::class, 'update']);
     Route::get('/soal/edit/{id_soal}', [SoalController::class, 'edit']);
     Route::delete('/soal/{id_soal}', [SoalController::class, 'delete'])->name('soal.delete');
+    Route::get('/download_format', [SoalController::class, 'downloadFormat']);
 
     Route::get('/kategori_soal', [KategoriSoalController::class, 'index'])->name('kategori_soal');
     Route::get('/kategori_soal/create', [KategoriSoalController::class, 'create']);

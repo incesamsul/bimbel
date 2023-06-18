@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\SoalImport;
 use App\Models\KategoriSoal;
 use App\Models\Kelas;
 use App\Models\Pilihan;
@@ -9,6 +10,8 @@ use App\Models\Soal;
 use App\Models\SubKategoriSoal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class SoalController extends Controller
 {
@@ -33,7 +36,8 @@ class SoalController extends Controller
     {
         return Inertia::render('Soal/Create', [
             'user' => auth()->user(),
-            'edit' => Soal::with('pilihan')->where('id', $idSoal)->first()
+            'edit' => Soal::with('pilihan')->where('id', $idSoal)->first(),
+            'kategori_soal' => KategoriSoal::all(),
         ]);
     }
 
@@ -100,5 +104,32 @@ class SoalController extends Controller
         return response()->json([
             'message' => 'soal berhasil dihapus',
         ]);
+    }
+
+    public function getSoals()
+    {
+        $soals = Soal::with('kategori_soal')->get();
+        return response()->json($soals);
+    }
+
+    public function import(Request $request)
+    {
+        $soal = $request->file('soal');
+        $response = Excel::import(new SoalImport, $soal);
+
+        return response()->json([
+            'message' => 'soal berhasil dibuat',
+        ]);
+    }
+
+    public function downloadFormat()
+    {
+        $file = public_path('formats/import.xlsx');
+
+        $headers = [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ];
+
+        return response()->download($file, 'format_import_data.xlsx', $headers);
     }
 }

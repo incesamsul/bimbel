@@ -48,7 +48,7 @@ defineProps({
                         <a class="nav-link" href="#">Paket</a>
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="#">Cara Daftar</a>
+                        <a class="nav-link" href="#">Faq</a>
                     </li>
                     <li class="nav-item mx-3">
                         <a class="nav-link" href="#" id="toggleMode">
@@ -64,8 +64,8 @@ defineProps({
         <div class="container text-main">
             <div class="row  ">
                 <div class="col-sm-6 pe-5 d-flex justify-content-center align-items-start flex-column">
-                    <h1>Sukses CPNS <br> Bersama Viracun</h1>
-                    <p class="my-4">Yakin udah siap menghadapi tes seleksi?
+                    <h1><span class="text-black">Sukses CPNS <br> Bersama</span> Viracun</h1>
+                    <p class="my-4 text-black">Yakin udah siap menghadapi tes seleksi?
                         Sini belajar bareng, biar kamu makin paham dan pede menghadapi tes ujian</p>
                     <Link href="/register" class="btn secondary-bg text-white main-radius py-2 px-3">Daftar Sekarang
                     !</Link>
@@ -80,16 +80,211 @@ defineProps({
         </div>
     </section>
 
-    <section id="hero" class="full-height  secondary">
+    <section class="full-height  mt-5 d-flex justify-content-center align-items-center">
+        <div class="container-fluid text-black">
+            <div class="row mt-5">
+                <div class="col-sm-6">
+                    <img src="/assets/img/bgviracun.png" alt="" width="600">
+                </div>
+                <div class="col-sm-4 d-flex flex-column justify-content-center pr-5">
+                    <h2><strong>Tentang <span class="text-main">Viracun</span></strong></h2>
+                    <p class="mt-3 ">Viracun telah banyak membantu calon ASN untuk lulus ujian sejak 2019.
+                        Kami memahami
+                        masalah dan
+                        kendala belajar yang dialami pejuang ASN selama ini.</p>
+                    <p>Kami ingin membantu calon ASN untuk lulus seleksi dan meraih mimpinya. Berkomitmen memberikan
+                        fasilitas belajar yang terbaik untuk meningkatkan pemahaman dan kesiapan calon ASN menghadapi tes
+                        seleksi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class=" pb-5 mb-5 ">
+        <div class="container text-black">
+            <div class="row mt-5">
+                <div class="col-sm-6">
+                    <h1 class="mt-5 pt-5"><strong>Keunggulan Bimbel <br>Bersama<span
+                                class="text-main">Viracun</span></strong>
+                    </h1>
+                    <div class="d-flex flex-column mt-5 alert shadow-sm  main-radius">
+                        <div class="d-flex ">
+                            <h4 class="fas fa-book mr-3"></h4>
+                            <h5><strong>Materi Terstruktir</strong></h5>
+                        </div>
+                        <p class="mb-0"><small>Materi dan soal di susun dari basic hingga expert (HOTS) sesuai dengan
+                                kisi-kisi resmi
+                                dari
+                                PermenpanRB yang terbaru</small></p>
+                    </div>
+                    <div class="d-flex flex-column mt-2 alert shadow-sm  main-radius">
+                        <div class="d-flex ">
+                            <h4 class="fas fa-user-graduate mr-3"></h4>
+                            <h5><strong>Pelajar Profesional</strong></h5>
+                        </div>
+                        <p class="mb-0"><small>Pengajar di BIMBEL VIRACUN merupakan PNS 100% yang sudah terbukti lolos tes
+                                CPNS sehingga selain menjelaskan materi bisa juga berbagi pengalaman sewaktu menjalani
+                                tes</small></p>
+                    </div>
+                    <div class="d-flex flex-column mt-2 alert shadow-sm  main-radius">
+                        <div class="d-flex ">
+                            <h4 class="fas fa-book-reader mr-3"></h4>
+                            <h5><strong>Tips & Trick</strong></h5>
+                        </div>
+                        <p class="mb-0"><small>Setiap pertemuan akan dibagikan tips dan trik jitu dalam menjawab setiap soal
+                                dan bagaimana memanajemen waktu sehingga bisa menjawab semua soal dengan maksimal</small>
+                        </p>
+                    </div>
+                    <div class="d-flex flex-column mt-2 alert shadow-sm  main-radius">
+                        <div class="d-flex ">
+                            <h4 class="fas fa-laptop-code mr-3"></h4>
+                            <h5><strong>Sistem CAT</strong></h5>
+                        </div>
+                        <p class="mb-0"><small>Sistem latihan dan Tryout berbasis CAT sehingga peserta akan terbiasa dalam
+                                menghadapi test terutama manajemen waktu</small></p>
+                    </div>
+                    <div class="d-flex flex-column mt-2 alert shadow-sm  main-radius">
+                        <div class="d-flex ">
+                            <h4 class="fas fa-chalkboard mr-3"></h4>
+                            <h5><strong>Video Eksklusif</strong></h5>
+                        </div>
+                        <p class="mb-0"><small>Di sediakan video belajar khusus member yang bisa diakses kapan saja</small>
+                        </p>
+                    </div>
+                    <div class="d-flex flex-column mt-2 alert shadow-sm  main-radius">
+                        <div class="d-flex ">
+                            <h4 class="fas fa-chalkboard-teacher mr-3"></h4>
+                            <h5><strong>Group Diskusi</strong></h5>
+                        </div>
+                        <p class="mb-0"><small>Di sediakan grup telegram untuk membahas materi dan soal-soal yang ada di
+                                Bimbel</small></p>
+                    </div>
+                </div>
+                <div class="col-sm-6 d-flex  justify-content-center align-items-center">
+                    <img src="/assets/img/keunggulan_viracun.png" alt="" width="100%">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="full-height mt-5 pt-5">
         <div class="container text-black">
             <div class="row  mb-5 pb-5">
                 <div class="col-sm-12 text-center">
-                    <h1>Paket Kelas</h1>
+                    <h1><strong>#Cerita<span class="text-main">Alumni</span></strong></h1>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-sm-6 offset-sm-3">
+                    <div class="card p-0 overflow-hidden">
+                        <div class="card-body p-0 overflow-hidden">
+                            <div class="video-container">
+                                <iframe width="560" height="315" src="https://www.youtube.com/embed/pOcLi_3lr6A"
+                                    title="YouTube video player" frameborder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class=" mt-5 pt-5">
+        <div class="container text-black">
+            <div class="row  mb-5 pb-5">
+                <div class="col-sm-12 text-center">
+                    <h1><strong>Fitur Unggulan<span class="text-main"> Viracun</span></strong></h1>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="card border-0 gradient-1">
+                                <div class="card-body d-flex justify-content-center align-items-center">
+                                    <div class="d-flex flex-column  p-5 justify-content-center">
+                                        <h5><strong>Materi Text & Video</strong></h5>
+                                        <p><small>Materi dalam bentuk paket teks dan juga paket video sudah kami siapkan
+                                                untuk
+                                                dipelajari.</small></p>
+                                    </div>
+                                    <img src="assets/img/tm2.png" alt="" width="44%">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="card border-0 gradient-2">
+                                <div class="card-body d-flex flex-column ">
+                                    <img src="assets/img/tm1.png" alt="" width="100%">
+                                    <div class="d-flex flex-column mt-5">
+                                        <h5><strong>Video Series</strong></h5>
+                                        <p class="p"><small>Tonton video series untuk memahami materi mulai dari dasar
+                                                hingga
+                                                lanjutan. Dijamin paham deh!</small></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-sm-4">
+                            <div class="card border-0 gradient-3">
+                                <div class="card-body d-flex flex-column ">
+                                    <img src="assets/img/tm4.png" alt="" width="60%">
+                                    <div class="d-flex flex-column mt-5">
+                                        <h5><strong>Event Tryout</strong></h5>
+                                        <p class="p"><small>Berpartisipasi dalam event try out untuk mengukur kemampuan kamu
+                                                bersaing dengan pengguna lain.</small></p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="card border-0 gradient-4">
+                                <div class="card-body d-flex justify-content-center align-items-center">
+                                    <div class="d-flex flex-column  p-5 justify-content-center">
+                                        <h5><strong>Tryout dan latihan soal</strong></h5>
+                                        <p><small>Kerjakan try out dan latihan soal untuk mengasah kemampuan kamu menjawab
+                                                soal ujian.</small></p>
+                                    </div>
+                                    <img src="assets/img/tm3.png" alt="" width="44%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0 gradient-5">
+                        <div class="card-body d-flex flex-column ">
+                            <img src="assets/img/tm5.png" alt="" width="170%">
+                            <div class="d-flex flex-column mt-5">
+                                <h5><strong>Kelas bimbel</strong></h5>
+                                <p class="p"><small>Gabung bersama kelas bimbel untuk belajar secara interaktif bersama para
+                                        coach profesional</small></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="full-height mt-5 pt-5 ">
+        <div class="container text-black">
+            <div class="row  mb-5 pb-5">
+                <div class="col-sm-12 text-center">
+                    <h1><strong>Paket Kelas</strong></h1>
                 </div>
             </div>
             <div class="row mt-5">
                 <div class="col-sm-4" v-for="item in paket">
-                    <div class="card border-0 p-5">
+                    <div class="card border-0 p-5 shadow">
                         <h2><strong>{{ item.nama_paket }}</strong></h2>
                         <h4 class="main-color"><strong>Rp. {{ Number(item.harga).toLocaleString() }}</strong></h4>
                         <div class="list mt-3">
@@ -108,10 +303,6 @@ defineProps({
             </div>
         </div>
     </section>
-
-
-
-
 
 
     <footer class="p-5 mt-5 bg-second">
@@ -183,6 +374,48 @@ body {
     font-family: 'Nunito' !important;
     overflow-x: hidden;
     transition: 1s;
+}
+
+.gradient-1 {
+    background: linear-gradient(to right, #d69595, #ef95b3);
+    color: white !important;
+    height: 360px;
+}
+
+.gradient-4 {
+    background: linear-gradient(to right, #95cad6, #95efbc);
+    color: white !important;
+    height: 360px;
+}
+
+.gradient-2 {
+    background: linear-gradient(to right, #95a0d6, #959bef);
+    color: white !important;
+    height: 360px;
+}
+
+.gradient-5 {
+    background: linear-gradient(to right, #d695a6, #efdd95);
+    color: white !important;
+    height: 735px;
+}
+
+.gradient-3 {
+    background: linear-gradient(to right, #d495d6, #ef95e6);
+    color: white !important;
+    height: 360px;
+}
+
+.gradient-2 img {
+    object-fit: cover;
+}
+
+.gradient-1 img {
+    object-fit: cover !important;
+}
+
+.overflow-hidden {
+    overflow: hidden !important;
 }
 
 .bg-main {
@@ -286,7 +519,7 @@ footer ul li a {
 }
 
 .main-radius {
-    border-radius: 10px !important;
+    border-radius: 14px !important;
 }
 
 .img-card-mobile {

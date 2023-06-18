@@ -6,12 +6,15 @@ use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\LatihanSoalController;
 use App\Http\Controllers\MateriTextController;
 use App\Http\Controllers\MateriVideoController;
+use App\Http\Controllers\PaketSoalController;
+use App\Http\Controllers\PaketSoalRelasiController;
 use App\Http\Controllers\PaketTextController;
 use App\Http\Controllers\PaketTextRelasiController;
 use App\Http\Controllers\PaketVideoController;
 use App\Http\Controllers\PaketVideoRelasiController;
 use App\Http\Controllers\SegmentLatihanController;
 use App\Http\Controllers\SegmentTryoutController;
+use App\Http\Controllers\SoalController;
 use App\Http\Controllers\SubKategoriSoalController;
 use App\Http\Controllers\TryoutSoalController;
 use App\Models\PaketVideoRelasi;
@@ -43,25 +46,26 @@ Route::get('/get-soal-latihan/{id_latihan}/{segment_latihan_id}', [LatihanSoalCo
 
 Route::get('/get-videos', [MateriVideoController::class, 'getVideos']);
 Route::get('/get-paket-video-name/{id_paket_video}', [PaketVideoController::class, 'getPaketVideoName']);
-
 Route::get('/get-video-paket/{id_paket}', [PaketVideoRelasiController::class, 'getVideoPaket']);
-
-
 Route::post('/paket-video/add-video', [PaketVideoRelasiController::class, 'addVideo']);
 Route::delete('/paket-video/delete-video/{id_video}', [PaketVideoRelasiController::class, 'deleteVideo']);
 
+Route::get('/get-soals', [SoalController::class, 'getSoals']);
+Route::get('/get-paket-soal-name/{id_paket_soal}', [PaketSoalController::class, 'getPaketSoalName']);
+Route::get('/get-soal-paket/{id_paket}', [PaketSoalRelasiController::class, 'getSoalPaket']);
+Route::post('/paket-soal/add-soal', [PaketSoalRelasiController::class, 'addSoal']);
+Route::delete('/paket-soal/delete-soal/{id_video}', [PaketSoalRelasiController::class, 'deleteSoal']);
+
 Route::get('/get-texts', [MateriTextController::class, 'getTexts']);
 Route::get('/get-paket-text-name/{id_paket_text}', [PaketTextController::class, 'getPaketTextName']);
-
 Route::get('/get-text-paket/{id_paket}', [PaketTextRelasiController::class, 'getTextPaket']);
-
-
 Route::post('/paket-text/add-text', [PaketTextRelasiController::class, 'addText']);
 Route::delete('/paket-text/delete-text/{id_text}', [PaketTextRelasiController::class, 'deleteText']);
 
-
+Route::post('/import-soal', [SoalController::class, 'import']);
 
 Route::delete('/delete-soal/{id_tryout_soal}', [TryoutSoalController::class, 'deleteSoal']);
+Route::delete('/delete-soal-latihan/{id_latihan_soal}', [LatihanSoalController::class, 'deleteSoal']);
 
 Route::post('/tryout/add_soal', [TryoutSoalController::class, 'addSoal']);
 Route::post('/latihan/add_soal', [LatihanSoalController::class, 'addSoal']);

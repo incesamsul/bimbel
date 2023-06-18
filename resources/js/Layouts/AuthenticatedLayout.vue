@@ -61,6 +61,12 @@ const showingNavigationDropdown = ref(false);
                     <span>Data Soal</span></Link>
                 </li>
 
+                <li class="nav-item" :class="{ 'active': isActive('/paket_soal') }">
+                    <Link class="nav-link" href="/paket_soal">
+                    <i class="far fa-fw fa-folder"></i>
+                    <span>Paket Soal</span></Link>
+                </li>
+
                 <li class="nav-item" :class="{ 'active': isActive('/kelas') }">
                     <Link class="nav-link" href="/kelas">
                     <i class="far fa-fw fa-folder-open"></i>

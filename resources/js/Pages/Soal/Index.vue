@@ -23,7 +23,12 @@ import { showFlashMessage } from '@/global_func.js';
             <div class="card border-0 mb-4">
                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-">Data soal</h6>
-                    <Link href="/soal/create" class="btn btn-light"> <i class="fas fa-plus"></i></Link>
+                    <div>
+                        <Link href="/soal/create" class="btn btn-light"> <i class="fas fa-plus"></i></Link>
+                        <button data-toggle="modal" data-target="#import" type="button" class="btn btn-success ml-2"> <i
+                                class="fas fa-file-excel"></i></button>
+                        <a href="/download_format" class="btn btn-primary ml-2"> <i class="fas fa-arrow-down"></i></a>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -65,6 +70,30 @@ import { showFlashMessage } from '@/global_func.js';
         </div>
 
 
+        <!-- Modal -->
+        <div class="modal fade" id="import" tabindex="-1" aria-labelledby="importLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importLabel">Import soal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="file" ref="fileInput" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" @click="uploadFile"><template v-if="loading">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                            </template><span v-else>Import</span></button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </AuthenticatedLayout>
 </template>
 
@@ -81,7 +110,36 @@ export default {
     computed: {
 
     },
+    data() {
+        return {
+            loading: false,
+        };
+    },
     methods: {
+        uploadFile() {
+            this.loading = true;
+            const fileInput = this.$refs.fileInput;
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('soal', file);
+
+                axios.post('/api/import-soal', formData)
+                    .then(response => {
+                        // Handle success response
+                        console.log(response);
+                        showFlashMessage(response.data.message);
+                        document.location.reload();
+                    })
+                    .catch(error => {
+                        // Handle error response
+                        console.error(error);
+                    }).finally(() => {
+                        this.loading = false; // reset loading flag
+                    });
+            }
+        },
         deletesoal(soal_id) {
             if (confirm('yakin ingin menghapus data ?')) {
                 axios.delete(`/soal/${soal_id}`)

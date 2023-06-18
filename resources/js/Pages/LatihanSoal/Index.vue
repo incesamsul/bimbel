@@ -30,6 +30,18 @@ import { showFlashMessage } from '@/global_func.js';
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group m-0">
+                                        <label for="paket">Paket soal</label>
+                                        <select v-model="inputPaketId" name="paket" id="paket" class="form-control">
+                                            <option value="">-- pilih paket --</option>
+                                            <option :value="data.id" v-for="data in  paket_soal ">{{ data.nama_paket }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group m-0">
                                         <label for="kelas">kelas</label>
                                         <select v-model="inputKelasId" name="kategori" id="kategori" class="form-control">
                                             <option value="">-- pilih kelas --</option>
@@ -62,7 +74,7 @@ import { showFlashMessage } from '@/global_func.js';
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row mt-4">
                                 <div class="col-sm-12">
                                     <div class="form-grup">
@@ -106,10 +118,10 @@ import { showFlashMessage } from '@/global_func.js';
                             </template>
                             <template v-else>
 
-                                <div v-for="result in searchResults" :key="result.id"
+                                <div v-for="result in searchResults" :key="result.soal.id"
                                     :class="['alert', 'alert-secondary', 'd-flex', 'justify-content-between', 'align-items-center', 'cursor-pointer', { 'bg-main text-white': result.selected }]"
                                     @click="toggleSelection(result)">
-                                    <p class="m-0" v-html="result.pertanyaan"></p>
+                                    <p class="m-0" v-html="result.soal.pertanyaan"></p>
                                 </div>
 
                             </template>
@@ -215,6 +227,7 @@ export default {
         kelas: Object,
         kategori_soals: Object,
         id_latihan: Number,
+        paket_soal: Object,
     },
     data() {
         return {
@@ -227,6 +240,7 @@ export default {
             kategori_soal: [],
             subkategori_soal: [],
             inputKelasId: '',
+            inputPaketId: '',
             selectedQuestionIndex: 0,
             selectedQuestion: null,
             searchResults: [] // Initialize search results as an empty array
@@ -238,7 +252,7 @@ export default {
     },
     methods: {
         deleteSoal(id_latihan_soal) {
-            axios.delete(`/api/delete-soal/${id_latihan_soal}`)
+            axios.delete(`/api/delete-soal-latihan/${id_latihan_soal}`)
                 .then(response => {
                     // Update the soal data in the component
                     console.log(response);
@@ -284,10 +298,10 @@ export default {
         toggleSelectAll() {
             this.searchResults.forEach(result => {
                 result.selected = this.selectAll;
-                if (this.selectAll && !this.selectedSoalId.includes(result.id)) {
-                    this.selectedSoalId.push(result.id); // Add the selected ID to the array
+                if (this.selectAll && !this.selectedSoalId.includes(result.soal.id)) {
+                    this.selectedSoalId.push(result.soal.id); // Add the selected ID to the array
                 } else if (!this.selectAll) {
-                    const index = this.selectedSoalId.indexOf(result.id);
+                    const index = this.selectedSoalId.indexOf(result.soal.id);
                     if (index !== -1) {
                         this.selectedSoalId.splice(index, 1); // Remove the unselected ID from the array
                     }
@@ -297,9 +311,9 @@ export default {
         toggleSelection(result) {
             result.selected = !result.selected;
             if (result.selected) {
-                this.selectedSoalId.push(result.id); // Add the selected ID to the array
+                this.selectedSoalId.push(result.soal.id); // Add the selected ID to the array
             } else {
-                const index = this.selectedSoalId.indexOf(result.id);
+                const index = this.selectedSoalId.indexOf(result.soal.id);
                 if (index !== -1) {
                     this.selectedSoalId.splice(index, 1); // Remove the unselected ID from the array
                 }
@@ -314,7 +328,8 @@ export default {
                 params: {
                     kategoriSoalId: this.inputKategoriSoalId,
                     kelasId: this.inputKelasId,
-                    subKategoriSoalId: this.inputSubKategoriSoalId
+                    subKategoriSoalId: this.inputSubKategoriSoalId,
+                    paket_soal: this.inputPaketId,
                 }
             })
                 .then(response => {

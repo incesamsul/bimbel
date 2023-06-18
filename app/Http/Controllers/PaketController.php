@@ -139,7 +139,7 @@ class PaketController extends Controller
         $paketData = [];
 
         foreach ($arrPaket as $paketId) {
-            $paketData[] = Tryout::where('id', $paketId)->first();
+            $paketData[] = Tryout::with('tryout_soal')->where('id', $paketId)->first();
         }
 
         return Inertia::render('Paket/ContentTryout', [
@@ -175,7 +175,7 @@ class PaketController extends Controller
         $paketData = [];
 
         foreach ($arrPaket as $paketId) {
-            $paketData[] = Latihan::where('id', $paketId)->first();
+            $paketData[] = Latihan::with('latihan_soal')->where('id', $paketId)->first();
         }
 
         return Inertia::render('Paket/ContentLatihan', [
