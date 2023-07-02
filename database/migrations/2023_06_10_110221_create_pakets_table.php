@@ -14,13 +14,14 @@ return new class extends Migration
         Schema::create('paket', function (Blueprint $table) {
             $table->id();
             $table->string('nama_paket');
-            $table->string('link_telegram');
+            $table->string('link_telegram')->nullable();
             $table->string('paket_video');
             $table->string('paket_text');
             $table->string('paket_tryout');
             $table->string('paket_latihan');
             $table->integer('harga');
             $table->string('list_paket');
+            $table->enum('jenis_paket', ['bimbel', 'non_bimbel']);
             $table->timestamps();
         });
     }

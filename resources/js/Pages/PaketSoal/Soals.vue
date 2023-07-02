@@ -36,6 +36,7 @@ import { showFlashMessage } from '@/global_func.js';
                         <div
                             class="card-header bg-white main-radius d-flex flex-row justify-content-between align-items-center">
                             <h4>soal dalam paket</h4>
+                            <Link :href="'/paket_soal/' + id_paket_soal + '/1'" class="btn btn-light"> Tiu</Link>
                             <!-- Show loading indicator -->
                             <template v-if="loading">
                                 <i class="fas fa-circle-notch fa-spin"></i>
@@ -69,6 +70,8 @@ import { showFlashMessage } from '@/global_func.js';
                             <div v-for="item in soals"
                                 :class="['alert', 'alert-secondary', 'd-flex', 'align-items-center', 'flex-row', 'cursor-pointer', { 'bg-main text-white': item.selected }]"
                                 @click="toggleSelection(item)">
+
+
                                 <span><i class="fas fa-soal"></i></span>
                                 <span class="ml-3"
                                     v-html="item.pertanyaan + 'kategori : ' + item.kategori_soal.kode"></span>
@@ -108,6 +111,7 @@ export default {
         };
     },
     methods: {
+
         deletesoal(id_soal) {
             this.loading = true;
             axios.delete(`/api/paket-soal/delete-soal/${id_soal}`)

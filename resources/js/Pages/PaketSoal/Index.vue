@@ -36,7 +36,7 @@ import { showFlashMessage } from '@/global_func.js';
                             <div class="row">
                                 <Link :href="'paket_soal/' + item.id" class="col-6 col-sm-4 col-md-2 folder-col"
                                     v-for="item in paket_soal">
-                                <i class="fas fa-folder text-info"></i>
+                                <i class="fas fa-folder text-info item" :data-id="item.id"></i>
                                 <p>{{ item.nama_paket }}</p>
                                 </Link>
                             </div>
@@ -48,12 +48,23 @@ import { showFlashMessage } from '@/global_func.js';
 
         </div>
 
+        <ul class='menu'>
+            <li class='menu-item btn-delete'>
+                <i class="menu-icon fas fa-trash"></i>
+                <span class='menu-option'>delete</span>
+            </li>
+            <hr>
+            <li class='menu-item exit'>
+                <i class="menu-icon fas fa-sign-out-alt"></i>
+                <span class='menu-option'>exit</span>
+            </li>
+        </ul>
 
     </AuthenticatedLayout>
 </template>
 
-<script>
 
+<script>
 
 
 export default {
@@ -83,6 +94,38 @@ export default {
             }
         }
     }, mounted() {
+
+        const menu = document.querySelector('.menu');
+        const items = Array.from(document.querySelectorAll('.item'));
+        const btnDelete = document.querySelector('.btn-delete');
+        let self = this;
+        function showMenu(e) {
+            if (items.includes(e.target)) {
+                e.preventDefault();
+                menu.style.left = e.pageX + 'px';
+                menu.style.top = e.pageY + 'px';
+                menu.classList.add('visible');
+
+                const id = e.target.getAttribute('data-id');
+                btnDelete.addEventListener('click', function () {
+                    self.deletepaket_soal(id);
+                })
+            }
+        }
+
+
+
+
+
+        function removeMenu(e) {
+            if (!e.target.closest('.menu') || e.target.closest('.exit')) {
+                menu.classList.remove('visible');
+            }
+        }
+
+        document.addEventListener('contextmenu', showMenu, false);
+        document.addEventListener('click', removeMenu, false);
+
         // Initialize DataTables
         $('#dataTable').DataTable({
             // DataTables configuration options

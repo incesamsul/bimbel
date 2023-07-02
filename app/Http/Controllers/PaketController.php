@@ -240,6 +240,7 @@ class PaketController extends Controller
             'paket_latihan' => $request->paket_latihan,
             'harga' => $request->harga,
             'list_paket' => $request->list_paket,
+            'jenis_paket' => $request->jenis_paket
         ])->id;
 
         return response()->json([
@@ -259,6 +260,7 @@ class PaketController extends Controller
             'paket_latihan' => $request->paket_latihan,
             'harga' => $request->harga,
             'list_paket' => $request->list_paket,
+            'jenis_paket' => $request->jenis_paket
         ]);
 
         return response()->json([
@@ -272,5 +274,13 @@ class PaketController extends Controller
         return response()->json([
             'message' => 'kelas berhasil dihapus',
         ]);
+    }
+
+    public function getAll()
+    {
+        $paket = Paket::all();
+        return response()->json(
+            $paket
+        );
     }
 }

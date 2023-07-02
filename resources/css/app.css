@@ -3,10 +3,58 @@
 @import url('/resources/template/sbadmin/css/sb-admin-2.min.css');
 @import url('/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.css');
 @import url('/resources/template/sbadmin/vendor/tagsinput/tagsinput.css');
+@import url('/resources/template/sbadmin/vendor/katex/cdn.jsdelivr.net_npm_katex@0.12.0_dist_katex.min.css');
+
+.menu {
+    margin: 0 !important;
+    padding: 0 !important;
+    position: fixed;
+    z-index: 10;
+    border-radius: 15px;
+    list-style-type: none;
+    background-color: white;
+    display: none;
+    box-shadow: 1px 1px 5px #eee, -1px -1px 5px #eee;
+    overflow: hidden;
+}
+
+.menu-item {
+    width: 8.5rem;
+    height: 2.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font: 100 0.85rem helvetica, sans-serif;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-icon {
+    font-size: 1rem;
+}
+
+hr {
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0.5px solid rgba(0, 0, 0, 0.25);
+}
+
+.visible {
+    display: block;
+}
 
 .bootstrap-tagsinput .badge {
     margin-left: 5px;
     margin-right: 5px;
+}
+
+.katex i {
+    font-style: normal !important;
 }
 
 

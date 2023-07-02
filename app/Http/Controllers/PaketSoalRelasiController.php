@@ -33,9 +33,19 @@ class PaketSoalRelasiController extends Controller
         return response()->json(['message' => 'Data soal berhasil dihapus']);
     }
 
-    public function getSoalPaket($idPaket)
+    public function getSoalPaket($idPaket, $kategori = null)
     {
-        $soals = PaketSoalRelasi::with('soal.kategori_soal')->where('id_paket_soal', $idPaket)->get();
+        if ($kategori) {
+
+            $soals = PaketSoalRelasi::with('soal.kategori_soal')->where('id_paket_soal', $idPaket)->whereHas('soals', function ($query) use ($kategori) {
+                $query->where('kategori_soal_id', $kategori);
+            })->get();
+        } else {
+
+            $soals = PaketSoalRelasi::with('soal.kategori_soal')->where('id_paket_soal', $idPaket)->whereHas('soals', function ($query) use ($kategori) {
+                $query->where('kategori_soal_id', '!=', '1');
+            })->get();
+        }
         return response()->json($soals);
     }
 }

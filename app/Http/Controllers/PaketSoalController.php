@@ -17,13 +17,23 @@ class PaketSoalController extends Controller
         ]);
     }
 
-    public function soals($idPaket)
+    public function soals($idPaket, $kategori = null)
     {
-        return Inertia::render('PaketSoal/Soals', [
-            'user' => auth()->user(),
-            'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
-            'id_paket_soal' => $idPaket,
-        ]);
+        if ($kategori) {
+            return Inertia::render('PaketSoal/Tiu', [
+                'user' => auth()->user(),
+                'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
+                'id_paket_soal' => $idPaket,
+                'kategori' => $kategori
+            ]);
+        } else {
+            return Inertia::render('PaketSoal/Soals', [
+                'user' => auth()->user(),
+                'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
+                'id_paket_soal' => $idPaket,
+                'kategori' => $kategori
+            ]);
+        }
     }
 
     public function create()

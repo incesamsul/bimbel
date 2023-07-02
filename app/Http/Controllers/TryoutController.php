@@ -146,25 +146,48 @@ class TryoutController extends Controller
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
 
                     if (isset($jawabanTryout[$index])) {
-                        if ($jawabanTryout[$index]->jawaban == 0) {
-                            $poinTkp3++;
+
+                        $exploded_values = explode(',', $soal->soal->jawaban);
+
+                        $search = [];
+                        $replace = [0, 1, 2, 3, 4];
+
+                        foreach ($exploded_values as $value) {
+                            $search[] = substr($value, 0, 1);
                         }
-                        if ($jawabanTryout[$index]->jawaban == 1) {
-                            $poinTkp5++;
-                        }
-                        if ($jawabanTryout[$index]->jawaban == 2) {
-                            $poinTkp4++;
-                        }
-                        if ($jawabanTryout[$index]->jawaban == 3) {
-                            $poinTkp2++;
-                        }
-                        if ($jawabanTryout[$index]->jawaban == 4) {
-                            $poinTkp1++;
+
+                        $output = str_replace($search, $replace, $soal->soal->jawaban);
+
+                        $answers = explode(',', $output);
+
+
+                        foreach ($answers as $key => $value) {
+                            $answer = $value[0];
+                            if ($answer == $jawabanTryout[$index]->jawaban) {
+                                $poin = $value[1];
+                                if ($poin == 3) {
+                                    $poinTkp3++;
+                                }
+                                if ($poin == 5) {
+                                    $poinTkp5++;
+                                }
+                                if ($poin == 4) {
+                                    $poinTkp4++;
+                                }
+                                if ($poin == 2) {
+                                    $poinTkp2++;
+                                }
+                                if (
+                                    $poin == 1
+                                ) {
+                                    $poinTkp1++;
+                                }
+                            }
                         }
                     }
                     // sistem penilaian tkp BCADE : 54321
                     // 0:A = 3
-                    // 1:B = 5
+                    // 1:B =
                     // 2:C = 4
                     // 3:D = 2
                     // 4:E = 1
@@ -229,6 +252,7 @@ class TryoutController extends Controller
 
         // echo "poin tkp   : " . (($poinTkp5 * 5) + ($poinTkp4 * 4) + ($poinTkp3 * 3) + ($poinTkp2 * 2) + ($poinTkp1 * 1)) . "<br>";
 
+        // die;
 
         $hasilTryout = [
             'total_soal_tiu' => $totalTiu,

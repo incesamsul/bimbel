@@ -49,14 +49,14 @@ const submit = () => {
             <div class="form-group">
                 <div class="custom-control custom-checkbox small">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
                 </div>
             </div>
 
 
             <PrimaryButton class="btn bg-main text-white btn-user btn-block mt-4" :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing">
-                Log in
+                Masuk
             </PrimaryButton>
             <hr>
 
@@ -68,12 +68,12 @@ const submit = () => {
                     </a> -->
         </form>
 
-        <div class="d-flex justify-content-between">
-            <Link v-if="canResetPassword" :href="route('password.request')" class="small">
-            Forgot your password?
+        <div class="d-flex justify-content-between mt-3">
+            <Link v-if="canResetPassword" :href="route('password.request')" class="small text-secondary">
+            Lupa password?
             </Link>
-            <Link v-if="canResetPassword" :href="'/register'" class="small">
-            don't have an account?
+            <Link v-if="canResetPassword" :href="'/register'" class="small text-secondary">
+            Belum punya akun?
             </Link>
         </div>
 

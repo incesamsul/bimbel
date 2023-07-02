@@ -27,11 +27,9 @@ const submit = () => {
         <Head title="Log in" />
 
         <div class="text-center">
-            <h1 class="h4 text-gray-900 mb-4">Forgot password!</h1>
+            <h1 class="h4 text-gray-900 mb-4">Lupa password!</h1>
             <div class="mb-4 text-sm text-gray-600">
-                Forgot your password? No problem. Just let us know your email address and we will email you a
-                password reset
-                link that will allow you to choose a new one.
+                Lupa password ? jangan khawatir, masukkan email anda untuk melakukan reset password
             </div>
         </div>
         <form @submit.prevent="submit" class="user">

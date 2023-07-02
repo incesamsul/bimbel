@@ -16,15 +16,15 @@ import { showFlashMessage } from '@/global_func.js';
         <div class="container-fluid">
 
             <!-- Page Heading -->
-            <h1 class="h3 mb-2 text-gray-800">Data paket_text</h1>
-            <p class="mb-4">Semua data paket_text ada dihalaman ini.</p>
+            <h1 class="h3 mb-2 text-gray-800">Data paket_soal</h1>
+            <p class="mb-4">Semua data paket_soal ada dihalaman ini.</p>
 
             <div class="row">
                 <div class="col-sm-12">
                     <div class="card border-0 mb-4">
                         <div class="card-body main-radius py-3 bg-white d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-">Data {{ paket_text.nama_paket }}</h6>
-                            <Link href="/paket_text" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
+                            <h6 class="m-0 font-weight-bold text-">Data {{ paket_soal.nama_paket }}</h6>
+                            <Link href="/paket_soal" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
                         </div>
                     </div>
                 </div>
@@ -35,40 +35,32 @@ import { showFlashMessage } from '@/global_func.js';
                     <div class="card border-0">
                         <div
                             class="card-header bg-white main-radius d-flex flex-row justify-content-between align-items-center">
-                            <h4>Text dalam paket</h4>
+                            <h4>soal dalam paket</h4>
+                            <Link :href="'/paket_soal/' + id_paket_soal" class="btn btn-light"> All</Link>
                             <!-- Show loading indicator -->
                             <template v-if="loading">
                                 <i class="fas fa-circle-notch fa-spin"></i>
                             </template>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-3" v-for="paket in paket_text">
-                                    <div class="card p-0 overflow-hidden border-0 shadow-sm">
-                                        <div class="card-body p-0">
-                                            <div class="video-container">
-                                                <iframe :src="paket.text.link" width="640" height="480"></iframe>
+                            <div v-for="item in paket_soal"
+                                class="alert alert-secondary d-flex align-items-center justify-content-between  flex-rowcursor-pointer">
 
-                                            </div>
-                                            <div class="p-3 d-flex justify-content-between align-items-center flex-row">
-                                                <small>{{ paket.text.judul_materi }}</small>
-                                                <span @click="deleteText(paket.text.id)"
-                                                    class="text-danger cursor-pointer"><i class="fas fa-trash"></i></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <span :id="'output_' + item.soal.id" class="output"></span>
+
+
+                                <span @click="deletesoal(item.soal.id)" class="text-danger cursor-pointer"><i
+                                        class="fas fa-trash"></i></span>
                             </div>
-
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="card border-0">
                         <div class="card-header bg-white main-radius">
-                            <h4>List Text</h4>
+                            <h4>List soal</h4>
                             <div class="button-wrapper">
-                                <span @click="addText" class="btn btn-light">
+                                <span @click="addsoal" class="btn btn-light">
                                     Simpan
                                 </span>
                                 <input class="hide" id="selectAll" type="checkbox" v-model="selectAll"
@@ -77,12 +69,15 @@ import { showFlashMessage } from '@/global_func.js';
                             </div>
                         </div>
                         <div class="card-body">
-                            <div v-for="item in texts"
+                            <div v-for="item in soals" :key="item.id"
                                 :class="['alert', 'alert-secondary', 'd-flex', 'align-items-center', 'flex-row', 'cursor-pointer', { 'bg-main text-white': item.selected }]"
                                 @click="toggleSelection(item)">
-                                <span><i class="fas fa-text"></i></span>
-                                <span class="ml-3">{{ item.judul_materi }} ( {{ item.kategori.kode }} )</span>
+
+                                <span :id="'output_' + item.id" class="output"></span>
                             </div>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -103,24 +98,27 @@ export default {
     props: {
         user: Object,
         users: Object,
-        id_paket_text: Number,
+        id_paket_soal: Number,
+        kategori: Number,
     },
     computed: {
 
     },
     data() {
         return {
-            texts: [],
+            soals: [],
             selectAll: false,
             selectedId: [],
             loading: false,
-            paket_text: [],
+            paket_soal: [],
         };
     },
     methods: {
-        deleteText(id_text) {
+
+
+        deletesoal(id_soal) {
             this.loading = true;
-            axios.delete(`/api/paket-text/delete-text/${id_text}`)
+            axios.delete(`/api/paket-soal/delete-soal/${id_soal}`)
                 .then(response => {
                     // Update the soal data in the component
                     console.log(response);
@@ -134,17 +132,18 @@ export default {
                 });
 
         },
-        addText() {
+        addsoal() {
             this.loading = true;
-            axios.post('/api/paket-text/add-text', {
-                id_materi_text: this.selectedId,
-                id_paket_text: this.id_paket_text,
+            axios.post('/api/paket-soal/add-soal', {
+                id_soal: this.selectedId,
+                id_paket_soal: this.id_paket_soal,
             })
                 .then(response => {
                     // Handle the response from the server
                     showFlashMessage(response.data.message);
                     this.fetchDataPaket();
                     console.log(response.data);
+                    document.location.reload()
                 })
                 .catch(error => {
                     // Handle any errors
@@ -153,17 +152,22 @@ export default {
                     this.loading = false; // reset loading flag
                 });
         },
-        fetchTextData() {
-            axios.get('/api/get-texts')
+        fetchsoalData() {
+            return axios.get('/api/get-soals/' + this.kategori)
                 .then((response) => {
-                    this.texts = response.data;
-                })
-                .catch((error) => {
-                    console.error('Error loading video data:', error);
+                    this.soals = response.data;
                 });
         },
+
+        updateOutput(inputValue, itemId) {
+            let output = document.getElementById('output_' + itemId);
+            console.log(inputValue);
+            katex.render(inputValue, output, {
+                throwOnError: false,
+            });
+        },
         toggleSelectAll() {
-            this.texts.forEach(result => {
+            this.soals.forEach(result => {
                 result.selected = this.selectAll;
                 if (this.selectAll && !this.selectedId.includes(result.id)) {
                     this.selectedId.push(result.id); // Add the selected ID to the array
@@ -187,14 +191,14 @@ export default {
             }
 
             // Check if all items are selected to update the "Select All" checkbox
-            this.selectAll = this.texts.every(result => result.selected);
+            this.selectAll = this.soals.every(result => result.selected);
         },
         fetchDataPaket() {
-            axios.get(`/api/get-text-paket/${this.id_paket_text}`)
+            return axios.get(`/api/get-soal-paket/${this.id_paket_soal}/${this.kategori}`)
                 .then(response => {
                     // Update the soal data in the component
-                    this.paket_text = response.data;
-                    console.log(this.paket_text);
+                    this.paket_soal = response.data;
+                    console.log(this.paket_soal);
                 })
                 .catch(error => {
                     console.error(error);
@@ -202,9 +206,23 @@ export default {
 
         },
     }, mounted() {
-        this.fetchTextData();
-        this.fetchDataPaket();
-
+        this.fetchsoalData()
+            .then(() => {
+                this.soals.forEach((item) => {
+                    this.updateOutput(item.pertanyaan, item.id);
+                });
+            })
+            .catch((error) => {
+                console.error('Error loading soal data:', error);
+            });
+        this.fetchDataPaket().then(() => {
+            this.soals.forEach((item) => {
+                this.updateOutput(item.pertanyaan, item.id);
+            });
+        })
+            .catch((error) => {
+                console.error('Error loading soal data:', error);
+            });
 
     }
 }

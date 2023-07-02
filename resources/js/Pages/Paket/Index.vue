@@ -33,7 +33,9 @@ import { showFlashMessage } from '@/global_func.js';
             <div class="row">
                 <div class="col-sm-4" v-for="item in paket">
                     <div class="card border-0 p-5">
-                        <h2><strong>{{ item.nama_paket }}</strong></h2>
+                        <h2><strong>{{ item.nama_paket }}</strong> <span class="badge badge-info ">{{ item.jenis_paket
+                        }}</span></h2>
+
                         <h4 class="main-color"><strong>Rp. {{ Number(item.harga).toLocaleString() }}</strong></h4>
                         <div class="list mt-3">
                             <p v-for="paket in listPaket(item.list_paket)"><i class="fas fa-check text-success"></i> {{

@@ -37,9 +37,18 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div>
+                                    <div class="d-flex justify-content-start " id="soal-math">
+                                        <p>{{ selectedQuestionIndex + 1 }}. </p>
+                                        <div>
+                                            <input type="hidden" id="input" value="what">
+                                            <div id="output"></div>
+                                        </div>
+                                    </div>
+
                                     <div v-if="selectedQuestion">
 
-                                        <div class="d-flex justify-content-between">
+                                        <div class="d-flex justify-content-between"
+                                            v-if="selectedQuestion.soal.kategori_soal_id != 1">
                                             <div class="question d-flex">
                                                 <span class="mr-3">{{ selectedQuestionIndex + 1 }}. </span>
                                                 <span v-html="selectedQuestion.soal.pertanyaan.trim()"></span>
@@ -293,39 +302,17 @@ export default {
         };
     },
     methods: {
+        updateOutput(item) {
+            let input = document.getElementById('input').value;
+            let output = document.getElementById('output');
+            katex.render(input, output, {
+                throwOnError: false,
+            });
+        },
         goBack() {
             window.history.back();
         },
-        finishSegment(tryoutId) {
 
-            clearInterval(this.timerInterval);
-            localStorage.removeItem('startTime');
-            localStorage.removeItem('duration');
-
-            // Reset the timer display
-            $('#timer').text('00:00');
-            this.loading = true;
-            axios.post(`/api/finish_segment/${tryoutId}`, {
-                user_id: this.user.id,
-
-            })
-                .then(response => {
-                    // console.log(response)
-                    $('body').removeClass('modal-open');
-                    $('.modal-backdrop').remove();
-
-                    this.$inertia.visit(`/member/tryout/finish/${this.segment_tryout_id}`);
-
-                })
-                .catch(error => {
-                    // Handle the error response if needed
-                    console.error(error);
-                }).finally(() => {
-                    // Set loading state to false
-                    this.loading = false;
-                });
-            // return '/member/tryout/konfirmasi/' + tryoutId;
-        },
         isQuestionAnswered(index) {
             const question = this.tryout_soal[index];
 
@@ -471,6 +458,8 @@ export default {
                 this.selectedQuestionIndex--;
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
             }
+            $('#input').val(this.selectedQuestion.soal.pertanyaan);
+            this.updateOutput();
         },
 
         nextQuestion() {
@@ -478,6 +467,8 @@ export default {
                 this.selectedQuestionIndex++;
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
             }
+            $('#input').val(this.selectedQuestion.soal.pertanyaan);
+            this.updateOutput();
         },
         fetchDataSoal() {
             axios.get(`/api/get-soal/${this.id_tryout}/${this.segment_tryout_id}`)
@@ -497,6 +488,14 @@ export default {
         displayQuestion(index) {
             this.selectedQuestionIndex = index;
             this.selectedQuestion = this.tryout_soal[index];
+            $('#input').val(this.selectedQuestion.soal.pertanyaan);
+            this.updateOutput();
+            if (this.selectedQuestion.soal.kategori_soal_id != 1) {
+                // tiu
+                $('#soal-math').addClass('hide');
+            } else {
+                $('#soal-math').removeClass('hide');
+            }
         },
         isActiveQuestion(index) {
             return this.selectedQuestionIndex === index;

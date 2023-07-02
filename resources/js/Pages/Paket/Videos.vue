@@ -51,7 +51,7 @@ import { showFlashMessage } from '@/global_func.js';
                                         <div class="card-body p-0 ">
                                             <div class="video-container">
                                                 <iframe width="560" height="315"
-                                                    src="https://www.youtube.com/embed/TrfvMuBfaCE"
+                                                    :src="'https://www.youtube.com/embed/' + getYouTubeVideoId(paket.video.link)"
                                                     title="YouTube video player" frameborder="0"
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                                     allowfullscreen></iframe>
@@ -99,6 +99,21 @@ export default {
         };
     },
     methods: {
+        getYouTubeVideoId(url) {
+            // Regular expression pattern to match YouTube video URLs
+            var pattern = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([^\s&]+)/;
+
+            // Extract the video ID using the pattern
+            var match = url.match(pattern);
+
+            if (match && match[1]) {
+                // Return the extracted video ID
+                return match[1];
+            } else {
+                // Return null if the URL doesn't match the expected pattern
+                return null;
+            }
+        },
 
 
         fetchDataPaket() {

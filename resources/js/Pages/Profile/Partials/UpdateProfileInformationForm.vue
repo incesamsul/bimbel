@@ -19,16 +19,17 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.name,
     email: user.email,
+    whatsapp: user.whatsapp,
 });
 </script>
 
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+            <h2 class="text-lg font-medium text-gray-900">Profile </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
+                Ubah informasi akun dan password
             </p>
         </header>
 
@@ -49,6 +50,15 @@ const form = useForm({
                     autocomplete="username" />
 
                 <InputError class="mt-2" :message="form.errors.email" />
+            </div>
+
+            <div class="form-group">
+                <InputLabel for="whatsapp" value="whatsapp" />
+
+                <TextInput id="whatsapp" type="whatsapp" class="form-control shadow-none" v-model="form.whatsapp" required
+                    autocomplete="username" />
+
+                <InputError class="mt-2" :message="form.errors.whatsapp" />
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">

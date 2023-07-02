@@ -36,14 +36,24 @@ use Inertia\Inertia;
 |
 */
 
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//         'paket' => Paket::all(),
+//     ]);
+// });
+
+Route::get('/test', [GeneralController::class, 'test']);
+
+Route::get('/convertlatex/{latex}', [GeneralController::class, 'convertLatex']);
+
+Route::post('/callback', [TripayCallbackController::class, 'handle']);
+
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-        'paket' => Paket::all(),
-    ]);
+    return redirect()->to('register');
 });
 
 // GENERAL CONTROLLER ROUTE
@@ -121,6 +131,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::get('/paket_soal', [PaketSoalController::class, 'index'])->name('paket_soal');
     Route::get('/paket_soal/create', [PaketSoalController::class, 'create']);
     Route::get('/paket_soal/{id_paket}', [PaketSoalController::class, 'soals']);
+    Route::get('/paket_soal/{id_paket}/{kategori}', [PaketSoalController::class, 'soals']);
     Route::post('/paket_soal', [PaketSoalController::class, 'store']);
     Route::put('/paket_soal', [PaketSoalController::class, 'update']);
     Route::get('/paket_soal/edit/{id_paket}', [PaketSoalController::class, 'edit']);
@@ -158,6 +169,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::delete('/materi_text/{id_materi_text}', [MateriTextController::class, 'delete'])->name('materi_text.delete');
 
     Route::get('/soal', [SoalController::class, 'index'])->name('soal');
+    Route::get('/soal/tiu', [SoalController::class, 'tiu']);
     Route::get('/soal/create', [SoalController::class, 'create']);
     Route::post('/soal', [SoalController::class, 'store']);
     Route::put('/soal', [SoalController::class, 'update']);

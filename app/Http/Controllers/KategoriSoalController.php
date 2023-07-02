@@ -66,4 +66,10 @@ class KategoriSoalController extends Controller
             'message' => 'kategori berhasil dihapus',
         ]);
     }
+
+    public function fetchKategoriSoal()
+    {
+        $kategori = KategoriSoal::all();
+        return response()->json($kategori);
+    }
 }

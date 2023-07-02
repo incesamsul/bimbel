@@ -11,6 +11,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    whatsapp: '',
 });
 
 const submit = () => {
@@ -62,15 +63,24 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
+            <div class="form-group">
+                <InputLabel for="whatsapp" value="Nomor whatsapp" />
+
+                <TextInput id="whatsapp" type="text" class="form-control form-control-user shadow-none"
+                    v-model="form.whatsapp" required autocomplete="new-password" />
+
+                <InputError class="mt-2" :message="form.errors.whatsapp" />
+            </div>
+
             <div class="flex items-center justify-end">
                 <Link :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <small>Already registered?</small>
+                <small>Sudah punya akun ?</small>
                 </Link>
 
                 <PrimaryButton class="btn bg-main text-white btn-user btn-block mt-4"
                     :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
+                    Daftar
                 </PrimaryButton>
             </div>
         </form>

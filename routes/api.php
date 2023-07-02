@@ -1,11 +1,15 @@
 <?php
 
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\JawabanLatihanController;
 use App\Http\Controllers\JawabanTryoutController;
+use App\Http\Controllers\KategoriSoalController;
+use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LatihanController;
 use App\Http\Controllers\LatihanSoalController;
 use App\Http\Controllers\MateriTextController;
 use App\Http\Controllers\MateriVideoController;
+use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PaketSoalController;
 use App\Http\Controllers\PaketSoalRelasiController;
 use App\Http\Controllers\PaketTextController;
@@ -17,6 +21,7 @@ use App\Http\Controllers\SegmentTryoutController;
 use App\Http\Controllers\SoalController;
 use App\Http\Controllers\SubKategoriSoalController;
 use App\Http\Controllers\TryoutSoalController;
+use App\Models\KategoriSoal;
 use App\Models\PaketVideoRelasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +48,7 @@ Route::get('/search_soal', [TryoutSoalController::class, 'searchSoal']);
 
 Route::get('/get-soal/{id_tryout}/{segment_tryout_id}', [TryoutSoalController::class, 'getSoal']);
 Route::get('/get-soal-latihan/{id_latihan}/{segment_latihan_id}', [LatihanSoalController::class, 'getSoal']);
+Route::get('/get-paket', [PaketController::class, 'getAll']);
 
 Route::get('/get-videos', [MateriVideoController::class, 'getVideos']);
 Route::get('/get-paket-video-name/{id_paket_video}', [PaketVideoController::class, 'getPaketVideoName']);
@@ -51,8 +57,10 @@ Route::post('/paket-video/add-video', [PaketVideoRelasiController::class, 'addVi
 Route::delete('/paket-video/delete-video/{id_video}', [PaketVideoRelasiController::class, 'deleteVideo']);
 
 Route::get('/get-soals', [SoalController::class, 'getSoals']);
+Route::get('/get-soals/{kategori}', [SoalController::class, 'getSoals']);
 Route::get('/get-paket-soal-name/{id_paket_soal}', [PaketSoalController::class, 'getPaketSoalName']);
 Route::get('/get-soal-paket/{id_paket}', [PaketSoalRelasiController::class, 'getSoalPaket']);
+Route::get('/get-soal-paket/{id_paket}/{kategori}', [PaketSoalRelasiController::class, 'getSoalPaket']);
 Route::post('/paket-soal/add-soal', [PaketSoalRelasiController::class, 'addSoal']);
 Route::delete('/paket-soal/delete-soal/{id_video}', [PaketSoalRelasiController::class, 'deleteSoal']);
 
@@ -89,3 +97,13 @@ Route::post('/finish_segment/{segment_tryout_id}', [SegmentTryoutController::cla
 Route::post('/make_segment_latihan/{latihan_id}', [SegmentLatihanController::class, 'makeSegment']);
 Route::post('/start_segment_latihan/{latihan_id}', [SegmentLatihanController::class, 'startSegment']);
 Route::post('/finish_segment_latihan/{segment_latihan_id}', [SegmentLatihanController::class, 'finishSegment']);
+
+
+
+// RESTAPI
+
+Route::get('/fetch_kelas', [KelasController::class, 'fetchKelas']);
+Route::get('/fetch_kategori_soal', [KategoriSoalController::class, 'fetchKategoriSoal']);
+
+Route::post('/soal', [SoalController::class, 'store']);
+Route::put('/soal', [SoalController::class, 'update']);

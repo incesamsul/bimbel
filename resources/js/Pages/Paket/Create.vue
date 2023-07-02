@@ -33,7 +33,15 @@ import { showFlashMessage } from '@/global_func.js';
                         <label for="nama_paket">nama_paket</label>
                         <input v-model="inputNamapaket" type="text" class="form-control" name="nama_paket" id="nama_paket">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group ">
+                        <label for="jenis_paket">Jenis Paket</label>
+                        <select v-model="inputJenisPaket" class="form-control">
+                            <option value="">-- pilih jenis paket --</option>
+                            <option>bimbel</option>
+                            <option value="non_bimbel">non bimbel</option>
+                        </select>
+                    </div>
+                    <div class="form-group" v-if="inputJenisPaket == 'bimbel'">
                         <label for="link_telegram">link telegram</label>
                         <input v-model="inputLinkTelegram" type="text" class="form-control" name="link_telegram"
                             id="link_telegram">
@@ -46,8 +54,7 @@ import { showFlashMessage } from '@/global_func.js';
 
                     <div class="form-group">
                         <label for="">List Paket</label>
-                        <input class="form-control tagsinput" type="text" data-role="tagsinput"
-                            value="Video, Latihan, Tryout">
+                        <input class="form-control tagsinput" type="text" data-role="tagsinput" value="">
                     </div>
                 </div>
             </div>
@@ -202,6 +209,7 @@ export default {
             // deadline
             inputIdpaket: '',
             inputNamapaket: '',
+            inputJenisPaket: '',
             inputLinkTelegram: '',
             inputPaketVideo: '',
             inputPaketTryout: '',
@@ -283,6 +291,7 @@ export default {
                 paket_latihan: Object.values(this.selectedLatihanId).join(','),
                 harga: this.inputHarga,
                 list_paket: $('.tagsinput').val(),
+                jenis_paket: this.inputJenisPaket,
             }
             // Send the data to the backend server using axios
             if (this.edit) {
@@ -316,10 +325,8 @@ export default {
 
 
     }, mounted() {
-
-
+        $('.tagsinput').val(this.edit ? this.edit.list_paket : '')
         $('.tagsinput').tagsinput('add', { "value": 1, "text": "Video" });
-
         // Import a JavaScript file dynamically
         if (this.edit) {
             this.inputNamapaket = this.edit.nama_paket;
@@ -330,6 +337,7 @@ export default {
             this.inputPaketText = this.edit.paket_text;
             this.inputPaketTryout = this.edit.paket_tryout;
             this.inputPaketLatihan = this.edit.paket_latihan;
+            this.inputJenisPaket = this.edit.jenis_paket;
 
             // Assuming you have the array from the controller
 

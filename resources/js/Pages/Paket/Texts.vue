@@ -50,15 +50,11 @@ import { showFlashMessage } from '@/global_func.js';
                                     <div class="card p-0 overflow-hidden border-0 shadow-sm">
                                         <div class="card-body p-0">
                                             <div class="video-container">
-                                                <iframe
-                                                    src="https://drive.google.com/file/d/1Ci_QIGqEczFO8tE3jhaFcQyRnTMjCX3V/preview"
-                                                    width="640" height="480"></iframe>
+                                                <iframe :src="paket.text.link" width="640" height="480"></iframe>
 
                                             </div>
                                             <div class="p-3 d-flex justify-content-between align-items-center flex-row">
                                                 <small>{{ paket.text.judul_materi }}</small>
-                                                <span @click="deleteText(paket.text.id)"
-                                                    class="text-danger cursor-pointer"><i class="fas fa-trash"></i></span>
                                             </div>
                                         </div>
                                     </div>

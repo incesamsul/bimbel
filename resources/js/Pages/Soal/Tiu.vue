@@ -24,7 +24,10 @@ import { showFlashMessage } from '@/global_func.js';
                     <h6 class="m-0 font-weight-bold text-">Data soal</h6>
                     <div>
                         <!-- Button trigger modal -->
-                        <Link href="/soal/tiu" class="btn btn-primary ml-2"> Tiu</Link>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#mathSoal">
+                            Math <i class="fas fa-plus"></i>
+                        </button>
+                        <Link href="/soal" class="btn btn-info ml-2"> All</Link>
                         <Link href="/soal/create" class="btn btn-light ml-2"> <i class="fas fa-plus"></i></Link>
                         <button data-toggle="modal" data-target="#import" type="button" class="btn btn-success ml-2"> <i
                                 class="fas fa-file-excel"></i></button>
@@ -117,8 +120,7 @@ import { showFlashMessage } from '@/global_func.js';
                         </button>
                     </div>
                     <div class="modal-body">
-                        <iframe style="width: 100%; height: 100vh;"
-                            src="http://localhost/webs/things_from_chatgpt/mathquil/dist/" frameborder="0"></iframe>
+                        <iframe style="width: 100%; height: 100vh;" src="https://math.viracun.id/" frameborder="0"></iframe>
                     </div>
                 </div>
             </div>
@@ -146,7 +148,14 @@ export default {
         };
     },
     methods: {
-
+        updateOutput(item) {
+            let input = document.getElementById('input_' + item);
+            let inputValue = input ? input.value : '';
+            let output = document.getElementById('output_' + item);
+            katex.render(inputValue, output, {
+                throwOnError: false,
+            });
+        },
         uploadFile() {
             this.loading = true;
             const fileInput = this.$refs.fileInput;
@@ -188,7 +197,11 @@ export default {
             }
         }
     }, mounted() {
-
+        console.log(this.soal)
+        this.soal.forEach(el => {
+            console.log(el.id)
+            this.updateOutput(el.id)
+        });
 
         // Initialize DataTables
         $('#dataTable').DataTable({

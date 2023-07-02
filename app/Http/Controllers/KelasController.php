@@ -62,4 +62,10 @@ class KelasController extends Controller
             'message' => 'kelas berhasil dihapus',
         ]);
     }
+
+    public function fetchKelas()
+    {
+        $kelas = Kelas::all();
+        return response()->json($kelas);
+    }
 }

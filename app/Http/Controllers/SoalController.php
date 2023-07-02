@@ -19,7 +19,15 @@ class SoalController extends Controller
     {
         return Inertia::render('Soal/Index', [
             'user' => auth()->user(),
-            'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->get(),
+            'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->where('kategori_soal_id', '!=', 1)->get(),
+        ]);
+    }
+
+    public function tiu()
+    {
+        return Inertia::render('Soal/Tiu', [
+            'user' => auth()->user(),
+            'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->where('kategori_soal_id', '=', 1)->get(),
         ]);
     }
 
@@ -106,9 +114,13 @@ class SoalController extends Controller
         ]);
     }
 
-    public function getSoals()
+    public function getSoals($kategori = null)
     {
-        $soals = Soal::with('kategori_soal')->get();
+        if ($kategori) {
+            $soals = Soal::with('kategori_soal')->where('kategori_soal_id', $kategori)->get();
+        } else {
+            $soals = Soal::with('kategori_soal')->where('kategori_soal_id', '!=', '1')->get();
+        }
         return response()->json($soals);
     }
 

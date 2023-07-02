@@ -147,6 +147,18 @@ import CkEditor from '@/Components/CkEditor.vue';
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label for="">Jawaban</label>
+                                    <input class="form-control tagsinput" type="text" data-role="tagsinput" value="">
+                                </div>
+                                <div class="alert alert-info">
+                                    <p><strong>Petunjuk : </strong> untuk jawaban tkp masukkan seperti berikut :</p>
+                                    <p>a2,b1,c3,d4,e5 |<small>berarti a poinnya 2, b poinnya 1 dst</small></p>
+                                    <p>diawali dengan opsi lalu poin dari dari pilihan</p>
+                                    <hr>
+                                    <p>untuk tipe soal selain tkp langsung masukkan pilihan misal jawabannya a,b,c,d atau
+                                        e,. pastikan menggunakan huruf kecil</p>
+                                </div>
+                                <!-- <div class="form-group">
                                     <label for="jawaban">jawaban</label>
                                     <select v-model="inputJawaban" name="jawaban" id="jawaban" class="form-control">
                                         <option value="">--pilih jawban--</option>
@@ -156,7 +168,7 @@ import CkEditor from '@/Components/CkEditor.vue';
                                         <option value="3">D</option>
                                         <option value="4">E</option>
                                     </select>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="card border-0">
@@ -235,6 +247,24 @@ export default {
             }
         },
         submitsoal() {
+            let jawabanSoal = '';
+            if (this.inputKategoriSoalId == 2) { //2 itu tkp
+                jawabanSoal = $('.tagsinput').val();
+            } else {
+                if ($('.tagsinput').val() == 'a') {
+                    jawabanSoal = 0;
+                } else if ($('.tagsinput').val() == 'b') {
+                    jawabanSoal = 1;
+                } else if ($('.tagsinput').val() == 'c') {
+                    jawabanSoal = 2;
+                } else if ($('.tagsinput').val() == 'd') {
+                    jawabanSoal = 3;
+                } else if ($('.tagsinput').val() == 'e') {
+                    jawabanSoal = 4;
+                }
+
+
+            }
             const formData = {
 
                 id: this.inputIdsoal,
@@ -244,11 +274,12 @@ export default {
                 c: this.inputC,
                 d: this.inputD,
                 e: this.inputE,
-                jawaban: this.inputJawaban,
+                // jawaban: this.inputJawaban,
                 pembahasan: this.inputPembahasan,
                 kelas_id: this.inputKelasId,
                 kategori_soal_id: this.inputKategoriSoalId,
                 sub_kategori_soal_id: this.inputSubKategoriSoalId,
+                jawaban: jawabanSoal,
             }
             // Send the data to the backend server using axios
             if (this.edit) {
@@ -282,6 +313,7 @@ export default {
 
 
     }, mounted() {
+        $('.tagsinput').tagsinput('add', { "value": 1, "text": "Video" });
         // Import a JavaScript file dynamically
         if (this.edit) {
             this.inputIdsoal = this.edit.id;

@@ -9,12 +9,13 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import '/resources/template/sbadmin/vendor/jquery/jquery.min.js';
 import '/resources/template/sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js';
 import '/resources/template/sbadmin/vendor/jquery-easing/jquery.easing.min.js';
-import '/resources/template/sbadmin/js/sb-admin-2.min.js';
+import '/resources/template/sbadmin/js/sb-admin-2.js';
 import '/resources/template/sbadmin/vendor/datatables/jquery.dataTables.min.js';
 import '/resources/template/sbadmin/vendor/datatables/dataTables.bootstrap4.min.js';
 import '/resources/template/sbadmin/vendor/ckeditor/build/ckeditor.js';
 import '/resources/template/sbadmin/vendor/chart.js/chart.min.js';
 import '/resources/template/sbadmin/vendor/tagsinput/tagsinput.js';
+import '/resources/template/sbadmin/vendor/katex/cdn.jsdelivr.net_npm_katex@0.12.0_dist_katex.min.js';
 
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
