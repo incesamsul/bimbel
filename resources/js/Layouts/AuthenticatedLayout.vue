@@ -128,6 +128,18 @@ const showingNavigationDropdown = ref(false);
                     <span>Paket</span></Link>
                 </li>
 
+                <li class="nav-item" :class="{ 'active': isActive('/pembayaran') }">
+                    <Link class="nav-link" href="/pembayaran">
+                    <i class="far fa-fw fa-credit-card"></i>
+                    <span>Pembayaran</span></Link>
+                </li>
+
+                <li class="nav-item" :class="{ 'active': isActive('/diskon') }">
+                    <Link class="nav-link" href="/diskon">
+                    <i class="far fa-fw fa-credit-card"></i>
+                    <span>Diskon</span></Link>
+                </li>
+
 
             </template>
 
@@ -143,13 +155,13 @@ const showingNavigationDropdown = ref(false);
                 <li class="nav-item" :class="{ 'active': isActive('/member/pakets') }">
                     <Link class="nav-link" href="/member/paket">
                     <i class="far fa-fw fa-address-card"></i>
-                    <span>Paket</span></Link>
+                    <span>Beli Paket</span></Link>
                 </li>
 
                 <li class="nav-item" :class="{ 'active': isActive('/member/paket_aktif') }">
                     <Link class="nav-link" href="/member/paket_aktif">
                     <i class="far fa-fw fa-folder-open"></i>
-                    <span>Paket Aktif</span></Link>
+                    <span>Paket Saya</span></Link>
                 </li>
 
                 <!-- <li class="nav-item" :class="{ 'active': isActive('/member/tryout') }">
@@ -358,9 +370,20 @@ export default {
         },
         isActive(url) {
             return window.location.pathname.startsWith(url);
-        }
+        },
+
 
     },
+
+    mounted() {
+
+
+
+        if (window.innerWidth <= 768) {
+            this.toggleNav();
+        }
+    }
+
 
 };
 </script>

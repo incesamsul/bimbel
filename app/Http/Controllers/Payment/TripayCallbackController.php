@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 class TripayCallbackController extends Controller
 {
     // Isi dengan private key anda
-    protected $privateKey = 'vWhCP-l7wvT-K0LHS-RVvdC-5kH6b';
+    protected $privateKey = 'm6fTT-rPLkr-yVc70-1OJwa-5KsAz';
 
     public function handle(Request $request)
     {

@@ -39,7 +39,7 @@ import { showFlashMessage } from '@/global_func.js';
                                         <th>Twk</th>
                                         <th>Total</th> -->
                                         <th>Durasi</th>
-                                        <th>Keterangan</th>
+                                        <!-- <th>Keterangan</th> -->
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -52,7 +52,7 @@ import { showFlashMessage } from '@/global_func.js';
                                         <td>0</td>
                                         <td>0</td> -->
                                         <td>{{ item.durasi }}</td>
-                                        <td>gagal</td>
+                                        <!-- <td>gagal</td> -->
                                         <td>
                                             <Link class="btn btn-info" :href="'/member/latihan/finish/' + item.id">Hasil
                                             </Link>

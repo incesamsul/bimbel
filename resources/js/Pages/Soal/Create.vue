@@ -24,7 +24,12 @@ import CkEditor from '@/Components/CkEditor.vue';
             <div class="card border-0 mb-4">
                 <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Data soal</h6>
-                    <Link href="/soal" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
+                    <div class="d-flex">
+                        <Link href="/soal" class="btn btn-light"> <i class="fas fa-arrow-left"></i></Link>
+                        <button type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#mathSoal">
+                            Math <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
                 <div class="card-body">
                     <form id="msform">
@@ -36,9 +41,9 @@ import CkEditor from '@/Components/CkEditor.vue';
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group m-0">
+
                                             <label for="kelas">kelas</label>
-                                            <select v-model="inputKelasId" name="kategori" id="kategori"
-                                                class="form-control">
+                                            <select v-model="inputKelasId" name="kategori" class="form-control">
                                                 <option value="">-- pilih kelas --</option>
                                                 <option :value="data.id" v-for="data in  kelas ">{{ data.nama_kelas }}
                                                 </option>
@@ -197,6 +202,25 @@ import CkEditor from '@/Components/CkEditor.vue';
         </div>
 
 
+
+        <!-- Modal -->
+        <div class="modal fade" id="mathSoal" tabindex="-1" aria-labelledby="mathSoalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="mathSoalLabel">Soal</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe style="width: 100%; height: 100vh;" src="https://math.viracun.id/" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </AuthenticatedLayout>
 </template>
 
@@ -313,9 +337,15 @@ export default {
 
 
     }, mounted() {
+        $('.tagsinput').val(this.edit ? this.edit.jawaban : '')
         $('.tagsinput').tagsinput('add', { "value": 1, "text": "Video" });
         // Import a JavaScript file dynamically
         if (this.edit) {
+
+            this.inputKategoriSoalId = this.edit.kategori_soal_id;
+            this.loadSubKategoriSoalOptions();
+            this.inputSubKategoriSoalId = this.edit.sub_kategori_soal_id;
+            this.inputKelasId = this.edit.kelas_id;
             this.inputIdsoal = this.edit.id;
             this.inputPertanyaan = this.edit.pertanyaan;
             this.inputPembahasan = this.edit.pembahasan;

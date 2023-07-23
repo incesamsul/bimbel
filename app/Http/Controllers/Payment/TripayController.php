@@ -18,7 +18,7 @@ class TripayController extends Controller
 
         curl_setopt_array($curl, array(
             CURLOPT_FRESH_CONNECT  => true,
-            CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/merchant/payment-channel',
+            CURLOPT_URL            => 'https://tripay.co.id/api/merchant/payment-channel',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => false,
             CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $apiKey],
@@ -31,8 +31,8 @@ class TripayController extends Controller
 
         curl_close($curl);
 
-
         $response = json_decode($response)->data;
+
         return $response ? $response : $error;
     }
 
@@ -51,6 +51,7 @@ class TripayController extends Controller
             'amount'         => $amount,
             'customer_name'  => $user->name,
             'customer_email' => $user->email,
+            'customer_phone' => $user->whatsapp,
             'order_items'    => [
                 [
                     'name'        => $paket->nama_paket,
@@ -66,7 +67,7 @@ class TripayController extends Controller
 
         curl_setopt_array($curl, [
             CURLOPT_FRESH_CONNECT  => true,
-            CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/transaction/create',
+            CURLOPT_URL            => 'https://tripay.co.id/api/transaction/create',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => false,
             CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $apiKey],
@@ -96,7 +97,7 @@ class TripayController extends Controller
 
         curl_setopt_array($curl, [
             CURLOPT_FRESH_CONNECT  => true,
-            CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/transaction/detail?' . http_build_query($payload),
+            CURLOPT_URL            => 'https://tripay.co.id/api/transaction/detail?' . http_build_query($payload),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => false,
             CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $apiKey],
@@ -108,6 +109,7 @@ class TripayController extends Controller
         $error = curl_error($curl);
 
         curl_close($curl);
+
         $response = json_decode($response)->data;
 
         return $response ? $response : $error;

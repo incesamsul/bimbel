@@ -37,18 +37,11 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-body">
                             <div class="table-responsive">
                                 <div>
-                                    <div class="d-flex justify-content-start " id="soal-math">
-                                        <p>{{ selectedQuestionIndex + 1 }}. </p>
-                                        <div>
-                                            <input type="hidden" id="input" value="what">
-                                            <div id="output"></div>
-                                        </div>
-                                    </div>
+
 
                                     <div v-if="selectedQuestion">
 
-                                        <div class="d-flex justify-content-between"
-                                            v-if="selectedQuestion.soal.kategori_soal_id != 1">
+                                        <div class="d-flex justify-content-between">
                                             <div class="question d-flex">
                                                 <span class="mr-3">{{ selectedQuestionIndex + 1 }}. </span>
                                                 <span v-html="selectedQuestion.soal.pertanyaan.trim()"></span>
@@ -169,7 +162,7 @@ import { showFlashMessage } from '@/global_func.js';
                                             <p><strong>Kunci jawaban : {{ ['A', 'B', 'C', 'D',
                                                 'E'][selectedQuestion.soal.jawaban]
                                             }}</strong></p>
-                                            <p><strong>Jawban Anda : {{ ['A', 'B', 'C', 'D',
+                                            <p><strong>Jawaban Anda : {{ ['A', 'B', 'C', 'D',
                                                 'E'][selectedQuestion.jawaban_tryout ?
                                                     selectedQuestion.jawaban_tryout.jawaban : ''] }}</strong></p>
                                             <div class="question d-flex">
@@ -302,13 +295,7 @@ export default {
         };
     },
     methods: {
-        updateOutput(item) {
-            let input = document.getElementById('input').value;
-            let output = document.getElementById('output');
-            katex.render(input, output, {
-                throwOnError: false,
-            });
-        },
+
         goBack() {
             window.history.back();
         },
@@ -459,7 +446,7 @@ export default {
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
             }
             $('#input').val(this.selectedQuestion.soal.pertanyaan);
-            this.updateOutput();
+
         },
 
         nextQuestion() {
@@ -468,7 +455,7 @@ export default {
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
             }
             $('#input').val(this.selectedQuestion.soal.pertanyaan);
-            this.updateOutput();
+
         },
         fetchDataSoal() {
             axios.get(`/api/get-soal/${this.id_tryout}/${this.segment_tryout_id}`)
@@ -489,17 +476,36 @@ export default {
             this.selectedQuestionIndex = index;
             this.selectedQuestion = this.tryout_soal[index];
             $('#input').val(this.selectedQuestion.soal.pertanyaan);
-            this.updateOutput();
-            if (this.selectedQuestion.soal.kategori_soal_id != 1) {
-                // tiu
-                $('#soal-math').addClass('hide');
-            } else {
-                $('#soal-math').removeClass('hide');
+
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.renderEquations();
             }
+
         },
         isActiveQuestion(index) {
             return this.selectedQuestionIndex === index;
         },
+        renderEquations() {
+            console.log('WRER')
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+            document.head.appendChild(script);
+
+            script.onload = () => {
+                this.doRenderEquations();
+            };
+        },
+        doRenderEquations() {
+            if (window.MathJax && window.MathJax.typeset) {
+                // Use this.$refs.equation instead of querySelector
+                const elements = this.$refs.equation;
+                console.log(elements);
+                window.MathJax.typeset(elements);
+            }
+        },
+
     },
     mounted() {
 

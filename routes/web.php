@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DiskonController;
 use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\KategoriSoalController;
 use App\Http\Controllers\KelasController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\PaketController;
 use App\Http\Controllers\PaketSoalController;
 use App\Http\Controllers\PaketTextController;
 use App\Http\Controllers\PaketVideoController;
+use App\Http\Controllers\Payment\TripayCallbackController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SoalController;
@@ -113,7 +115,10 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
 
 // ADMIN ROUTE
 Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
-
+    Route::get('/detail_transaksi/{reference}', [TransaksiController::class, 'detailTransaksi']);
+    Route::get('/aktifkan/{reference}', [TransaksiController::class, 'aktifkanTransaksi']);
+    Route::get('/batalkan/{reference}', [TransaksiController::class, 'batalkanTransaksi']);
+    Route::get('/pembayaran', [PembayaranController::class, 'listPembayaran'])->name('list_pembayaran');
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
     Route::get('/kelas/create', [KelasController::class, 'create']);
     Route::post('/kelas', [KelasController::class, 'store']);
@@ -208,6 +213,9 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::delete('/latihan/{id_soal}', [LatihanController::class, 'delete'])->name('latihan.delete');
 
     Route::get('/latihan_soal/{id_latihan}', [LatihanSoalController::class, 'index'])->name('latihan_soal');
+    Route::get('/diskon', [DiskonController::class, 'index'])->name('diskon');
+    Route::post('/diskon', [DiskonController::class, 'store'])->name('diskon');
+    Route::put('/diskon', [DiskonController::class, 'update'])->name('diskon');
 
 
     Route::group(['prefix' => 'admin'], function () {

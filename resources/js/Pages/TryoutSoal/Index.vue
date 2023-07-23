@@ -121,7 +121,7 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div v-for="result in searchResults" :key="result.soal.id"
                                     :class="['alert', 'alert-secondary', 'd-flex', 'justify-content-between', 'align-items-center', 'cursor-pointer', { 'bg-main text-white': result.selected }]"
                                     @click="toggleSelection(result)">
-                                    <p class="m-0" v-html="result.soal.pertanyaan"></p>
+                                    <p ref="equation" class="m-0" v-html="result.soal.pertanyaan"></p>
                                 </div>
 
                             </template>
@@ -145,13 +145,14 @@ import { showFlashMessage } from '@/global_func.js';
                                         <div class="d-flex justify-content-between">
                                             <div class="question d-flex">
                                                 <span class="mr-3">{{ selectedQuestionIndex + 1 }}. </span>
-                                                <span v-html="selectedQuestion.soal.pertanyaan.trim()"></span>
+                                                <span ref="equation"
+                                                    v-html="selectedQuestion.soal.pertanyaan.trim()"></span>
                                             </div>
                                             <button @click="deleteSoal(selectedQuestion.id)" class="btn btn-danger m"><i
                                                     class="fas fa-trash"></i></button>
                                         </div>
                                         <ul>
-                                            <li type="A" class="pilihan "
+                                            <li ref="equation" type="A" class="pilihan "
                                                 v-for="(pilihan, pilihanIndex) in selectedQuestion.soal.pilihan"
                                                 :key="pilihanIndex">
                                                 {{ pilihan.pilihan }}
@@ -231,6 +232,8 @@ export default {
     },
     data() {
         return {
+            isMathJaxLoading: false,
+
             tryout_soal: [],
             selectAll: false,
             selectedSoalId: [],
@@ -339,6 +342,7 @@ export default {
                     console.log(searchResults);
                     // Update the data property used for rendering the search results
                     this.searchResults = searchResults;
+
                 })
                 .catch(error => {
                     console.error(error);
@@ -362,10 +366,70 @@ export default {
         displayQuestion(index) {
             this.selectedQuestionIndex = index;
             this.selectedQuestion = this.tryout_soal[index];
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.reinitializeMathJax();
+            }
         },
         isActiveQuestion(index) {
             return this.selectedQuestionIndex === index;
         },
+        reinitializeMathJax() {
+            // Remove the MathJax script from the DOM
+            const existingScript = document.querySelector('script[src^="https://cdn.jsdelivr.net/npm/mathjax@3"]');
+            if (existingScript) {
+                existingScript.remove();
+            }
+
+            // Load MathJax script again and render equations once it's loaded
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+            script.onload = () => {
+                this.renderEquations(); // Render the equation for the current question
+            };
+            document.head.appendChild(script);
+        },
+        renderEquations() {
+            // If MathJax is already loaded and ready, directly render the equations
+            if (window.MathJax && window.MathJax.typeset) {
+                this.doRenderEquations();
+            } else {
+                // If MathJax is not yet loaded, load it and render equations once it's ready
+                if (!this.isMathJaxLoading) {
+                    this.isMathJaxLoading = true;
+                    this.loadMathJax().then(() => {
+                        this.isMathJaxLoading = false;
+                        this.doRenderEquations();
+                    });
+                }
+            }
+        },
+        doRenderEquations() {
+            if (window.MathJax && window.MathJax.typeset) {
+                // Use this.$refs.equation instead of querySelector
+                const elements = this.$refs.equation;
+                window.MathJax.typeset(elements);
+            }
+        },
+        loadMathJax() {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+                document.head.appendChild(script);
+
+                script.onload = () => {
+                    resolve();
+                };
+
+                script.onerror = () => {
+                    reject(new Error('Failed to load MathJax'));
+                };
+            });
+        },
+
     },
     mounted() {
         this.fetchDataSoal();

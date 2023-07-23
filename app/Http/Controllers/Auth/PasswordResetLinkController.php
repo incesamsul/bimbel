@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordResets;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Str;
+
 
 class PasswordResetLinkController extends Controller
 {
@@ -33,19 +40,33 @@ class PasswordResetLinkController extends Controller
             'email' => 'required|email',
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
-        );
-
-        if ($status == Password::RESET_LINK_SENT) {
-            return back()->with('status', __($status));
+        $user = User::whereEmail($request->email)->first();
+        if (!$user) {
+            throw ValidationException::withMessages([
+                'email' => 'email tdk di kenali',
+            ]);
         }
 
+        PasswordResets::where('email', $request->email)->delete();
+
+        $kodeReset = Str::random(200);
+        PasswordResets::create([
+            'email' => $user->email,
+            'token' => $kodeReset,
+            'created_at' => Carbon::now(),
+        ]);
+
+        $recipient = $user->email;
+        $body = urlencode('ini adalah link reset password anda : ' . URL::to('/reset-password/' . $kodeReset));
+
+        $scriptId = "AKfycbxjnnbthdE2TH7_QmS7jURPHd1CN-uWkgM0H0haKb9H4c4d_t2ViaWUowG3pfso3Fh3";
+        $apiUrl = "https://script.google.com/macros/s/{$scriptId}/exec?recipient={$recipient}&body={$body}";
+
+        $response = file_get_contents($apiUrl);
+
+
         throw ValidationException::withMessages([
-            'email' => [trans($status)],
+            'email' => 'email reset password telah terkirim, tunggu beberapa menit jika email belum masuk secara otomatis',
         ]);
     }
 }

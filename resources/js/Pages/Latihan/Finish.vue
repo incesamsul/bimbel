@@ -23,9 +23,15 @@ import { showFlashMessage } from '@/global_func.js';
                 <div class="col-sm-12">
                     <div class="card border-0">
                         <div class="card-body text-center d-flex">
-                            <Link :href="'/member/latihan/history/' + this.segment_latihan.latihan.id"><i
+                            <Link :href="'/member/latihan/history/' + segment_latihan.latihan.id"><i
                                 class="fas fa-arrow-left mr-2"></i></Link>
-                            <h4>Maaf, Anda tidak lulus</h4>
+                            <h4>
+                                {{ (hasillatihan.total_poin_twk >= hasillatihan.passing_grade_twk &&
+                                    hasillatihan.total_poin_tkp
+                                    >= hasillatihan.passing_grade_tkp && hasillatihan.total_poin_tiu >
+                                    hasillatihan.passing_grade_tiu) ? 'Selamat, Anda lolos' :
+                                    'Maaf, anda tidak lulus' }}
+                            </h4>
                         </div>
                     </div>
                 </div>
@@ -39,21 +45,21 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-body text-center">
                             <canvas height="350" id="totalChart"></canvas>
                             <small>Total Poin</small>
-                            <h3>{{ this.hasillatihan.total_poin_tiu + this.hasillatihan.total_poin_twk +
-                                this.hasillatihan.total_poin_tkp }}</h3>
+                            <h3>{{ hasillatihan.total_poin_tiu + hasillatihan.total_poin_twk +
+                                hasillatihan.total_poin_tkp }}</h3>
                             <hr>
                             <div class="d-flex justify-content-around">
                                 <div class="d-flex flex-column ">
                                     <small>TIU</small>
-                                    <h3>{{ this.hasillatihan.total_poin_tiu }}</h3>
+                                    <h3>{{ hasillatihan.total_poin_tiu }}</h3>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <small>TWK</small>
-                                    <h3>{{ this.hasillatihan.total_poin_twk }}</h3>
+                                    <h3>{{ hasillatihan.total_poin_twk }}</h3>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <small>TKP</small>
-                                    <h3>{{ this.hasillatihan.total_poin_tkp }}</h3>
+                                    <h3>{{ hasillatihan.total_poin_tkp }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -67,20 +73,20 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-body text-center">
                             <canvas height="350" id="tiuChart"></canvas>
                             <small>Total Poin</small>
-                            <h3>{{ this.hasillatihan.total_poin_tiu }}</h3>
+                            <h3>{{ hasillatihan.total_poin_tiu }}</h3>
                             <hr>
                             <div class="d-flex justify-content-around">
                                 <div class="d-flex flex-column ">
                                     <small>BENAR</small>
-                                    <h3>{{ this.hasillatihan.tiu_terjawab_benar }}</h3>
+                                    <h3>{{ hasillatihan.tiu_terjawab_benar }}</h3>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <small>SALAH</small>
-                                    <h3>{{ this.hasillatihan.tiu_terjawab_salah }}</h3>
+                                    <h3>{{ hasillatihan.tiu_terjawab_salah }}</h3>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <small>KOSONG</small>
-                                    <h3>{{ this.hasillatihan.tiu_tidak_terjawab }}</h3>
+                                    <h3>{{ hasillatihan.tiu_tidak_terjawab }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -96,31 +102,31 @@ import { showFlashMessage } from '@/global_func.js';
                             <div class="d-flex flex-column">
                                 <div class="d-flex flex-row justify-content-between">
                                     <small>Poin 5</small>
-                                    <small>{{ this.hasillatihan.poin_tkp_5 }}</small>
+                                    <small>{{ hasillatihan.poin_tkp_5 }}</small>
                                 </div>
                                 <div class="d-flex flex-row justify-content-between">
                                     <small>Poin 4</small>
-                                    <small>{{ this.hasillatihan.poin_tkp_4 }}</small>
+                                    <small>{{ hasillatihan.poin_tkp_4 }}</small>
                                 </div>
                                 <div class="d-flex flex-row justify-content-between">
                                     <small>Poin 3</small>
-                                    <small>{{ this.hasillatihan.poin_tkp_3 }}</small>
+                                    <small>{{ hasillatihan.poin_tkp_3 }}</small>
                                 </div>
                                 <div class="d-flex flex-row justify-content-between">
                                     <small>Poin 2</small>
-                                    <small>{{ this.hasillatihan.poin_tkp_2 }}</small>
+                                    <small>{{ hasillatihan.poin_tkp_2 }}</small>
                                 </div>
                                 <div class="d-flex flex-row justify-content-between">
                                     <small>Poin 1</small>
-                                    <small>{{ this.hasillatihan.poin_tkp_1 }}</small>
+                                    <small>{{ hasillatihan.poin_tkp_1 }}</small>
                                 </div>
                                 <div class="d-flex flex-row justify-content-between">
                                     <small>Kosong</small>
-                                    <small>{{ this.hasillatihan.tkp_tidak_terjawab }}</small>
+                                    <small>{{ hasillatihan.tkp_tidak_terjawab }}</small>
                                 </div>
                                 <div class="d-flex flex-row justify-content-between mt-2">
                                     <small><strong>Total Poin</strong></small>
-                                    <h6>{{ this.hasillatihan.total_poin_tkp }}</h6>
+                                    <h6>{{ hasillatihan.total_poin_tkp }}</h6>
                                 </div>
                             </div>
                         </div>
@@ -134,20 +140,20 @@ import { showFlashMessage } from '@/global_func.js';
                         <div class="card-body text-center">
                             <canvas height="350" id="twkChart"></canvas>
                             <small>Total Poin</small>
-                            <h3>{{ this.hasillatihan.total_poin_twk }}</h3>
+                            <h3>{{ hasillatihan.total_poin_twk }}</h3>
                             <hr>
                             <div class="d-flex justify-content-around">
                                 <div class="d-flex flex-column ">
                                     <small>BENAR</small>
-                                    <h3>{{ this.hasillatihan.twk_terjawab_benar }}</h3>
+                                    <h3>{{ hasillatihan.twk_terjawab_benar }}</h3>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <small>SALAH</small>
-                                    <h3>{{ this.hasillatihan.twk_terjawab_salah }}</h3>
+                                    <h3>{{ hasillatihan.twk_terjawab_salah }}</h3>
                                 </div>
                                 <div class="d-flex flex-column">
                                     <small>KOSONG</small>
-                                    <h3>{{ this.hasillatihan.twk_tidak_terjawab }}</h3>
+                                    <h3>{{ hasillatihan.twk_tidak_terjawab }}</h3>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +161,7 @@ import { showFlashMessage } from '@/global_func.js';
                 </div>
             </div>
             <div class="row mt-4 mb-5">
-                <div class="col-sm-6">
+                <div class="col-sm-12">
                     <div class="card border-0">
                         <div class="card-header bg-white">
                             <h5>Passing grade</h5>
@@ -173,23 +179,26 @@ import { showFlashMessage } from '@/global_func.js';
                                 <tbody>
                                     <tr>
                                         <td>Tiu</td>
-                                        <td>80</td>
-                                        <td>{{ this.hasillatihan.total_poin_tiu }}</td>
-                                        <td>Gagal</td>
+                                        <td>{{ hasillatihan.passing_grade_tiu }}</td>
+                                        <td>{{ hasillatihan.total_poin_tiu }}</td>
+                                        <td>{{ hasillatihan.total_poin_tiu >= hasillatihan.passing_grade_tiu ? 'berhasil' :
+                                            'gagal' }}</td>
 
                                     </tr>
                                     <tr>
                                         <td>TKP</td>
-                                        <td>{{ this.hasillatihan.total_poin_tkp }}</td>
-                                        <td>0</td>
-                                        <td>Gagal</td>
+                                        <td>{{ hasillatihan.passing_grade_tkp }}</td>
+                                        <td>{{ hasillatihan.total_poin_tkp }}</td>
+                                        <td>{{ hasillatihan.total_poin_tkp >= hasillatihan.passing_grade_tkp ? 'berhasil' :
+                                            'gagal' }}</td>
 
                                     </tr>
                                     <tr>
                                         <td>TWK</td>
-                                        <td>{{ this.hasillatihan.total_poin_twk }}</td>
-                                        <td>0</td>
-                                        <td>Gagal</td>
+                                        <td>{{ hasillatihan.passing_grade_twk }}</td>
+                                        <td>{{ hasillatihan.total_poin_twk }}</td>
+                                        <td>{{ hasillatihan.total_poin_twk >= hasillatihan.passing_grade_twk ? 'berhasil' :
+                                            'gagal' }}</td>
 
                                     </tr>
 
@@ -198,7 +207,7 @@ import { showFlashMessage } from '@/global_func.js';
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <!-- <div class="col-sm-6">
                     <div class="card border-0">
                         <div class="card-header bg-white">
                             <h5>Informasi durasi pengerjaan</h5>
@@ -239,7 +248,7 @@ import { showFlashMessage } from '@/global_func.js';
                             </table>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
 

@@ -141,7 +141,7 @@ export default {
         totalTransaksi(transaksi) {
             let total = 0;
             transaksi.forEach(el => {
-                total += el.total_amount;
+                total += parseInt(el.total_amount);
             });
             return total;
         }

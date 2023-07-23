@@ -59,7 +59,9 @@ import { showFlashMessage } from '@/global_func.js';
                                     <div class="mt-4">
                                         <p class="mb-0"><small>{{ channel.name }} </small></p>
                                         <p class="my-0"><small>{{ channel.code }} </small></p>
-                                        <p class="my-0"><small>Biaya : {{ channel.fee_merchant.flat }} </small></p>
+                                        <p class="my-0"><small>Biaya : Rp. {{
+                                            Number(channel.fee_customer.flat).toLocaleString()
+                                        }} </small></p>
                                     </div>
 
                                 </div>

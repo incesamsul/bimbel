@@ -16,8 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('kelas_id');
             $table->unsignedBigInteger('kategori_soal_id');
             $table->unsignedBigInteger('sub_kategori_soal_id');
-            $table->string('pertanyaan', 1000);
-            $table->string('pembahasan');
+            $table->longText('pertanyaan');
+            $table->longText('pembahasan');
             $table->string('jawaban');
             $table->timestamps();
             $table->foreign('kelas_id')->references('id')->on('kelas')->onDelete('cascade');

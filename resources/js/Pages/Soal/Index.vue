@@ -24,7 +24,7 @@ import { showFlashMessage } from '@/global_func.js';
                     <h6 class="m-0 font-weight-bold text-">Data soal</h6>
                     <div>
                         <!-- Button trigger modal -->
-                        <Link href="/soal/tiu" class="btn btn-primary ml-2"> Tiu</Link>
+                        <!-- <Link href="/soal/tiu" class="btn btn-primary ml-2"> Tiu</Link> -->
                         <Link href="/soal/create" class="btn btn-light ml-2"> <i class="fas fa-plus"></i></Link>
                         <button data-toggle="modal" data-target="#import" type="button" class="btn btn-success ml-2"> <i
                                 class="fas fa-file-excel"></i></button>
@@ -52,15 +52,7 @@ import { showFlashMessage } from '@/global_func.js';
                                     <td>{{ item.kelas.nama_kelas }}</td>
                                     <td>{{ item.kategori_soal.nama }}</td>
                                     <td>{{ item.sub_kategori_soal.nama }}</td>
-                                    <template v-if="item.kategori_soal.kode == 'TIU'">
-                                        <td>
-                                            <input type="hidden" :id="'input_' + item.id" :value="item.pertanyaan">
-                                            <div :id="'output_' + item.id"></div>
-                                        </td>
-                                    </template>
-                                    <template v-else>
-                                        <td v-html="item.pertanyaan"></td>
-                                    </template>
+                                    <td ref="equation" v-html="item.pertanyaan"></td>
                                     <td>
                                         <span @click="deletesoal(item.id)" class="badge badge-danger cursor-pointer">
                                             <i class="fas fa-trash"></i>
@@ -186,9 +178,35 @@ export default {
                         console.error(error);
                     });
             }
-        }
-    }, mounted() {
+        },
+        renderEquations() {
+            console.log('WRER')
+            if (!window.MathJax) {
+                // Load MathJax asynchronously and render equations once it's loaded
+                const script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.async = true;
+                script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+                document.head.appendChild(script);
 
+                script.onload = () => {
+                    this.doRenderEquations();
+                };
+            } else {
+                this.doRenderEquations();
+            }
+        },
+        doRenderEquations() {
+            if (window.MathJax && window.MathJax.typeset) {
+                // Use this.$refs.equation instead of querySelector
+                const elements = this.$refs.equation;
+                console.log(elements);
+                window.MathJax.typeset(elements);
+            }
+        },
+
+    }, mounted() {
+        this.renderEquations();
 
         // Initialize DataTables
         $('#dataTable').DataTable({

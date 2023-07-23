@@ -74,6 +74,8 @@ class TryoutController extends Controller
 
     public function finish($segment_tryout_id)
     {
+
+
         $finishedSegment = SegmentTryout::with('tryout.kelas')
             ->with('tryout.tryout_soal.soal')
             ->with('tryout.segment_tryout')
@@ -196,7 +198,8 @@ class TryoutController extends Controller
                     $twkTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
                     if (isset($jawabanTryout[$index])) {
-                        if ($soal->soal->jawaban == $jawabanTryout[$index]) {
+
+                        if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
                             $twkTerjawabBenar++;
                         } else {
                             $twkTerjawabSalah++;
@@ -283,6 +286,10 @@ class TryoutController extends Controller
             'poin_tkp_1' => $poinTkp1,
 
             'total_poin_tkp' => (($poinTkp5 * 5) + ($poinTkp4 * 4) + ($poinTkp3 * 3) + ($poinTkp2 * 2) + ($poinTkp1 * 1)),
+
+            'passing_grade_tiu' => KategoriSoal::where('id', 1)->first()->passing_grade,
+            'passing_grade_tkp' => KategoriSoal::where('id', 2)->first()->passing_grade,
+            'passing_grade_twk' => KategoriSoal::where('id', 3)->first()->passing_grade,
         ];
 
 
@@ -292,7 +299,6 @@ class TryoutController extends Controller
         }
         return Inertia::render('Tryout/Finish', [
             'user' => auth()->user(),
-            // 'tryout' => Tryout::with('kelas')->with('tryout_soal')->with('segment_tryout')->where('id', $idTryout)->first(),
             'segment_tryout' => $finishedSegment,
             'hasil_tryout' => json_encode($hasilTryout),
         ]);

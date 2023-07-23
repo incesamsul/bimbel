@@ -44,7 +44,7 @@ import { showFlashMessage } from '@/global_func.js';
 
                             <div class="row">
                                 <template v-if="paket_text.length < 1" class="p-5">
-                                    <p class="ml-3 mt-3">tidak ada video</p>
+                                    <p class="ml-3 mt-3">tidak ada text</p>
                                 </template>
                                 <div class="col-sm-3" v-for="paket in paket_text">
                                     <div class="card p-0 overflow-hidden border-0 shadow-sm">

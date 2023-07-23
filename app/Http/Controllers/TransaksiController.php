@@ -55,4 +55,26 @@ class TransaksiController extends Controller
             'transaksi' => Transaksi::with('paket')->where('id_user', auth()->user()->id)->get(),
         ]);
     }
+
+    public function aktifkanTransaksi($reference)
+    {
+        $transaksi = Transaksi::where('reference', $reference)->update([
+            'status' => 'paid'
+        ]);
+
+        return response()->json([
+            'message' => 'transaksi berhasil di aktifkan',
+        ]);
+    }
+
+    public function batalkanTransaksi($reference)
+    {
+        $transaksi = Transaksi::where('reference', $reference)->update([
+            'status' => 'unpaid'
+        ]);
+
+        return response()->json([
+            'message' => 'transaksi berhasil di batalkan',
+        ]);
+    }
 }

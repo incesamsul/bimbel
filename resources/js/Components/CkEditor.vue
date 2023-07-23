@@ -15,22 +15,12 @@ export default {
             // your CKEditor configuration
             toolbar: {
                 items: [
-                    'heading',
-                    '|',
-                    'italic',
-                    '|',
-                    'bulletedList',
-                    'numberedList',
-                    'indent',
-                    'outdent',
-                    '|',
-                    'mediaEmbed',
-                    '|',
-                    'undo',
-                    'redo',
-                    '|',
-                    'superscript',
-                    'subscript',
+                    'undo', 'redo',
+                    '|', 'heading',
+                    '|', 'fontfamily', 'fontsize', 'fontColor', 'fontBackgroundColor',
+                    '|', 'bold', 'italic', 'strikethrough', 'subscript', 'superscript', 'code',
+                    '|', 'link', 'uploadImage', 'blockQuote', 'codeBlock',
+                    '|', 'bulletedList', 'numberedList', 'todoList', 'outdent', 'indent'
                 ],
             },
         })

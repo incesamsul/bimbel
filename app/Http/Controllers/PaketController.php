@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Diskon;
 use App\Models\Latihan;
 use App\Models\Paket;
 use App\Models\PaketText;
@@ -28,6 +29,8 @@ class PaketController extends Controller
         return Inertia::render('Paket/Member', [
             'user' => auth()->user(),
             'paket' => Paket::all(),
+            'paket_saya' => Transaksi::with('paket')->where('id_user', auth()->user()->id)->where('status', 'paid')->get(),
+            'diskon' => Diskon::all()->first() ? Diskon::all()->first()->persen : 0,
         ]);
     }
 

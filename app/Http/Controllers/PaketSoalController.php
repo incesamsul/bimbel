@@ -20,12 +20,21 @@ class PaketSoalController extends Controller
     public function soals($idPaket, $kategori = null)
     {
         if ($kategori) {
-            return Inertia::render('PaketSoal/Tiu', [
-                'user' => auth()->user(),
-                'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
-                'id_paket_soal' => $idPaket,
-                'kategori' => $kategori
-            ]);
+            if ($kategori == 1) {
+                return Inertia::render('PaketSoal/Tiu', [
+                    'user' => auth()->user(),
+                    'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
+                    'id_paket_soal' => $idPaket,
+                    'kategori' => $kategori
+                ]);
+            } else {
+                return Inertia::render('PaketSoal/Kategori', [
+                    'user' => auth()->user(),
+                    'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
+                    'id_paket_soal' => $idPaket,
+                    'kategori' => $kategori
+                ]);
+            }
         } else {
             return Inertia::render('PaketSoal/Soals', [
                 'user' => auth()->user(),

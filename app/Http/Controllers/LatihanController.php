@@ -119,7 +119,7 @@ class LatihanController extends Controller
         $poinTkp2 = 0;
         $poinTkp1 = 0;
 
-        $jawabanlatihan = JawabanLatihan::with('segment_latihan.latihan.latihan_soal.soal')
+        $jawabanlatihan = jawabanlatihan::with('segment_latihan.latihan.latihan_soal.soal')
             ->where('user_id', auth()->user()->id)
             ->where('segment_latihan_id', $segment_latihan_id)
             ->get();
@@ -148,20 +148,43 @@ class LatihanController extends Controller
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
 
                     if (isset($jawabanlatihan[$index])) {
-                        if ($jawabanlatihan[$index]->jawaban == 0) {
-                            $poinTkp3++;
+
+                        $exploded_values = explode(',', $soal->soal->jawaban);
+
+                        $search = [];
+                        $replace = [0, 1, 2, 3, 4];
+
+                        foreach ($exploded_values as $value) {
+                            $search[] = substr($value, 0, 1);
                         }
-                        if ($jawabanlatihan[$index]->jawaban == 1) {
-                            $poinTkp5++;
-                        }
-                        if ($jawabanlatihan[$index]->jawaban == 2) {
-                            $poinTkp4++;
-                        }
-                        if ($jawabanlatihan[$index]->jawaban == 3) {
-                            $poinTkp2++;
-                        }
-                        if ($jawabanlatihan[$index]->jawaban == 4) {
-                            $poinTkp1++;
+
+                        $output = str_replace($search, $replace, $soal->soal->jawaban);
+
+                        $answers = explode(',', $output);
+
+
+                        foreach ($answers as $key => $value) {
+                            $answer = $value[0];
+                            if ($answer == $jawabanlatihan[$index]->jawaban) {
+                                $poin = $value[1];
+                                if ($poin == 3) {
+                                    $poinTkp3++;
+                                }
+                                if ($poin == 5) {
+                                    $poinTkp5++;
+                                }
+                                if ($poin == 4) {
+                                    $poinTkp4++;
+                                }
+                                if ($poin == 2) {
+                                    $poinTkp2++;
+                                }
+                                if (
+                                    $poin == 1
+                                ) {
+                                    $poinTkp1++;
+                                }
+                            }
                         }
                     }
                     // sistem penilaian tkp BCADE : 54321
@@ -175,7 +198,7 @@ class LatihanController extends Controller
                     $twkTerjawab++;
                     $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
                     if (isset($jawabanlatihan[$index])) {
-                        if ($soal->soal->jawaban == $jawabanlatihan[$index]) {
+                        if ($soal->soal->jawaban == $jawabanlatihan[$index]->jawaban) {
                             $twkTerjawabBenar++;
                         } else {
                             $twkTerjawabSalah++;
@@ -260,6 +283,10 @@ class LatihanController extends Controller
             'poin_tkp_1' => $poinTkp1,
 
             'total_poin_tkp' => (($poinTkp5 * 5) + ($poinTkp4 * 4) + ($poinTkp3 * 3) + ($poinTkp2 * 2) + ($poinTkp1 * 1)),
+
+            'passing_grade_tiu' => KategoriSoal::where('id', 1)->first()->passing_grade,
+            'passing_grade_tkp' => KategoriSoal::where('id', 2)->first()->passing_grade,
+            'passing_grade_twk' => KategoriSoal::where('id', 3)->first()->passing_grade,
         ];
 
 

@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('nama_paket');
             $table->string('link_telegram')->nullable();
-            $table->string('paket_video');
-            $table->string('paket_text');
-            $table->string('paket_tryout');
-            $table->string('paket_latihan');
+            $table->string('paket_video')->nullable();
+            $table->string('paket_text')->nullable();
+            $table->string('paket_tryout')->nullable();
+            $table->string('paket_latihan')->nullable();
             $table->integer('harga');
             $table->string('list_paket');
             $table->enum('jenis_paket', ['bimbel', 'non_bimbel']);

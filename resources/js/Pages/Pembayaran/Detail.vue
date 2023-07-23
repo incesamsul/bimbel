@@ -28,9 +28,9 @@ import { Link, Head } from '@inertiajs/vue3';
             <div class="row">
                 <div class="col-sm-6 mt-3">
                     <div class="card border-0 ">
-                        <div class="card-body d-flex flex-column justify-content-between">
+                        <div class="card-body d-flex flex-column justify-content-between ">
                             <h1>Rp. {{ Number(detail_transaksi.amount).toLocaleString() }}</h1>
-                            <table width="400" cellspacing="0" cellpadding="10" class="mt-3">
+                            <table width="100%" cellspacing="0" cellpadding="10" class="mt-3 text-wrap">
                                 <tr>
                                     <td>payment method</td>
                                     <td>:</td>
@@ -47,9 +47,11 @@ import { Link, Head } from '@inertiajs/vue3';
                                     <td>{{ detail_transaksi.customer_name }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Biaya merchant</td>
+                                    <td>Biaya Admin</td>
                                     <td>:</td>
-                                    <td>{{ Number(detail_transaksi.fee_merchant).toLocaleString() }}</td>
+                                    <td>Rp. {{
+                                        Number(detail_transaksi.fee_customer).toLocaleString()
+                                    }}</td>
                                 </tr>
                                 <tr>
                                     <td>Status</td>
@@ -64,9 +66,7 @@ import { Link, Head } from '@inertiajs/vue3';
                                     <td>{{ formatDateTime(detail_transaksi.expired_time) }}</td>
                                 </tr>
                                 <tr>
-                                    <td>Qr</td>
-                                    <td>:</td>
-                                    <td>
+                                    <td colspan="2">
                                         <img :src="detail_transaksi.qr_url" alt="" width="200">
                                     </td>
                                 </tr>
@@ -101,6 +101,20 @@ import { Link, Head } from '@inertiajs/vue3';
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="alert alert-info mt-3">
+                                <h5>Info</h5>
+                                <p>
+                                    “Konfirmasi pembayaran dilakukan secara otomatis, silahkan tunggu maksimal 24 jam.
+
+                                    Setelah pembayaran terkonfirmasi silahkan buka tab “Paket Saya” untuk mengakses paket
+                                    yang sudah di beli.
+
+                                    Apabila tidak terkonfirmasi otomatis silahkan hubungi admin untuk konfirmasi manual
+                                    dengan mengirimkan bukti pembayaran.
+
+                                    Admin WA: <a target="_blank" href="https://wa.me/6281291553437">+6281291553437</a>
+                                </p>
                             </div>
                         </div>
                     </div>

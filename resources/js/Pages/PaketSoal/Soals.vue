@@ -36,7 +36,9 @@ import { showFlashMessage } from '@/global_func.js';
                         <div
                             class="card-header bg-white main-radius d-flex flex-row justify-content-between align-items-center">
                             <h4>soal dalam paket</h4>
-                            <Link :href="'/paket_soal/' + id_paket_soal + '/1'" class="btn btn-light"> Tiu</Link>
+                            <Link :href="'/paket_soal/' + id_paket_soal + '/1'" class="btn btn-light"> TIU</Link>
+                            <Link :href="'/paket_soal/' + id_paket_soal + '/2'" class="btn btn-light"> TKP</Link>
+                            <Link :href="'/paket_soal/' + id_paket_soal + '/3'" class="btn btn-light"> TWB</Link>
                             <!-- Show loading indicator -->
                             <template v-if="loading">
                                 <i class="fas fa-circle-notch fa-spin"></i>

@@ -43,7 +43,7 @@ class PaketSoalRelasiController extends Controller
         } else {
 
             $soals = PaketSoalRelasi::with('soal.kategori_soal')->where('id_paket_soal', $idPaket)->whereHas('soals', function ($query) use ($kategori) {
-                $query->where('kategori_soal_id', '!=', '1');
+                $query->where('kategori_soal_id', '!=', '100');
             })->get();
         }
         return response()->json($soals);

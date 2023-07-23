@@ -55,11 +55,11 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
                 </div>
                 <div class="col-sm-2">
                     <div class="card border-0 paket-item">
-                        <Link :href="transaksi.paket.link_telegram"
+                        <a target="_blank" :href="transaksi.paket.link_telegram"
                             class="card-body d-flex align-items-center flex-column pt-5">
-                        <img src="/assets/img/svg/group.svg" alt="Example Image" width="85">
-                        <p class="mt-3">Group Telegram</p>
-                        </Link>
+                            <img src="/assets/img/svg/group.svg" alt="Example Image" width="85">
+                            <p class="mt-3">Group Telegram</p>
+                        </a>
                     </div>
                 </div>
             </div>
