@@ -28,7 +28,7 @@ class PaketController extends Controller
     {
         return Inertia::render('Paket/Member', [
             'user' => auth()->user(),
-            'paket' => Paket::all(),
+            'paket' => Paket::where('tampilkan', '1')->get(),
             'paket_saya' => Transaksi::with('paket')->where('id_user', auth()->user()->id)->where('status', 'paid')->get(),
             'diskon' => Diskon::all()->first() ? Diskon::all()->first()->persen : 0,
         ]);
@@ -96,8 +96,9 @@ class PaketController extends Controller
             ->where('id_user', auth()->user()->id)
             ->where('status', 'paid')
             ->first();
+
         $paket = $transaksi->paket;
-        $arrPaket = explode(",", $paket->paket_video);
+        $arrPaket = explode(",", $paket->paket_text);
         $paketData = [];
 
         foreach ($arrPaket as $paketId) {
@@ -107,7 +108,7 @@ class PaketController extends Controller
                 'nama_paket' => $paketName ? $paketName->nama_paket : '',
             ];
         }
-
+        // die;
         return Inertia::render('Paket/ContentText', [
             'user' => auth()->user(),
             'paket' => $paket,
@@ -271,6 +272,30 @@ class PaketController extends Controller
         ]);
     }
 
+    public function tampilkan($idPaket)
+    {
+
+        Paket::where('id', $idPaket)->update([
+            'tampilkan' => '1'
+        ]);
+
+        return response()->json([
+            'message' => 'kelas berhasil ditampilkan',
+        ]);
+    }
+
+    public function sembunyikan($idPaket)
+    {
+
+        Paket::where('id', $idPaket)->update([
+            'tampilkan' => '0'
+        ]);
+
+        return response()->json([
+            'message' => 'kelas berhasil ditampilkan',
+        ]);
+    }
+
     public function delete($idKelas)
     {
         Paket::where('id', $idKelas)->delete();
@@ -281,7 +306,7 @@ class PaketController extends Controller
 
     public function getAll()
     {
-        $paket = Paket::all();
+        $paket = Paket::where('tampilkan', '1')->get();
         return response()->json(
             $paket
         );

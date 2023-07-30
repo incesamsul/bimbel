@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('paket_tryout')->nullable();
             $table->string('paket_latihan')->nullable();
             $table->integer('harga');
+            $table->string('tampilkan');
             $table->string('list_paket');
             $table->enum('jenis_paket', ['bimbel', 'non_bimbel']);
             $table->timestamps();

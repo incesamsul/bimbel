@@ -6,6 +6,12 @@ const showingNavigationDropdown = ref(false);
 </script>
 
 <template class="authenticated">
+    <div class="white-blank">
+        <div class="content d-flex justify-content-center align-items-center">
+
+        </div>
+    </div>
+
     <!-- Page Wrapper -->
     <div id="wrapper">
         <!-- Sidebar -->
@@ -350,6 +356,24 @@ const showingNavigationDropdown = ref(false);
     </div>
 </template>
 <style>
+.white-blank {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+    display: none;
+}
+
+.white-blank.show {
+    display: flex;
+}
+
 .authenticated .row {
     height: auto !important;
 }

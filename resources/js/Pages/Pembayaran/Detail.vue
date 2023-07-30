@@ -29,6 +29,7 @@ import { Link, Head } from '@inertiajs/vue3';
                 <div class="col-sm-6 mt-3">
                     <div class="card border-0 ">
                         <div class="card-body d-flex flex-column justify-content-between ">
+
                             <h1>Rp. {{ Number(detail_transaksi.amount).toLocaleString() }}</h1>
                             <table width="100%" cellspacing="0" cellpadding="10" class="mt-3 text-wrap">
                                 <tr>
@@ -131,6 +132,7 @@ export default {
         user: Object,
         detail_transaksi: Object,
         paket: Object,
+        diskon: Number,
     },
 
     methods: {

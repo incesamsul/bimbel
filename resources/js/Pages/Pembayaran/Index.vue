@@ -28,8 +28,23 @@ import { showFlashMessage } from '@/global_func.js';
             <div class="row">
                 <div class="col-sm-4 mt-3">
                     <div class="card border-0 p-5">
+                        <span class="mb-3 badge badge-primary">{{ paket_saya.length > 0 ? 'Diskon alumni ' + diskon + '%' :
+                            '' }}</span>
                         <h2><strong>{{ paket.nama_paket }}</strong></h2>
-                        <h4 class="main-color"><strong>Rp. {{ Number(paket.harga).toLocaleString() }}</strong></h4>
+                        <template v-if="paket_saya.length > 0">
+                            <p class="text-secondary"><s><strong>Rp. {{
+                                Number(paket.harga).toLocaleString()
+                            }}</strong></s>
+                            </p>
+                            <h4 class="main-color"><strong>Rp. {{
+                                Number(paket.harga - (paket.harga * diskon / 100)).toLocaleString()
+                            }}</strong>
+                            </h4>
+
+                        </template>
+                        <h4 v-else class="main-color"><strong>Rp. {{ Number(paket.harga).toLocaleString()
+                        }}</strong>
+                        </h4>
                         <div class="list mt-3">
                             <p v-for="paket in listPaket(paket.list_paket)"><i class="fas fa-check text-success"></i> {{
                                 paket }}
@@ -81,6 +96,8 @@ export default {
         user: Object,
         channels: Object,
         paket: Object,
+        diskon: Number,
+        paket_saya: Object,
     },
     data() {
         return {
@@ -94,10 +111,20 @@ export default {
         },
         requestPembayaran(metode_pembayaran) {
             this.loading = true;
+            let totalBayar = 0;
+
+            if (this.paket_saya.length > 0) {
+                totalBayar = this.paket.harga - (this.paket.harga * this.diskon / 100);
+            } else {
+                totalBayar = this.paket.harga;
+            }
+
+
+            console.log(totalBayar);
             const formData = {
                 // produk
                 method: metode_pembayaran,
-                total_pembayaran: this.paket.harga,
+                total_pembayaran: totalBayar,
                 id_paket: this.paket.id,
 
             }

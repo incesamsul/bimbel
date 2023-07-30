@@ -51,6 +51,15 @@ import { showFlashMessage } from '@/global_func.js';
                             <i class="fas fa-pen"></i>
                             edit
                             </Link>
+                            <span v-if="item.tampilkan == '1'" @click="sembunyikanPaket(item.id)"
+                                class="btn btn-info cursor-pointer ml-2">
+                                <i class="fas fa-eye"></i>
+                                hide
+                            </span>
+                            <span v-else @click="tampilkanPaket(item.id)" class="btn btn-success cursor-pointer ml-2">
+                                <i class="fas fa-eye"></i>
+                                show
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -81,6 +90,38 @@ export default {
         deletepaket(id_paket) {
             if (confirm('yakin ingin menghapus data ?')) {
                 axios.delete(`/paket/${id_paket}`)
+                    .then(response => {
+                        // Handle success response
+                        console.log(response);
+                        showFlashMessage(response.data.message);
+                        this.$inertia.visit(route('paket'));
+
+                    })
+                    .catch(error => {
+                        // Handle error response
+                        console.error(error);
+                    });
+            }
+        },
+        tampilkanPaket(id_paket) {
+            if (confirm('yakin ingin menampilkan paket ?')) {
+                axios.put(`/paket/tampilkan/${id_paket}`)
+                    .then(response => {
+                        // Handle success response
+                        console.log(response);
+                        showFlashMessage(response.data.message);
+                        this.$inertia.visit(route('paket'));
+
+                    })
+                    .catch(error => {
+                        // Handle error response
+                        console.error(error);
+                    });
+            }
+        },
+        sembunyikanPaket(id_paket) {
+            if (confirm('yakin ingin sembunyikan paket ?')) {
+                axios.put(`/paket/sembunyikan/${id_paket}`)
                     .then(response => {
                         // Handle success response
                         console.log(response);

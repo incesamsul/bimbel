@@ -131,6 +131,8 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::post('/paket', [PaketController::class, 'store']);
     Route::put('/paket', [PaketController::class, 'update']);
     Route::get('/paket/edit/{id_paket}', [PaketController::class, 'edit']);
+    Route::put('/paket/tampilkan/{id_paket}', [PaketController::class, 'tampilkan']);
+    Route::put('/paket/sembunyikan/{id_paket}', [PaketController::class, 'sembunyikan']);
     Route::delete('/paket/{id_paket}', [PaketController::class, 'delete'])->name('paket.delete');
 
     Route::get('/paket_soal', [PaketSoalController::class, 'index'])->name('paket_soal');

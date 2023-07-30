@@ -26,11 +26,12 @@ import { showFlashMessage } from '@/global_func.js';
                             <Link :href="'/member/latihan/history/' + segment_latihan.latihan.id"><i
                                 class="fas fa-arrow-left mr-2"></i></Link>
                             <h4>
-                                {{ (hasillatihan.total_poin_twk >= hasillatihan.passing_grade_twk &&
+                                Hasil latihan
+                                <!-- {{ (hasillatihan.total_poin_twk >= hasillatihan.passing_grade_twk &&
                                     hasillatihan.total_poin_tkp
                                     >= hasillatihan.passing_grade_tkp && hasillatihan.total_poin_tiu >
                                     hasillatihan.passing_grade_tiu) ? 'Selamat, Anda lolos' :
-                                    'Maaf, anda tidak lulus' }}
+                                    'Maaf, anda tidak lulus' }} -->
                             </h4>
                         </div>
                     </div>
@@ -160,96 +161,7 @@ import { showFlashMessage } from '@/global_func.js';
                     </div>
                 </div>
             </div>
-            <div class="row mt-4 mb-5">
-                <div class="col-sm-12">
-                    <div class="card border-0">
-                        <div class="card-header bg-white">
-                            <h5>Passing grade</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Kategori</th>
-                                        <th>Passing grade</th>
-                                        <th>Nilai</th>
-                                        <th>Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Tiu</td>
-                                        <td>{{ hasillatihan.passing_grade_tiu }}</td>
-                                        <td>{{ hasillatihan.total_poin_tiu }}</td>
-                                        <td>{{ hasillatihan.total_poin_tiu >= hasillatihan.passing_grade_tiu ? 'berhasil' :
-                                            'gagal' }}</td>
 
-                                    </tr>
-                                    <tr>
-                                        <td>TKP</td>
-                                        <td>{{ hasillatihan.passing_grade_tkp }}</td>
-                                        <td>{{ hasillatihan.total_poin_tkp }}</td>
-                                        <td>{{ hasillatihan.total_poin_tkp >= hasillatihan.passing_grade_tkp ? 'berhasil' :
-                                            'gagal' }}</td>
-
-                                    </tr>
-                                    <tr>
-                                        <td>TWK</td>
-                                        <td>{{ hasillatihan.passing_grade_twk }}</td>
-                                        <td>{{ hasillatihan.total_poin_twk }}</td>
-                                        <td>{{ hasillatihan.total_poin_twk >= hasillatihan.passing_grade_twk ? 'berhasil' :
-                                            'gagal' }}</td>
-
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <!-- <div class="col-sm-6">
-                    <div class="card border-0">
-                        <div class="card-header bg-white">
-                            <h5>Informasi durasi pengerjaan</h5>
-                        </div>
-                        <div class="card-body p-0">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Kategori</th>
-                                        <th>Durasi</th>
-                                        <th>Rata rata</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Tiu</td>
-                                        <td>80</td>
-                                        <td>0</td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td>TKP</td>
-                                        <td>126</td>
-                                        <td>0</td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td>TWK</td>
-                                        <td>65</td>
-                                        <td>0</td>
-
-
-                                    </tr>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
         </div>
 
 

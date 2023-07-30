@@ -23,7 +23,7 @@ import { showFlashMessage } from '@/global_func.js';
                 <div class="col-sm-12">
                     <div class="card border-0 mb-4">
                         <div class="card-body main-radius py-3 bg-white d-flex justify-content-between align-items-center">
-                            <h6 class="m-0 font-weight-bold text-">Diskon sekarang : {{ this.edit ? this.edit.persen : '' }}
+                            <h6 class="m-0 font-weight-bold text-">Diskon sekarang : {{ edit ? edit.persen : '' }}
                                 %</h6>
                         </div>
                     </div>

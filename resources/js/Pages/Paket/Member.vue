@@ -26,7 +26,7 @@ import { Link, Head } from '@inertiajs/vue3';
                             }}</strong></s>
                             </p>
                             <h4 class="main-color"><strong>Rp. {{
-                                Number(item.harga * diskon / 100).toLocaleString()
+                                Number(item.harga - (item.harga * diskon / 100)).toLocaleString()
                             }}</strong>
                             </h4>
 

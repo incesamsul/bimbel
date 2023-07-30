@@ -81,7 +81,8 @@ export default {
             })
                 .then(response => {
                     console.log(response)
-                    this.$inertia.visit(`/member/latihan/kerjakan/${response.data.segment_latihan_id}`);
+                    // this.$inertia.visit(`/member/latihan/kerjakan/${response.data.segment_latihan_id}`);
+                    window.location.href = `/member/latihan/kerjakan/${response.data.segment_latihan_id}`;
 
                 })
                 .catch(error => {
