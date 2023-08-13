@@ -66,6 +66,10 @@ import { showFlashMessage } from '@/global_func.js';
                                 <input class="hide" id="selectAll" type="checkbox" v-model="selectAll"
                                     @change="toggleSelectAll">
                                 <label for="selectAll" class="cursor-pointer ml-3 btn btn-light mt-2">Pilih semua</label>
+                                <select v-model="selectedKelas" class="form-control" @change="fetchsoalData(selectedKelas)">
+                                    <option value="0">--pilih kelas--</option>
+                                    <option v-for="item in kelas" :value="item.id">{{ item.nama_kelas }}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="card-body">
@@ -76,7 +80,8 @@ import { showFlashMessage } from '@/global_func.js';
 
                                 <span><i class="fas fa-soal"></i></span>
                                 <span class="ml-3"
-                                    v-html="item.pertanyaan + 'kategori : ' + item.kategori_soal.kode"></span>
+                                    v-html="item.pertanyaan + 'kategori : ' + item.kategori_soal.kode + '<br>kelas :' + item.kelas.nama_kelas"></span>
+
                             </div>
                         </div>
                     </div>
@@ -99,12 +104,14 @@ export default {
         user: Object,
         users: Object,
         id_paket_soal: Number,
+        kelas: Object,
     },
     computed: {
 
     },
     data() {
         return {
+            selectedKelas: 0,
             soals: [],
             selectAll: false,
             selectedId: [],
@@ -149,10 +156,13 @@ export default {
                     this.loading = false; // reset loading flag
                 });
         },
-        fetchsoalData() {
-            axios.get('/api/get-soals')
+        fetchsoalData(id_kelas) {
+
+            this.loading = true;
+            axios.get('/api/get-soals/' + id_kelas)
                 .then((response) => {
                     this.soals = response.data;
+                    this.loading = false;
                 })
                 .catch((error) => {
                     console.error('Error loading soal data:', error);

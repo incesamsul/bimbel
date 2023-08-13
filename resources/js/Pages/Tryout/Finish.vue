@@ -28,8 +28,8 @@ import { showFlashMessage } from '@/global_func.js';
                             <h4>
                                 {{ (hasilTryout.total_poin_twk >= hasilTryout.passing_grade_twk &&
                                     hasilTryout.total_poin_tkp
-                                    >= hasilTryout.passing_grade_tkp && hasilTryout.total_poin_tiu >
-                                    hasilTryout.passing_grade_tiu) ? 'Selamat, Anda lolos' :
+                                    >= hasilTryout.passing_grade_tkp && hasilTryout.total_poin_tiu >=
+                                    hasilTryout.passing_grade_tiu) ? 'Selamat, Anda Lulus' :
                                     'Maaf, anda tidak lulus' }}
                             </h4>
                         </div>

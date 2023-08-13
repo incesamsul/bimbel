@@ -57,6 +57,7 @@ Route::post('/paket-video/add-video', [PaketVideoRelasiController::class, 'addVi
 Route::delete('/paket-video/delete-video/{id_video}', [PaketVideoRelasiController::class, 'deleteVideo']);
 
 Route::get('/get-soals', [SoalController::class, 'getSoals']);
+Route::get('/get-soals/{id_kelas}', [SoalController::class, 'getSoals']);
 Route::get('/get-soals/{kategori}', [SoalController::class, 'getSoals']);
 Route::get('/get-paket-soal-name/{id_paket_soal}', [PaketSoalController::class, 'getPaketSoalName']);
 Route::get('/get-soal-paket/{id_paket}', [PaketSoalRelasiController::class, 'getSoalPaket']);

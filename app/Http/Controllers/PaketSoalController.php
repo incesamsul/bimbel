@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\PaketSoal;
 use App\Models\PaketVideo;
 use Illuminate\Http\Request;
@@ -25,14 +26,16 @@ class PaketSoalController extends Controller
                     'user' => auth()->user(),
                     'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
                     'id_paket_soal' => $idPaket,
-                    'kategori' => $kategori
+                    'kategori' => $kategori,
+                    'kelas' => Kelas::all(),
                 ]);
             } else {
                 return Inertia::render('PaketSoal/Kategori', [
                     'user' => auth()->user(),
                     'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
                     'id_paket_soal' => $idPaket,
-                    'kategori' => $kategori
+                    'kategori' => $kategori,
+                    'kelas' => Kelas::all(),
                 ]);
             }
         } else {
@@ -40,7 +43,8 @@ class PaketSoalController extends Controller
                 'user' => auth()->user(),
                 'paket_soal' => PaketSoal::where('id', $idPaket)->first(),
                 'id_paket_soal' => $idPaket,
-                'kategori' => $kategori
+                'kategori' => $kategori,
+                'kelas' => Kelas::all(),
             ]);
         }
     }

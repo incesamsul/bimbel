@@ -116,12 +116,22 @@ class SoalController extends Controller
         ]);
     }
 
-    public function getSoals($kategori = null)
+    // public function getSoals($kategori = null)
+    // {
+    //     if ($kategori) {
+    //         $soals = Soal::with('kategori_soal')->where('kategori_soal_id', $kategori)->get();
+    //     } else {
+    //         $soals = Soal::with('kategori_soal')->where('kategori_soal_id', '!=', '100')->get();
+    //     }
+    //     return response()->json($soals);
+    // }
+
+    public function getSoals($idKelas = null)
     {
-        if ($kategori) {
-            $soals = Soal::with('kategori_soal')->where('kategori_soal_id', $kategori)->get();
+        if ($idKelas) {
+            $soals = Soal::with('kelas')->with('kategori_soal')->where('kelas_id', $idKelas)->get();
         } else {
-            $soals = Soal::with('kategori_soal')->where('kategori_soal_id', '!=', '100')->get();
+            $soals = Soal::with('kelas')->with('kategori_soal')->where('kelas_id', '!=', '1')->get();
         }
         return response()->json($soals);
     }
