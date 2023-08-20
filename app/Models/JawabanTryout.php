@@ -16,4 +16,9 @@ class JawabanTryout extends Model
     {
         return $this->belongsTo(SegmentTryout::class, 'segment_tryout_id', 'id');
     }
+
+    public function soal()
+    {
+        return $this->belongsTo(Soal::class, 'soal_id', 'id');
+    }
 }

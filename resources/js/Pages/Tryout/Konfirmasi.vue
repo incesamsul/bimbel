@@ -39,6 +39,25 @@ import { showFlashMessage } from '@/global_func.js';
                                     <p>Durasi pengerjaan : {{ segment_tryout.tryout.durasi }} Menit</p>
                                     <!-- <Link :href="'/member/tryout/kerjakan/' + segment_tryout.id"
                                         class="btn bg-main text-white"><i class="fas fa-play-circle"></i> Mulai</Link> -->
+                                    <div class="alert alert-warning d-flex align-items-center">
+                                        <h1 class="fas fa-info-circle"></h1>
+                                        <ol>
+                                            <li>Kami menyerankan agar kamu megnerjakan soal menggunakan PC/Laptop untuk
+                                                pengalaman
+                                                pengguna lebih baik.</li>
+                                            <li>pastikan koneksi internet kamu stabil</li>
+                                            <li>gunakan browser versi terbaru agar website dapat diakses dengan lancar tanpa
+                                                masalah.</li>
+                                            <li>pastikan tidak ada aktivitas login ke akun kamu ( pada perangkat lain ) pada
+                                                saat
+                                                mengerjakan soal</li>
+                                        </ol>
+                                    </div>
+
+                                    <div class="alert alert-danger">
+                                        Anda tidak dapat berpindah ke tryout yang lain atau kembali ke halaman daftar tryout
+                                        sebelum menyelesaikan tryout ini.
+                                    </div>
                                     <button @click="startSegment(segment_tryout.tryout.id)" class="btn bg-main text-white">
 
                                         <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>

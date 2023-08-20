@@ -158,17 +158,16 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div>
                                     <div v-if="selectedQuestion">
 
-                                        <div class="d-flex flex-column">
-                                            <p><strong>Kunci jawaban : {{ ['A', 'B', 'C', 'D',
-                                                'E'][selectedQuestion.soal.jawaban]
-                                            }}</strong></p>
-                                            <p><strong>Jawaban Anda : {{ ['A', 'B', 'C', 'D',
-                                                'E'][selectedQuestion.jawaban_tryout ?
-                                                    selectedQuestion.jawaban_tryout.jawaban : ''] }}</strong></p>
-                                            <div class="question d-flex">
-                                                <span v-html="selectedQuestion.soal.pembahasan"></span>
-                                            </div>
-
+                                        <p v-if="selectedQuestion.soal.kategori_soal_id == '2'"><strong>Kunci jawaban :
+                                                {{ selectedQuestion.soal.jawaban }}</strong></p>
+                                        <p v-else><strong>Kunci jawaban : {{ ['A', 'B', 'C', 'D',
+                                            'E'][selectedQuestion.soal.jawaban]
+                                        }}</strong></p>
+                                        <p><strong>Jawaban Anda : {{ ['A', 'B', 'C', 'D',
+                                            'E'][selectedQuestion.jawaban_latihan ?
+                                                selectedQuestion.jawaban_latihan.jawaban : ''] }}</strong></p>
+                                        <div class="question d-flex">
+                                            <span v-html="selectedQuestion.soal.pembahasan"></span>
                                         </div>
 
                                     </div>

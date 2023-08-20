@@ -31,6 +31,7 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div class="col-sm-7">
                                     <p class="badge badge-info">Premium</p>
                                     <p>Jumlah soal : 100</p>
+
                                     <button @click="makeSegment(item.id)" class="btn bg-main text-white">
 
                                         <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>

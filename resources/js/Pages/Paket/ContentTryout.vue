@@ -42,6 +42,11 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div class="col-sm-7">
                                     <p class="badge badge-info">Premium</p>
                                     <p>Jumlah soal : {{ item.tryout_soal.length }}</p>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle"></i>
+                                        Menekan tombol mulai berarti mengerjakan, anda tidak dapat mengerjakan tryout lain
+                                        atau berpindah halaman sebelum menyelesaikan satu tryout dalam satu waktu.
+                                    </div>
                                     <button @click="makeSegment(item.id)" class="btn bg-main text-white">
 
                                         <i v-if="loading" class="fas fa-circle-notch fa-spin"></i>

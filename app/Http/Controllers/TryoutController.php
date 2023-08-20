@@ -6,6 +6,7 @@ use App\Models\JawabanTryout;
 use App\Models\KategoriSoal;
 use App\Models\Kelas;
 use App\Models\SegmentTryout;
+use App\Models\Soal;
 use App\Models\Tryout;
 use App\Models\TryoutSoal;
 use Illuminate\Http\Request;
@@ -124,90 +125,168 @@ class TryoutController extends Controller
             ->where('segment_tryout_id', $segment_tryout_id)
             ->get();
 
-        $soalIds = []; // Array to store the IDs of questions that have been counted
+        $tiuTerjawabData = JawabanTryout::whereHas('soal', function ($query) {
+            $query->where('kategori_soal_id', 1);
+        })->where('segment_tryout_id', $segment_tryout_id)->get();
 
-        foreach ($jawabanTryout as $row) {
-            $soalTerjawab = $row->segment_tryout->tryout->tryout_soal;
+        $twkTerjawabData = JawabanTryout::whereHas('soal', function ($query) {
+            $query->where('kategori_soal_id', 3);
+        })->where('segment_tryout_id', $segment_tryout_id)->get();
+        $tkpTerjawabData = JawabanTryout::whereHas('soal', function ($query) {
+            $query->where('kategori_soal_id', 2);
+        })->where('segment_tryout_id', $segment_tryout_id)->get();
 
-            foreach ($soalTerjawab as $index => $soal) {
+        $tiuTerjawab = count($tiuTerjawabData);
+        $twkTerjawab = count($twkTerjawabData);
+        $tkpTerjawab = count($tkpTerjawabData);
 
-                $soalId = $soal->soal->id;
-                if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 1) {
-                    $tiuTerjawab++;
-                    $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-                    if (isset($jawabanTryout[$index])) {
-                        if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
-                            $tiuTerjawabBenar++;
-                        } else {
-                            $tiuTerjawabSalah++;
-                        }
+
+        foreach ($tiuTerjawabData as $key => $value) {
+            $kunciJawaban = Soal::where('id', $value->soal_id)->first()->jawaban;
+            $jawaban = $value->jawaban;
+            if ($jawaban == $kunciJawaban) {
+                $tiuTerjawabBenar++;
+            } else {
+                $tiuTerjawabSalah++;
+            }
+        }
+
+        foreach ($twkTerjawabData as $key => $value) {
+            $kunciJawaban = Soal::where('id', $value->soal_id)->first()->jawaban;
+            $jawaban = $value->jawaban;
+            if ($jawaban == $kunciJawaban) {
+                $twkTerjawabBenar++;
+            } else {
+                $twkTerjawabSalah++;
+            }
+        }
+
+        foreach ($tkpTerjawabData as $key => $value) {
+            $jawaban = $value->jawaban;
+
+            $kunciJawaban = Soal::where('id', $value->soal_id)->first()->jawaban;
+            $exploded_values = explode(',', $kunciJawaban);
+
+            $search = [];
+            $replace = [0, 1, 2, 3, 4];
+
+            foreach ($exploded_values as $value) {
+                $search[] = substr($value, 0, 1);
+            }
+
+            $output = str_replace($search, $replace, $kunciJawaban);
+
+            $answers = explode(',', $output);
+
+
+            foreach ($answers as $key => $value) {
+                $answer = $value[0];
+                if ($answer == $jawaban) {
+                    $poin = $value[1];
+                    if ($poin == 3) {
+                        $poinTkp3++;
                     }
-                }
-                if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 2) {
-                    $tkpTerjawab++;
-                    $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-
-                    if (isset($jawabanTryout[$index])) {
-
-                        $exploded_values = explode(',', $soal->soal->jawaban);
-
-                        $search = [];
-                        $replace = [0, 1, 2, 3, 4];
-
-                        foreach ($exploded_values as $value) {
-                            $search[] = substr($value, 0, 1);
-                        }
-
-                        $output = str_replace($search, $replace, $soal->soal->jawaban);
-
-                        $answers = explode(',', $output);
-
-
-                        foreach ($answers as $key => $value) {
-                            $answer = $value[0];
-                            if ($answer == $jawabanTryout[$index]->jawaban) {
-                                $poin = $value[1];
-                                if ($poin == 3) {
-                                    $poinTkp3++;
-                                }
-                                if ($poin == 5) {
-                                    $poinTkp5++;
-                                }
-                                if ($poin == 4) {
-                                    $poinTkp4++;
-                                }
-                                if ($poin == 2) {
-                                    $poinTkp2++;
-                                }
-                                if (
-                                    $poin == 1
-                                ) {
-                                    $poinTkp1++;
-                                }
-                            }
-                        }
+                    if ($poin == 5) {
+                        $poinTkp5++;
                     }
-                    // sistem penilaian tkp BCADE : 54321
-                    // 0:A = 3
-                    // 1:B =
-                    // 2:C = 4
-                    // 3:D = 2
-                    // 4:E = 1
-                }
-                if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 3) {
-                    $twkTerjawab++;
-                    $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
-                    if (isset($jawabanTryout[$index])) {
-
-                        if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
-                            $twkTerjawabBenar++;
-                        } else {
-                            $twkTerjawabSalah++;
-                        }
+                    if ($poin == 4) {
+                        $poinTkp4++;
+                    }
+                    if ($poin == 2) {
+                        $poinTkp2++;
+                    }
+                    if (
+                        $poin == 1
+                    ) {
+                        $poinTkp1++;
                     }
                 }
             }
         }
+
+        // $soalIds = []; // Array to store the IDs of questions that have been counted
+
+        // foreach ($jawabanTryout as $row) {
+
+        //     $soalTerjawab = $row->segment_tryout->tryout->tryout_soal;
+
+        //     foreach ($soalTerjawab as $index => $soal) {
+
+        //         $soalId = $soal->soal->id;
+
+        //         if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 1) {
+        //             $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
+        //             if (isset($jawabanTryout[$index])) {
+        //                 if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
+        //                     $tiuTerjawabBenar++;
+        //                 } else {
+        //                     $tiuTerjawabSalah++;
+        //                 }
+        //             }
+        //         }
+        //         if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 3) {
+        //             $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
+        //             if (isset($jawabanTryout[$index])) {
+
+        //                 if ($soal->soal->jawaban == $jawabanTryout[$index]->jawaban) {
+        //                     $twkTerjawabBenar++;
+        //                 } else {
+        //                     $twkTerjawabSalah++;
+        //                 }
+        //             }
+        //         }
+        //         if (!in_array($soalId, $soalIds) && $soal->soal->kategori_soal_id == 2) {
+        //             $soalIds[] = $soalId; // Add the question ID to the array of counted IDs
+
+        //             if (isset($jawabanTryout[$index])) {
+
+        //                 $exploded_values = explode(',', $soal->soal->jawaban);
+
+        //                 $search = [];
+        //                 $replace = [0, 1, 2, 3, 4];
+
+        //                 foreach ($exploded_values as $value) {
+        //                     $search[] = substr($value, 0, 1);
+        //                 }
+
+        //                 $output = str_replace($search, $replace, $soal->soal->jawaban);
+
+        //                 $answers = explode(',', $output);
+
+
+        //                 foreach ($answers as $key => $value) {
+        //                     $answer = $value[0];
+        //                     if ($answer == $jawabanTryout[$index]->jawaban) {
+        //                         $poin = $value[1];
+        //                         if ($poin == 3) {
+        //                             $poinTkp3++;
+        //                         }
+        //                         if ($poin == 5) {
+        //                             $poinTkp5++;
+        //                         }
+        //                         if ($poin == 4) {
+        //                             $poinTkp4++;
+        //                         }
+        //                         if ($poin == 2) {
+        //                             $poinTkp2++;
+        //                         }
+        //                         if (
+        //                             $poin == 1
+        //                         ) {
+        //                             $poinTkp1++;
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //             // sistem penilaian tkp BCADE : 54321
+        //             // 0:A = 3
+        //             // 1:B =
+        //             // 2:C = 4
+        //             // 3:D = 2
+        //             // 4:E = 1
+        //         }
+        //     }
+        // }
 
 
 
