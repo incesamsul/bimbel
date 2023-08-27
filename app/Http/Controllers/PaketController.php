@@ -129,7 +129,7 @@ class PaketController extends Controller
 
         if ($activeSegment) {
             // Perform the redirect to the desired route or URL
-            return redirect('/member/tryout/konfirmasi');
+            return redirect('/member/tryout/konfirmasi/' . $idPaket);
         }
         $transaksi = Transaksi::with('paket')
             ->whereHas('paket', function ($query) use ($idPaket) {
@@ -165,7 +165,7 @@ class PaketController extends Controller
 
         if ($activeSegment) {
             // Perform the redirect to the desired route or URL
-            return redirect()->route('latihan.konfirmasi');
+            return redirect()->route('latihan.konfirmasi', $idPaket);
         }
         $transaksi = Transaksi::with('paket')
             ->whereHas('paket', function ($query) use ($idPaket) {

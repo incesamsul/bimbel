@@ -11,7 +11,7 @@ use App\Models\SubKategoriSoal;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
-
+use Yajra\DataTables\Facades\DataTables;
 
 class SoalController extends Controller
 {
@@ -22,6 +22,33 @@ class SoalController extends Controller
             // 'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->where('kategori_soal_id', '!=', 1)->get(),
             'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->get(),
         ]);
+    }
+
+    public function soalDatatable()
+    {
+        $query = Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal');
+
+        return DataTables::eloquent($query)
+            ->addColumn('kelas', function ($soal) {
+                return $soal->kelas->nama_kelas;
+            })
+            ->addColumn('kategori', function ($soal) {
+                return $soal->kategori_soal->nama;
+            })
+            ->addColumn('sub_kategori', function ($soal) {
+                return $soal->sub_kategori_soal->nama;
+            })
+            ->addColumn('pertanyaan', function ($soal) {
+                return $soal->pertanyaan;
+            })
+            ->addColumn('actions', function ($soal) {
+                return "<button class='shadow-none btn btn-sm bg-main text-white btn-hapus' data-id='$soal->id'><i class='fas fa-trash'></i> </button>
+                        <button class='ml-1 shadow-none btn btn-sm btn-warning text-white btn-edit' data-id='$soal->id'><i class='fas fa-pen'></i></button>
+                ";
+                // Add other action buttons as needed
+            })
+            ->rawColumns(['actions', 'pertanyaan'])
+            ->toJson();
     }
 
     public function tiu()

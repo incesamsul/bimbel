@@ -28,6 +28,11 @@ import { showFlashMessage } from '@/global_func.js';
                                 class="fas fa-arrow-left"></i></Link>
                         </div>
                     </div>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Menekan tombol mulai berarti mengerjakan, anda tidak dapat mengerjakan tryout lain
+                        atau berpindah halaman sebelum menyelesaikan satu tryout dalam satu waktu.
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -94,7 +99,7 @@ export default {
             })
                 .then(response => {
                     console.log(response)
-                    this.$inertia.visit(`/member/latihan/konfirmasi`);
+                    this.$inertia.visit(`/member/latihan/konfirmasi/${this.paket.id}`);
 
                 })
                 .catch(error => {

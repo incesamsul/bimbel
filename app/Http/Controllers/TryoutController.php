@@ -52,7 +52,7 @@ class TryoutController extends Controller
     }
 
 
-    public function konfirmasi()
+    public function konfirmasi($paketId = null)
     {
         $activeSegment = SegmentTryout::with('tryout.kelas')
             ->with('tryout.tryout_soal')
@@ -69,7 +69,8 @@ class TryoutController extends Controller
         return Inertia::render('Tryout/Konfirmasi', [
             'user' => auth()->user(),
             // 'tryout' => Tryout::with('kelas')->with('tryout_soal')->with('segment_tryout')->where('id', $idTryout)->first(),
-            'segment_tryout' => $activeSegment
+            'segment_tryout' => $activeSegment,
+            'paket_id' => $paketId
         ]);
     }
 

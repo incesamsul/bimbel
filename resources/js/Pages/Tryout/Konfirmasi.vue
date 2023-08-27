@@ -29,8 +29,9 @@ import { showFlashMessage } from '@/global_func.js';
                                 </div>
                                 <div class="col-sm-7">
                                     <h5 class="main-color  text-capitalize"><strong>
-                                            <Link href="/member/tryout"><i class="fas fa-arrow-left mr-3 text-danger">
-                                            </i></Link> {{ segment_tryout.tryout.nama_tryout
+                                            <Link href="/member/tryout">
+                                            <!-- <i class="fas fa-arrow-left mr-3 text-danger"></i> -->
+                                            </Link> {{ segment_tryout.tryout.nama_tryout
                                             }}
                                         </strong>
                                     </h5>
@@ -66,6 +67,10 @@ import { showFlashMessage } from '@/global_func.js';
                                         <span v-else> lanjutkan</span>
                                     </button>
 
+                                    <button class="btn btn-secondary ml-2" @click="finishSegment(segment_tryout.id)">
+                                        kembali
+                                    </button>
+
                                 </div>
                             </div>
                         </div>
@@ -86,11 +91,45 @@ export default {
     props: {
         user: Object,
         segment_tryout: Object,
+        paket_id: Number,
     },
     computed: {
 
     },
     methods: {
+
+        finishSegment(tryoutId) {
+
+            if (confirm('Ingin menyelesaikan tryout ? kembali berarti menyelesaikan tryout')) {
+                clearInterval(this.timerInterval);
+                localStorage.removeItem('startTime');
+                localStorage.removeItem('duration');
+
+                // Reset the timer display
+                $('#timer').text('00:00');
+                this.loading = true;
+                axios.post(`/api/finish_segment/${tryoutId}`, {
+                    user_id: this.user.id,
+
+                })
+                    .then(response => {
+                        // console.log(response)
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+
+                        this.$inertia.visit(`/member/paket_aktif/${this.paket_id}/tryout`);
+
+                    })
+                    .catch(error => {
+                        // Handle the error response if needed
+                        console.error(error);
+                    }).finally(() => {
+                        // Set loading state to false
+                        this.loading = false;
+                    });
+                // return '/member/tryout/konfirmasi/' + tryoutId;
+            }
+        },
         startSegment(tryoutId) {
             this.loading = true;
             axios.post(`/api/start_segment/${tryoutId}`, {

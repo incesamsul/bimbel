@@ -98,7 +98,7 @@ export default {
             })
                 .then(response => {
                     console.log(response)
-                    this.$inertia.visit(`/member/tryout/konfirmasi`);
+                    this.$inertia.visit(`/member/tryout/konfirmasi/${this.paket.id}`);
 
                 })
                 .catch(error => {

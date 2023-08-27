@@ -468,12 +468,18 @@ export default {
                 this.selectedQuestionIndex--;
                 this.selectedQuestion = this.latihan_soal[this.selectedQuestionIndex];
             }
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.renderEquations();
+            }
         },
 
         nextQuestion() {
             if (this.selectedQuestionIndex < this.latihan_soal.length - 1) {
                 this.selectedQuestionIndex++;
                 this.selectedQuestion = this.latihan_soal[this.selectedQuestionIndex];
+            }
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.renderEquations();
             }
         },
         fetchDataSoal() {
@@ -494,9 +500,32 @@ export default {
         displayQuestion(index) {
             this.selectedQuestionIndex = index;
             this.selectedQuestion = this.latihan_soal[index];
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.renderEquations();
+            }
         },
         isActiveQuestion(index) {
             return this.selectedQuestionIndex === index;
+        },
+        renderEquations() {
+            console.log('WRER')
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.async = true;
+            script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js';
+            document.head.appendChild(script);
+
+            script.onload = () => {
+                this.doRenderEquations();
+            };
+        },
+        doRenderEquations() {
+            if (window.MathJax && window.MathJax.typeset) {
+                // Use this.$refs.equation instead of querySelector
+                const elements = this.$refs.equation;
+                console.log(elements);
+                window.MathJax.typeset(elements);
+            }
         },
     },
     mounted() {

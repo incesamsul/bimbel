@@ -93,7 +93,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
 
         // GET REQUEST
         Route::get('/tryout', [TryoutController::class, 'member']);
-        Route::get('/tryout/konfirmasi', [TryoutController::class, 'konfirmasi']);
+        Route::get('/tryout/konfirmasi/{paket_id}', [TryoutController::class, 'konfirmasi']);
         Route::get('/tryout/kerjakan/{segment_tryout_id}', [TryoutController::class, 'kerjakan']);
         Route::get('/tryout/review/{segment_tryout_id}', [TryoutController::class, 'review']);
         Route::get('/tryout/finish/{segment_tryout_id}', [TryoutController::class, 'finish']);
@@ -101,7 +101,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
 
         // GET REQUEST
         Route::get('/latihan', [LatihanController::class, 'member']);
-        Route::get('/latihan/konfirmasi', [LatihanController::class, 'konfirmasi'])->name('latihan.konfirmasi');
+        Route::get('/latihan/konfirmasi/{paket_id}', [LatihanController::class, 'konfirmasi'])->name('latihan.konfirmasi');
         Route::get('/latihan/kerjakan/{segment_latihan_id}', [LatihanController::class, 'kerjakan']);
         Route::get('/latihan/review/{segment_latihan_id}', [LatihanController::class, 'review']);
         Route::get('/latihan/finish/{segment_latihan_id}', [LatihanController::class, 'finish']);
@@ -176,6 +176,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::delete('/materi_text/{id_materi_text}', [MateriTextController::class, 'delete'])->name('materi_text.delete');
 
     Route::get('/soal', [SoalController::class, 'index'])->name('soal');
+    Route::get('/soal-datatable', [SoalController::class, 'soalDatatable'])->name('soal.datatable');
     Route::get('/soal/tiu', [SoalController::class, 'tiu']);
     Route::get('/soal/create', [SoalController::class, 'create']);
     Route::post('/soal', [SoalController::class, 'store']);

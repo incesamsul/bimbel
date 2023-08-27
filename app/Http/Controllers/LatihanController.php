@@ -53,7 +53,7 @@ class LatihanController extends Controller
     }
 
 
-    public function konfirmasi()
+    public function konfirmasi($paketId = null)
     {
         $activeSegment = SegmentLatihan::with('latihan.kelas')
             ->with('latihan.latihan_soal')
@@ -70,7 +70,8 @@ class LatihanController extends Controller
         return Inertia::render('Latihan/Konfirmasi', [
             'user' => auth()->user(),
             // 'latihan' => Latihan::with('kelas')->with('latihan_soal')->with('segment_latihan')->where('id', $idlatihan)->first(),
-            'segment_latihan' => $activeSegment
+            'segment_latihan' => $activeSegment,
+            'paket_id' => $paketId
         ]);
     }
 

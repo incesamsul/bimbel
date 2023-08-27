@@ -29,8 +29,9 @@ import { showFlashMessage } from '@/global_func.js';
                                 </div>
                                 <div class="col-sm-7">
                                     <h5 class="main-color  text-capitalize"><strong>
-                                            <Link href="/member/latihan"><i class="fas fa-arrow-left mr-3 text-danger">
-                                            </i></Link> {{ segment_latihan.latihan.nama_latihan
+                                            <Link href="/member/latihan">
+                                            <!-- <i class="fas fa-arrow-left mr-3 text-danger"></i> -->
+                                            </Link> {{ segment_latihan.latihan.nama_latihan
                                             }}
                                         </strong>
                                     </h5>
@@ -39,6 +40,26 @@ import { showFlashMessage } from '@/global_func.js';
                                     <p>Durasi : {{ segment_latihan.latihan.durasi }} Menit</p>
                                     <!-- <Link :href="'/member/latihan/kerjakan/' + segment_latihan.id"
                                         class="btn bg-main text-white"><i class="fas fa-play-circle"></i> Mulai</Link> -->
+                                    <div class="alert alert-warning d-flex align-items-center">
+                                        <h1 class="fas fa-info-circle"></h1>
+                                        <ol>
+                                            <li>Kami menyerankan agar kamu megnerjakan soal menggunakan PC/Laptop untuk
+                                                pengalaman
+                                                pengguna lebih baik.</li>
+                                            <li>pastikan koneksi internet kamu stabil</li>
+                                            <li>gunakan browser versi terbaru agar website dapat diakses dengan lancar tanpa
+                                                masalah.</li>
+                                            <li>pastikan tidak ada aktivitas login ke akun kamu ( pada perangkat lain ) pada
+                                                saat
+                                                mengerjakan soal</li>
+                                        </ol>
+                                    </div>
+
+                                    <div class="alert alert-danger">
+                                        Anda tidak dapat berpindah ke latihan yang lain atau kembali ke halaman daftar
+                                        latihan
+                                        sebelum menyelesaikan latihan ini.
+                                    </div>
                                     <button @click="startSegment(segment_latihan.latihan.id)"
                                         class="btn bg-main text-white">
 
@@ -46,6 +67,10 @@ import { showFlashMessage } from '@/global_func.js';
                                         <i v-else class="fas fa-play-circle"></i>
                                         <span v-if="segment_latihan.mulai == null"> Mulai</span>
                                         <span v-else> lanjutkan</span>
+                                    </button>
+
+                                    <button class="btn btn-secondary ml-2" @click="finishSegment(segment_latihan.id)">
+                                        kembali
                                     </button>
 
                                 </div>
@@ -68,11 +93,44 @@ export default {
     props: {
         user: Object,
         segment_latihan: Object,
+        paket_id: Number,
     },
     computed: {
 
     },
     methods: {
+        finishSegment(latihanId) {
+
+            if (confirm('Ingin menyelesaikan latihan ? kembali berarti menyelesaikan latihan')) {
+                clearInterval(this.timerInterval);
+                localStorage.removeItem('startTime');
+                localStorage.removeItem('duration');
+
+                // Reset the timer display
+                $('#timer').text('00:00');
+                this.loading = true;
+                axios.post(`/api/finish_segment_latihan/${latihanId}`, {
+                    user_id: this.user.id,
+
+                })
+                    .then(response => {
+                        // console.log(response)
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+
+                        this.$inertia.visit(`/member/paket_aktif/${this.paket_id}/latihan`);
+
+                    })
+                    .catch(error => {
+                        // Handle the error response if needed
+                        console.error(error);
+                    }).finally(() => {
+                        // Set loading state to false
+                        this.loading = false;
+                    });
+                // return '/member/latihan/konfirmasi/' + latihanId;
+            }
+        },
         startSegment(latihanId) {
             this.loading = true;
             axios.post(`/api/start_segment_latihan/${latihanId}`, {

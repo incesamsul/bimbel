@@ -33,7 +33,7 @@ import { showFlashMessage } from '@/global_func.js';
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered" id="table-data-serverside" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>#</th>
@@ -44,7 +44,7 @@ import { showFlashMessage } from '@/global_func.js';
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <!-- <tbody>
 
                                 <tr v-for="item in soal">
                                     <td>{{ item.id }}</td>
@@ -63,7 +63,7 @@ import { showFlashMessage } from '@/global_func.js';
                                         </Link>
                                     </td>
                                 </tr>
-                            </tbody>
+                            </tbody> -->
                         </table>
                     </div>
                 </div>
@@ -206,11 +206,48 @@ export default {
         },
 
     }, mounted() {
+        const self = this; // Capture the Vue component context
+
         this.renderEquations();
 
-        // Initialize DataTables
-        $('#dataTable').DataTable({
-            // DataTables configuration options
+
+        $(document).on('click', '.btn-hapus', function () {
+            let id = $(this).data('id');
+            self.deletesoal(id);
+        })
+
+        $(document).on('click', '.btn-edit', function () {
+            let id = $(this).data('id');
+            document.location.href = '/soal/edit/' + id;
+
+        })
+
+        let dataTable = $('#table-data-serverside').DataTable({
+            ajax: "/soal-datatable",
+            processing: true,
+            serverSide: true,
+            responsive: true,
+
+            columns: [{
+                data: 'id'
+            },
+            {
+                data: 'kelas'
+            },
+            {
+                data: 'kategori'
+            },
+            {
+                data: 'sub_kategori'
+            },
+            {
+                data: 'pertanyaan'
+            },
+            {
+                data: 'actions',
+            },
+
+            ]
         });
     }
 }
