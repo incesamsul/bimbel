@@ -46,7 +46,7 @@ class LoginRequest extends FormRequest
 
             throw ValidationException::withMessages([
                 // 'email' => trans('auth.failed'),
-                'email' => 'Maaf email tidak dikenali',
+                'email' => 'Passsword atau email salah',
             ]);
         }
 

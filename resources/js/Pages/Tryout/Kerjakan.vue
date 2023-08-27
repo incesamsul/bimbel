@@ -51,7 +51,8 @@ import { showFlashMessage } from '@/global_func.js';
                                                 v-for="(pilihan, pilihanIndex) in selectedQuestion.soal.pilihan"
                                                 :key="pilihanIndex" @click="selectAnswer(pilihanIndex)" :class="{
                                                     'bg-success text-white': isOptionAnswered(selectedQuestionIndex, pilihanIndex),
-                                                    'bg-warning text-white': isOptionFlagged(selectedQuestionIndex, pilihanIndex)
+                                                    'bg-warning text-white': isOptionFlagged(selectedQuestionIndex, pilihanIndex),
+                                                    'bg-success-h text-white': isHightlited(pilihanIndex)
                                                 }">
                                                 <div class="options-warpper">
                                                     {{ ['A', 'B', 'C', 'D', 'E'][pilihanIndex] }}. {{ pilihan.pilihan }}
@@ -222,6 +223,10 @@ import { showFlashMessage } from '@/global_func.js';
 </template>
 
 <style>
+.bg-success-h {
+    background-color: #1CC88A !important;
+}
+
 .btn-transparent:hover {
     background-color: #eeeeee5c;
 }
@@ -300,6 +305,7 @@ export default {
             selectedQuestionIndex: 0,
             selectedQuestion: null,
             loading: false,
+            highlight: false,
             searchResults: [] // Initialize search results as an empty array
         };
     },
@@ -452,12 +458,19 @@ export default {
             }
         },
 
+        isHightlited(pilihanIndex) {
+            if (pilihanIndex == this.selectedAnswerIndex) {
+                return this.highlight;
+            }
+
+        },
         selectAnswer(index) {
             this.selectedAnswerIndex = index;
             const selectedAnswer = this.selectedQuestion.soal.pilihan[index];
 
             // Set loading state to true
             this.loading = true;
+            this.highlight = true;
 
             // Save the selected answer to the database using an API call
             axios.post(`/api/save-tryout-answer/${this.segment_tryout_id}`, {
@@ -475,6 +488,9 @@ export default {
                 }).finally(() => {
                     // Set loading state to false
                     this.loading = false;
+                    setTimeout(() => {
+                        this.highlight = false;
+                    }, 1000);
                 });
         },
         previousQuestion() {
