@@ -78,31 +78,31 @@ import { showFlashMessage } from '@/global_func.js';
                 </template>
                 <template v-if="user.role == 'member'">
                     <div class="col-sm-4 mt-3">
-                        <div class="card border-0 pt-3">
-                            <div class="card-body text-center">
-                                <h1 class="fas fa-folder-open "></h1>
-                                <h4>Paket aktif</h4>
-                                <h6>{{ paket_aktif.length }}</h6>
-                            </div>
+                        <Link href="/member/paket" class="card border-0 pt-3">
+                        <div class="card-body text-center">
+                            <h1 class="fas fa-folder-open "></h1>
+                            <h4>Paket aktif</h4>
+                            <h6>{{ paket_aktif.length }}</h6>
                         </div>
+                        </Link>
                     </div>
                     <div class="col-sm-4 mt-3">
-                        <div class="card border-0 pt-3">
-                            <div class="card-body text-center">
-                                <h1 class="fas fa-credit-card "></h1>
-                                <h4>Transaksi terbayar</h4>
-                                <h6>{{ transaksi_paid.length }}</h6>
-                            </div>
+                        <Link href="/member/pembayaran" class="card border-0 pt-3">
+                        <div class="card-body text-center">
+                            <h1 class="fas fa-credit-card "></h1>
+                            <h4>Transaksi terbayar</h4>
+                            <h6>{{ transaksi_paid.length }}</h6>
                         </div>
+                        </Link>
                     </div>
                     <div class="col-sm-4 mt-3">
-                        <div class="card border-0 pt-3">
-                            <div class="card-body text-center">
-                                <h1 class="fas fa-credit-card "></h1>
-                                <h4>Transaksi belum terbayar</h4>
-                                <h6>{{ transaksi_unpaid.length }}</h6>
-                            </div>
+                        <Link href="/member/pembayaran" class="card border-0 pt-3">
+                        <div class="card-body text-center">
+                            <h1 class="fas fa-credit-card "></h1>
+                            <h4>Transaksi belum terbayar</h4>
+                            <h6>{{ transaksi_unpaid.length }}</h6>
                         </div>
+                        </Link>
                     </div>
                 </template>
             </div>

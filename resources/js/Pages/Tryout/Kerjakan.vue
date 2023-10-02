@@ -13,7 +13,7 @@ import { showFlashMessage } from '@/global_func.js';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout :user="user">
-        <div class="container-fluid">
+        <div class="container-fluid" id="container-kerjakan">
 
             <!-- Page Heading -->
             <h1 class="h3 mb-2 text-gray-800">Data soal tryout</h1>
@@ -223,6 +223,10 @@ import { showFlashMessage } from '@/global_func.js';
 </template>
 
 <style>
+#container-kerjakan img {
+    width: 100% !important;
+}
+
 .bg-success-h {
     background-color: #1CC88A !important;
 }

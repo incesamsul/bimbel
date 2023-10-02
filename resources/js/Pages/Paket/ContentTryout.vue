@@ -57,6 +57,10 @@ import { showFlashMessage } from '@/global_func.js';
                                         :href="'/member/tryout/history/' + item.id">
                                     <i class="fas fa-clock"></i>
                                     </Link>
+                                    <Link title="History " class="btn btn-primary ml-2"
+                                        :href="'/member/tryout/rank/' + item.id">
+                                    <i class="fas fa-trophy"></i>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

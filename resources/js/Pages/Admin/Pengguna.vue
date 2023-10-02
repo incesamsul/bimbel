@@ -179,6 +179,7 @@ function resetForm() {
                                 <select v-model="form.role" required class="form-control">
                                     <option value="">-- pilih role --</option>
                                     <option value="admin">admin</option>
+                                    <option value="member">member</option>
                                 </select>
 
                                 <InputError class="mt-2" :message="form.errors.role" />

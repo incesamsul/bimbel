@@ -98,6 +98,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:member']], function () {
         Route::get('/tryout/review/{segment_tryout_id}', [TryoutController::class, 'review']);
         Route::get('/tryout/finish/{segment_tryout_id}', [TryoutController::class, 'finish']);
         Route::get('/tryout/history/{tryout_id}', [TryoutController::class, 'history']);
+        Route::get('/tryout/rank/{tryout_id}', [TryoutController::class, 'rank']);
 
         // GET REQUEST
         Route::get('/latihan', [LatihanController::class, 'member']);

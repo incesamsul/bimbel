@@ -51,6 +51,44 @@ class TryoutController extends Controller
         ]);
     }
 
+    public function rank($tryoutId)
+    {
+
+        $participant = SegmentTryout::selectRaw('MAX(id) as id, user_id')
+            ->with('user')
+            ->where('tryout_id', $tryoutId)
+            ->groupBy('user_id')
+            ->paginate(50);
+
+        $tryoutResult = [];
+        foreach ($participant as $row) {
+            $participantData = [
+                'nama' => $row->user->name,
+                'tiu' => getScoreTryout($row->id, $row->user_id, 'tiu'),
+                'tkp' => getScoreTryout($row->id, $row->user_id, 'tkp'),
+                'twk' => getScoreTryout($row->id, $row->user_id, 'twk'),
+                'total' => getScoreTryout($row->id, $row->user_id, 'total'),
+                'keterangan' => getScoreTryout($row->id, $row->user_id, 'keterangan'),
+            ];
+            $tryoutResult[] = $participantData;
+        }
+
+        // Sort the $tryoutResult array by 'total' in descending order
+        usort($tryoutResult, function ($a, $b) {
+            return $b['total'] - $a['total'];
+        });
+
+
+        $paginationLinks = $participant->links('pagination::bootstrap-4')->toHtml();
+        // dd($paginationLinks);
+
+        return Inertia::render('Tryout/Rank', [
+            'user' => auth()->user(),
+            'tryout_result' => $tryoutResult,
+            'pagination_links' => $paginationLinks
+        ]);
+    }
+
 
     public function konfirmasi($paketId = null)
     {

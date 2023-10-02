@@ -164,8 +164,8 @@ import { showFlashMessage } from '@/global_func.js';
                                             'E'][selectedQuestion.soal.jawaban]
                                         }}</strong></p>
                                         <p><strong>Jawaban Anda : {{ ['A', 'B', 'C', 'D',
-                                            'E'][selectedQuestion.jawaban_latihan ?
-                                                selectedQuestion.jawaban_latihan.jawaban : ''] }}</strong></p>
+                                            'E'][selectedQuestion.jawaban_tryout ?
+                                                selectedQuestion.jawaban_tryout.jawaban : ''] }}</strong></p>
                                         <div class="question d-flex">
                                             <span v-html="selectedQuestion.soal.pembahasan"></span>
                                         </div>

@@ -29,7 +29,7 @@ import { showFlashMessage } from '@/global_func.js';
                             <template v-else>
                                 <h6 class="m-0 font-weight-bold text-">Data {{ paket_text.nama_paket }}</h6>
                             </template>
-                            <Link :href="'/member/paket_aktif/' + id_paket + '/video'" class="btn btn-light"> <i
+                            <Link :href="'/member/paket_aktif/' + id_paket + '/text'" class="btn btn-light"> <i
                                 class="fas fa-arrow-left"></i></Link>
                         </div>
                     </div>
