@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\JawabanTryout;
 use App\Models\KategoriSoal;
 use App\Models\Kelas;
+use App\Models\Rank;
+use App\Models\RankTryout;
 use App\Models\SegmentTryout;
 use App\Models\Soal;
 use App\Models\Tryout;
@@ -54,38 +56,41 @@ class TryoutController extends Controller
     public function rank($tryoutId)
     {
 
-        $participant = SegmentTryout::selectRaw('MAX(id) as id, user_id')
-            ->with('user')
-            ->where('tryout_id', $tryoutId)
-            ->groupBy('user_id')
-            ->paginate(50);
+        // $participant = SegmentTryout::selectRaw('MAX(id) as id, user_id')
+        //     ->with('user')
+        //     ->where('tryout_id', $tryoutId)
+        //     ->groupBy('user_id')
+        //     ->paginate(50);
 
-        $tryoutResult = [];
-        foreach ($participant as $row) {
-            $participantData = [
-                'nama' => $row->user->name,
-                'tiu' => getScoreTryout($row->id, $row->user_id, 'tiu'),
-                'tkp' => getScoreTryout($row->id, $row->user_id, 'tkp'),
-                'twk' => getScoreTryout($row->id, $row->user_id, 'twk'),
-                'total' => getScoreTryout($row->id, $row->user_id, 'total'),
-                'keterangan' => getScoreTryout($row->id, $row->user_id, 'keterangan'),
-            ];
-            $tryoutResult[] = $participantData;
-        }
+        // $tryoutResult = [];
+        // foreach ($participant as $row) {
+        //     $participantData = [
+        //         'nama' => $row->user->name,
+        //         'tiu' => getScoreTryout($row->id, $row->user_id, 'tiu'),
+        //         'tkp' => getScoreTryout($row->id, $row->user_id, 'tkp'),
+        //         'twk' => getScoreTryout($row->id, $row->user_id, 'twk'),
+        //         'total' => getScoreTryout($row->id, $row->user_id, 'total'),
+        //         'keterangan' => getScoreTryout($row->id, $row->user_id, 'keterangan'),
+        //     ];
+        //     $tryoutResult[] = $participantData;
+        // }
 
-        // Sort the $tryoutResult array by 'total' in descending order
-        usort($tryoutResult, function ($a, $b) {
-            return $b['total'] - $a['total'];
-        });
+        // // Sort the $tryoutResult array by 'total' in descending order
+        // usort($tryoutResult, function ($a, $b) {
+        //     return $b['total'] - $a['total'];
+        // });
 
 
-        $paginationLinks = $participant->links('pagination::bootstrap-4')->toHtml();
-        // dd($paginationLinks);
+        // $paginationLinks = $participant->links('pagination::bootstrap-4')->toHtml();
+        // // dd($paginationLinks);
 
         return Inertia::render('Tryout/Rank', [
             'user' => auth()->user(),
-            'tryout_result' => $tryoutResult,
-            'pagination_links' => $paginationLinks
+            'passing_grade_tiu' => KategoriSoal::where('id', 1)->first()->passing_grade,
+            'passing_grade_tkp' => KategoriSoal::where('id', 2)->first()->passing_grade,
+            'passing_grade_twk' => KategoriSoal::where('id', 3)->first()->passing_grade,
+            'tryout_result' => RankTryout::with('user')->where('tryout_id', $tryoutId)->orderBy('total', 'desc')->get(),
+            // 'pagination_links' => $paginationLinks
         ]);
     }
 
@@ -409,6 +414,19 @@ class TryoutController extends Controller
             'passing_grade_tkp' => KategoriSoal::where('id', 2)->first()->passing_grade,
             'passing_grade_twk' => KategoriSoal::where('id', 3)->first()->passing_grade,
         ];
+
+
+        $rank = RankTryout::where('user_id', auth()->user()->id)->where('tryout_id', $finishedSegment->tryout_id)->first();
+        if (!$rank) {
+            RankTryout::create([
+                'user_id' => auth()->user()->id,
+                'tryout_id' => $finishedSegment->tryout_id,
+                'tiu' => $hasilTryout['total_poin_tiu'],
+                'twk' => $hasilTryout['total_poin_twk'],
+                'tkp' => $hasilTryout['total_poin_tkp'],
+                'total' => $hasilTryout['total_poin_tiu'] + $hasilTryout['total_poin_twk'] + $hasilTryout['total_poin_tkp'],
+            ]);
+        }
 
 
         if (!$finishedSegment) {

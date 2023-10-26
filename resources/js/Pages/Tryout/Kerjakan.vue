@@ -118,9 +118,22 @@ import { showFlashMessage } from '@/global_func.js';
                                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                                     <h6 class="m-0 font-weight-bold text-">Nomor soal</h6>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" >
+
                                     <div class="row ">
-                                        <div class="col-sm-12 d-flex flex-wrap ">
+                                        <div class="col-sm-6 d-flex flex-column">
+                                            <button class="btn mb-3 bg-main text-white mr-2" @click="previousQuestion"
+                                                    :disabled="selectedQuestionIndex === 0"><i
+                                                        class="fas fa-chevron-left"></i>
+                                                    Previous </button>
+
+                                        </div>
+                                        <div class="col-sm-6 d-flex flex-column">
+                                            <button class="btn bg-main text-white mr-2" @click="nextQuestion"
+                                                    :disabled="selectedQuestionIndex === tryout_soal.length - 1"> Next <i
+                                                        class="fas fa-chevron-right"></i></button>
+                                        </div>
+                                        <div class="col-sm-12 my-5 d-flex flex-wrap " style="max-height: 200px; overflow-y: auto;">
                                             <div v-for="(item, index) in tryout_soal" :key="item.id">
                                                 <button
                                                     class="text-danger nomor-soal btn mr-2 mt-2 p-3 d-flex justify-content-center align-items-center"
@@ -140,16 +153,10 @@ import { showFlashMessage } from '@/global_func.js';
                                     </div>
                                     <div class="row mt-3">
                                         <div class="col-sm-12">
-                                            <div class="d-flex justify-content-center">
-                                                <button class="btn bg-main text-white mr-2" @click="previousQuestion"
-                                                    :disabled="selectedQuestionIndex === 0"><i
-                                                        class="fas fa-chevron-left"></i>
-                                                    Previous </button>
-                                                <button class="btn bg-main text-white mr-2" @click="nextQuestion"
-                                                    :disabled="selectedQuestionIndex === tryout_soal.length - 1"> Next <i
-                                                        class="fas fa-chevron-right"></i></button>
-                                                <button class="btn bg-warning text-white mr-2"><i class="fas fa-flag"></i>
-                                                    Ragu</button>
+                                            <div class="d-flex flex-column">
+
+                                                <!-- <button class="btn bg-warning text-white mr-2"><i class="fas fa-flag"></i>
+                                                    Ragu</button> -->
                                                 <button data-toggle="modal" data-target="#exampleModal"
                                                     class="btn btn-success">Selesai <i class="fas fa-check"></i></button>
 
@@ -166,13 +173,13 @@ import { showFlashMessage } from '@/global_func.js';
                                 </div>
                                 <div class="card-body">
 
-                                    <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                                    <!-- <div class="alert alert-warning d-flex justify-content-between align-items-center">
                                         <div class="content">
                                             <i class="fas fa-flag"></i>
                                             Ragu
                                         </div>
                                         <span>{{ flaggedQuestions }}</span>
-                                    </div>
+                                    </div> -->
                                     <div class="alert alert-success d-flex justify-content-between align-items-center">
                                         <div class="content">
                                             <i class="fas fa-check"></i>
@@ -469,6 +476,7 @@ export default {
 
         },
         selectAnswer(index) {
+
             this.selectedAnswerIndex = index;
             const selectedAnswer = this.selectedQuestion.soal.pilihan[index];
 
@@ -494,10 +502,12 @@ export default {
                     this.loading = false;
                     setTimeout(() => {
                         this.highlight = false;
-                    }, 1000);
+                    }, 10000);
                 });
         },
         previousQuestion() {
+            this.highlight = false;
+
             if (this.selectedQuestionIndex > 0) {
                 this.selectedQuestionIndex--;
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
@@ -509,6 +519,8 @@ export default {
         },
 
         nextQuestion() {
+            this.highlight = false;
+
             if (this.selectedQuestionIndex < this.tryout_soal.length - 1) {
                 this.selectedQuestionIndex++;
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
@@ -535,6 +547,8 @@ export default {
         },
 
         displayQuestion(index) {
+            this.highlight = false;
+
             this.selectedQuestionIndex = index;
             this.selectedQuestion = this.tryout_soal[index];
             $('#input').val(this.selectedQuestion.soal.pertanyaan);

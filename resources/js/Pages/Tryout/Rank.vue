@@ -30,7 +30,7 @@ import { showFlashMessage } from '@/global_func.js';
 
                         </div>
                         <div class="card-body table-responsive">
-                            <table class="table">
+                            <table class="table table-striped" id="dataTable">
                                 <thead>
                                     <tr>
                                         <th>Rank</th>
@@ -45,17 +45,19 @@ import { showFlashMessage } from '@/global_func.js';
                                 <tbody>
                                     <tr v-for="(item, index) in tryout_result">
                                         <td>{{ index + 1 }}</td>
-                                        <td>{{ item.nama }}</td>
+                                        <td>{{ item.user.name }}</td>
                                         <td>{{ item.tiu }}</td>
                                         <td>{{ item.tkp }}</td>
                                         <td>{{ item.twk }}</td>
                                         <td>{{ item.total }}</td>
-                                        <td v-html="item.keterangan"></td>
+                                        <td>
+                                            {{ checkLulus(item.tiu, item.tkp, item.twk) }}
+                                        </td>
 
                                     </tr>
                                 </tbody>
                             </table>
-                            <div v-html="pagination_links"></div>
+                            <!-- <div v-html="pagination_links"></div> -->
 
                         </div>
                     </div>
@@ -82,12 +84,21 @@ export default {
         users: Object,
         tryout_result: Object,
         pagination_links: String,
-
+        passing_grade_tiu : Number,
+        passing_grade_tkp : Number,
+        passing_grade_twk : Number,
     },
     computed: {
 
     },
     methods: {
+        checkLulus(tiu, tkp, twk) {
+            if (tiu >= this.passing_grade_tiu && tkp >= this.passing_grade_tkp && twk >= this.passing_grade_twk) {
+                return 'Lulus';
+            } else {
+                return 'TIDAK LULUS';
+            }
+        },
         goBack() {
             window.history.back();
         },

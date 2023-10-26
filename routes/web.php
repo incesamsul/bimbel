@@ -226,6 +226,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
         // GET REQUEST
         Route::get('/pengguna', [UserController::class, 'pengguna']);
 
+        Route::put('/reset-pass/{id}', [UserController::class, 'resetPass']);
         // CRUD PENGGUNA
         Route::post('/pengguna', [UserController::class, 'store'])->name('pengguna.store');
         Route::put('/pengguna', [UserController::class, 'update'])->name('pengguna.update');

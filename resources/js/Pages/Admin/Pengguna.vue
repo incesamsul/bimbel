@@ -108,6 +108,7 @@ function resetForm() {
                                     <th>Email</th>
                                     <th>whatsapp</th>
                                     <th>alamat</th>
+                                    <th>Password</th>
                                     <th>aksi</th>
                                 </tr>
                             </thead>
@@ -118,6 +119,10 @@ function resetForm() {
                                     <td>{{ user.email }}</td>
                                     <td>{{ user.whatsapp }}</td>
                                     <td>{{ user.alamat }}</td>
+                                    <td>
+                                        <button @click="resetPass(user.id)" type="button" class="btn btn-info"><i
+                                                class="fas fa-sync"></i></button>
+                                    </td>
                                     <td>
                                         <button @click="deleteUser(user.id)" type="button" class="btn btn-danger"><i
                                                 class="fas fa-trash"></i></button>
@@ -220,6 +225,13 @@ export default {
     },
 
     methods: {
+        resetPass(id) {
+            // Make API request to delete row using Inertia.js
+            if (confirm('yakin ingin reset password?')) {
+                this.$inertia.put(`/admin/reset-pass/${id}`)
+                showFlashMessage('data berhasil tereset');
+            }
+        },
         deleteUser(id) {
             // Make API request to delete row using Inertia.js
             if (confirm('yakin ingin menghapus data?')) {

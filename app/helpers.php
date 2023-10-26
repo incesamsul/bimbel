@@ -5,6 +5,19 @@ use App\Models\KategoriSoal;
 use App\Models\SegmentTryout;
 use App\Models\Soal;
 
+
+function lulusCheck($tiu, $tkp, $twk)
+{
+    $passing_grade_tiu = KategoriSoal::where('id', 1)->first()->passing_grade;
+    $passing_grade_tkp = KategoriSoal::where('id', 2)->first()->passing_grade;
+    $passing_grade_twk = KategoriSoal::where('id', 3)->first()->passing_grade;
+
+    if ($tiu >= $passing_grade_tiu && $tkp >= $passing_grade_tkp && $twk >= $passing_grade_twk) {
+        return 'LULUS';
+    } else {
+        return 'TIDAK LULUS';
+    }
+}
 function getScoreTryout($segment_tryout_id, $user_id, $type)
 {
 

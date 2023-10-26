@@ -13,7 +13,7 @@ import { showFlashMessage } from '@/global_func.js';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout :user="user">
-        <div class="container-fluid">
+        <div class="container-fluid" id="container-kerjakan">>
 
             <!-- Page Heading -->
             <h1 class="h3 mb-2 text-gray-800">Data soal tryout</h1>
@@ -82,7 +82,7 @@ import { showFlashMessage } from '@/global_func.js';
                                 </div>
                                 <div class="card-body">
                                     <div class="row ">
-                                        <div class="col-sm-12 d-flex flex-wrap ">
+                                        <div class="col-sm-12 my-5 d-flex flex-wrap " style="max-height: 200px; overflow-y: auto;">
                                             <div v-for="(item, index) in tryout_soal" :key="item.id">
                                                 <button
                                                     class="text-danger nomor-soal btn mr-2 mt-2 p-3 d-flex justify-content-center align-items-center"
@@ -212,6 +212,9 @@ import { showFlashMessage } from '@/global_func.js';
 </template>
 
 <style>
+#container-kerjakan img {
+    width: 100% !important;
+}
 .btn-transparent:hover {
     background-color: #eeeeee5c;
 }
@@ -445,7 +448,9 @@ export default {
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
             }
             $('#input').val(this.selectedQuestion.soal.pertanyaan);
-
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.renderEquations();
+            }
         },
 
         nextQuestion() {
@@ -454,6 +459,9 @@ export default {
                 this.selectedQuestion = this.tryout_soal[this.selectedQuestionIndex];
             }
             $('#input').val(this.selectedQuestion.soal.pertanyaan);
+            if (this.selectedQuestion.soal.kategori_soal_id == '1') {
+                this.renderEquations();
+            }
 
         },
         fetchDataSoal() {

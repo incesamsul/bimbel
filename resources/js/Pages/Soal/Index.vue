@@ -19,6 +19,48 @@ import { showFlashMessage } from '@/global_func.js';
             <h1 class="h3 mb-2 text-gray-800">Data soal</h1>
             <p class="mb-4">Semua data soal ada dihalaman ini.</p>
             <!-- DataTales Example -->
+
+            <div class="row">
+            <div class="col-sm-12">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <h5>Filter</h5>
+                        <p><small>Filter soal berdasarkan kelas, kategori, dan sub kategori</small></p>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label class="text-black" for="kelas"><small>Kelas</small></label>
+                                <select class="form-control border-none main-radius" name="kelas" id="kelas">
+                                    <option value=""> -- pilih kelas --</option>
+                                    <option v-for="item in kelas" :value="item.id">{{ item.nama_kelas }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="text-black" for="kategori"><small>Kategori</small></label>
+                                <select class="form-control border-none main-radius" name="kategori" id="kategori">
+                                    <option value=""> -- pilih kategori --</option>
+                                    <option v-for="item in kategori_soal" :value="item.id">{{ item.nama }}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <label class="text-black" for="tgl_akhir"><small>Tgl akhir</small></label>
+                                <div class="d-flex">
+                                    <select class="form-control border-none main-radius" name="sub_kategori" id="sub_kategori">
+                                        <option value=""> -- pilih sub_kategori --</option>
+                                        <option v-for="item in sub_kategori_soal" :value="item.id">{{ item.nama }}</option>
+                                    </select>
+                                    <button type="submit" class="ml-4 btn bg-main main-radius text-white btn-filter"><i
+                                            class="fas fa-filter"></i></button>
+                                    <button type="submit"
+                                        class="ml-4 btn bg-secondary main-radius text-white btn-reset-filter"><i
+                                            class="fas fa-sync"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
             <div class="card border-0 mb-4">
                 <div class="card-header py-3 bg-white d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-">Data soal</h6>
@@ -128,6 +170,9 @@ export default {
         user: Object,
         users: Object,
         soal: Object,
+        kelas: Object,
+        kategori_soal: Object,
+        sub_kategori_soal: Object,
     },
     computed: {
 
@@ -222,7 +267,34 @@ export default {
 
         })
 
-        let dataTable = $('#table-data-serverside').DataTable({
+        let dataTable;
+
+        $(document).on('click', '.btn-filter', function() {
+
+                let kelas = $('#kelas').val();
+                let kategori = $('#kategori').val();
+                let sub_kategori = $('#sub_kategori').val();
+
+
+                const newURL = `/soal-datatable?kelas=${kelas}&kategori=${kategori}&sub_kategori=${sub_kategori}`;
+
+                if (dataTable) {
+                    // Update the DataTable's ajax URL and reload it
+                    dataTable.ajax.url(newURL).load();
+                }
+            });
+
+            $(document).on('click', '.btn-reset-filter', function() {
+
+                const newURL = `/soal-datatable`;
+
+                if (dataTable) {
+                    // Update the DataTable's ajax URL and reload it
+                    dataTable.ajax.url(newURL).load();
+                }
+                });
+
+         dataTable = $('#table-data-serverside').DataTable({
             ajax: "/soal-datatable",
             processing: true,
             serverSide: true,

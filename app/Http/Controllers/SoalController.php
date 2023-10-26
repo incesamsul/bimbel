@@ -20,13 +20,35 @@ class SoalController extends Controller
         return Inertia::render('Soal/Index', [
             'user' => auth()->user(),
             // 'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->where('kategori_soal_id', '!=', 1)->get(),
+            'kelas' => Kelas::all(),
+            'kategori_soal' => KategoriSoal::all(),
+            'sub_kategori_soal' => SubKategoriSoal::all(),
             'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->get(),
         ]);
     }
 
     public function soalDatatable()
     {
+
+        $kelas = isset($_GET['kelas']) ? $_GET['kelas'] : '';
+        $kategori = isset($_GET['kategori']) ? $_GET['kategori'] : '';
+        $sub_kategori = isset($_GET['sub_kategori']) ? $_GET['sub_kategori'] : '';
+
         $query = Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal');
+
+        if ($kelas !== '') {
+            $query->where('kelas_id', 'like', '%' . $kelas . '%');
+        }
+
+        if ($kategori !== '') {
+            $query->where('kategori_soal_id', $kategori);
+        }
+
+        if ($sub_kategori !== '') {
+            $query->where('sub_kategori_soal_id', $sub_kategori);
+        }
+
+        // $query = Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal');
 
         return DataTables::eloquent($query)
             ->addColumn('kelas', function ($soal) {

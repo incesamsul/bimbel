@@ -21,6 +21,7 @@ class UserController extends Controller
     public function pengguna()
     {
         return Inertia::render('Admin/Pengguna', [
+            // 'users' => User::limit(10)->get(),
             'users' => User::all(),
             'user' => auth()->user()
         ]);
@@ -81,5 +82,14 @@ class UserController extends Controller
 
         // Return a response indicating successful deletion
         return redirect()->back()->with('message', 'Data successfully deleted!');
+    }
+
+    public function resetPass($id)
+    {
+
+        $user = User::find($id);
+        $user->password = bcrypt('123456');
+        $user->save();
+        return redirect()->back()->with('message', 'Data successfully reset!');
     }
 }

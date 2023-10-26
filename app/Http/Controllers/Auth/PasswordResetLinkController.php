@@ -59,7 +59,7 @@ class PasswordResetLinkController extends Controller
         $recipient = $user->email;
         $body = urlencode('ini adalah link reset password anda : ' . URL::to('/reset-password/' . $kodeReset));
 
-        $scriptId = "AKfycbxjnnbthdE2TH7_QmS7jURPHd1CN-uWkgM0H0haKb9H4c4d_t2ViaWUowG3pfso3Fh3";
+        $scriptId = "AKfycbzupui2Dea8ucTQ9TQmnIuekHcTvegeAC5caABAmp8MsZgJbrqATuncCGNKdCJ1z3HrGA";
         $apiUrl = "https://script.google.com/macros/s/{$scriptId}/exec?recipient={$recipient}&body={$body}";
 
         $response = file_get_contents($apiUrl);
