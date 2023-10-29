@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JawabanTryout;
 use App\Models\SegmentTryout;
 use Illuminate\Http\Request;
 
@@ -42,11 +43,27 @@ class SegmentTryoutController extends Controller
     {
 
 
-        $cekJawaban = SegmentTryout::where('user_id', $request->user_id)
+        // return response()->json(
+        //     $request
+        // );
+        $updateStatus = SegmentTryout::where('user_id', $request->user_id)
             ->where('id', $segmentTryoutId);
 
+        if ($request->answer) {
 
-        $updatedSegment = $cekJawaban->update([
+            foreach ($request->answer as $row) {
+                JawabanTryout::create([
+                    'soal_id' => $row['soal_id'],
+                    'jawaban' => $row['answerOption'],
+                    'segment_tryout_id' => $segmentTryoutId,
+                    'user_id' => $request->user_id,
+                ]);
+            }
+        }
+
+
+
+        $updatedSegment = $updateStatus->update([
             'selesai' => date('Y-m-d H:i:s'),
             'durasi' => '100',
             'status' => '1'
