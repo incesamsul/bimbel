@@ -50,6 +50,8 @@ use Inertia\Inertia;
 
 Route::get('/test', [GeneralController::class, 'test']);
 
+Route::get('/fix_duplicate_data_jawaban_tryout', [GeneralController::class, 'fixDuplicateDJT']);
+
 Route::get('/convertlatex/{latex}', [GeneralController::class, 'convertLatex']);
 
 Route::post('/callback', [TripayCallbackController::class, 'handle']);
@@ -120,6 +122,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::get('/aktifkan/{reference}', [TransaksiController::class, 'aktifkanTransaksi']);
     Route::get('/batalkan/{reference}', [TransaksiController::class, 'batalkanTransaksi']);
     Route::get('/pembayaran', [PembayaranController::class, 'listPembayaran'])->name('list_pembayaran');
+    Route::get('/pembayaran-datatable', [PembayaranController::class, 'pembayaranDatatable'])->name('pembayaran.datatable');
     Route::get('/kelas', [KelasController::class, 'index'])->name('kelas');
     Route::get('/kelas/create', [KelasController::class, 'create']);
     Route::post('/kelas', [KelasController::class, 'store']);

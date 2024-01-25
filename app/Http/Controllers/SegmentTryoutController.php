@@ -52,12 +52,22 @@ class SegmentTryoutController extends Controller
         if ($request->answer) {
 
             foreach ($request->answer as $row) {
-                JawabanTryout::create([
+                $existingRecord = JawabanTryout::where([
                     'soal_id' => $row['soal_id'],
-                    'jawaban' => $row['answerOption'],
                     'segment_tryout_id' => $segmentTryoutId,
                     'user_id' => $request->user_id,
-                ]);
+                ])->first();
+
+                if ($existingRecord) {
+                    // Handle the case where a duplicate record exists
+                } else {
+                    JawabanTryout::create([
+                        'soal_id' => $row['soal_id'],
+                        'jawaban' => $row['answerOption'],
+                        'segment_tryout_id' => $segmentTryoutId,
+                        'user_id' => $request->user_id,
+                    ]);
+                }
             }
         }
 

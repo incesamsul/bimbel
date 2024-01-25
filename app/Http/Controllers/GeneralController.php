@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\JawabanTryout;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -40,5 +41,13 @@ class GeneralController extends Controller
         $latexHtml = $doc->saveHTML($spanElement);
 
         return $latexHtml;
+    }
+
+    public function fixDuplicateDJT()
+    {
+        $jawabanTryout = JawabanTryout::take(1000)->latest()->get();
+        foreach ($jawabanTryout as $value) {
+            echo $value->segment_tryout_id . "- " . $value->soal_id . "<br>";
+        }
     }
 }

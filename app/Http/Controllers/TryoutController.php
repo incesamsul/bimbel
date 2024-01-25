@@ -164,21 +164,35 @@ class TryoutController extends Controller
         $poinTkp2 = 0;
         $poinTkp1 = 0;
 
-        $jawabanTryout = JawabanTryout::with('segment_tryout.tryout.tryout_soal.soal')
-            ->where('user_id', auth()->user()->id)
-            ->where('segment_tryout_id', $segment_tryout_id)
+        $jawabanTryout = JawabanTryout::select('soal_id', 'jawaban' /* other columns from the GROUP BY clause */)
+                ->with('segment_tryout.tryout.tryout_soal.soal')
+                ->where('user_id', auth()->user()->id)
+                ->where('segment_tryout_id', $segment_tryout_id)
+                ->groupBy('soal_id', 'jawaban' /* other columns from the GROUP BY clause */)
             ->get();
 
-        $tiuTerjawabData = JawabanTryout::whereHas('soal', function ($query) {
-            $query->where('kategori_soal_id', 1);
-        })->where('segment_tryout_id', $segment_tryout_id)->get();
 
-        $twkTerjawabData = JawabanTryout::whereHas('soal', function ($query) {
-            $query->where('kategori_soal_id', 3);
-        })->where('segment_tryout_id', $segment_tryout_id)->get();
-        $tkpTerjawabData = JawabanTryout::whereHas('soal', function ($query) {
-            $query->where('kategori_soal_id', 2);
-        })->where('segment_tryout_id', $segment_tryout_id)->get();
+            $tiuTerjawabData = JawabanTryout::select('soal_id', 'jawaban' /* other columns needed */)
+            ->whereHas('soal', function ($query) {
+                $query->where('kategori_soal_id', 1);
+            })->where('segment_tryout_id', $segment_tryout_id)
+            ->groupBy('soal_id', 'jawaban' /* other columns needed */)
+            ->get();
+
+        $twkTerjawabData = JawabanTryout::select('soal_id', 'jawaban' /* other columns needed */)
+            ->whereHas('soal', function ($query) {
+                $query->where('kategori_soal_id', 3);
+            })->where('segment_tryout_id', $segment_tryout_id)
+            ->groupBy('soal_id', 'jawaban' /* other columns needed */)
+            ->get();
+
+        $tkpTerjawabData = JawabanTryout::select('soal_id', 'jawaban' /* other columns needed */)
+            ->whereHas('soal', function ($query) {
+                $query->where('kategori_soal_id', 2);
+            })->where('segment_tryout_id', $segment_tryout_id)
+            ->groupBy('soal_id', 'jawaban' /* other columns needed */)
+            ->get();
+
 
         $tiuTerjawab = count($tiuTerjawabData);
         $twkTerjawab = count($twkTerjawabData);
@@ -416,9 +430,18 @@ class TryoutController extends Controller
         ];
 
 
-        $rank = RankTryout::where('user_id', auth()->user()->id)->where('tryout_id', $finishedSegment->tryout_id)->first();
-        if (!$rank) {
+        $rank = RankTryout::where('user_id', auth()->user()->id)->where('tryout_id', $finishedSegment->tryout_id);
+        if (!$rank->first()) {
             RankTryout::create([
+                'user_id' => auth()->user()->id,
+                'tryout_id' => $finishedSegment->tryout_id,
+                'tiu' => $hasilTryout['total_poin_tiu'],
+                'twk' => $hasilTryout['total_poin_twk'],
+                'tkp' => $hasilTryout['total_poin_tkp'],
+                'total' => $hasilTryout['total_poin_tiu'] + $hasilTryout['total_poin_twk'] + $hasilTryout['total_poin_tkp'],
+            ]);
+        } else {
+            $rank->update([
                 'user_id' => auth()->user()->id,
                 'tryout_id' => $finishedSegment->tryout_id,
                 'tiu' => $hasilTryout['total_poin_tiu'],

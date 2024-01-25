@@ -27,7 +27,10 @@ import { showFlashMessage } from "@/global_func.js";
                 class="spinner-border text-primary"
                 role="status"
               >
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only"
+                  >Loading... <i class="fas fa-spinner fa-spin"></i>Jika Soal
+                  tidak muncul setelah 60 detik tekan <a href="">Disini</a>
+                </span>
               </div>
             </div>
             <div class="card-body">
@@ -87,6 +90,8 @@ import { showFlashMessage } from "@/global_func.js";
                   </div>
                   <div v-else>
                     Loading...
+                    <i class="fas fa-spinner fa-spin"></i>Jika Soal tidak muncul
+                    setelah 60 detik tekan <a href="">Disini</a>
                     <!-- or any other loading indicator/message -->
                   </div>
                 </div>
@@ -196,7 +201,7 @@ import { showFlashMessage } from "@/global_func.js";
                       <i class="fas fa-check"></i>
                       Dijawab
                     </div>
-                    <span>{{ answeredQuestions }}</span>
+                    <span>{{ userAnswers.length }}</span>
                   </div>
                   <div
                     class="alert alert-danger d-flex justify-content-between align-items-center"
@@ -241,7 +246,7 @@ import { showFlashMessage } from "@/global_func.js";
           </div>
           <div class="modal-body">
             Apakah yakin ingin selesai ? masih ada
-            <strong>{{ answeredQuestions - tryout_soal.length }}</strong> soal
+            <strong>{{ userAnswers.length - tryout_soal.length }}</strong> soal
             yang belum terjawab
           </div>
           <div class="modal-footer">
@@ -345,9 +350,13 @@ export default {
       loading: false,
       highlight: false,
       searchResults: [], // Initialize search results as an empty array
+      userAnswers: JSON.parse(localStorage.getItem("userAnswers")) || [],
     };
   },
   methods: {
+    updateUserAnswersCount() {
+      this.userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || [];
+    },
     isQuestionAnswered(index) {
       const question = this.tryout_soal[index];
 
@@ -460,6 +469,8 @@ export default {
     },
 
     previousQuestion() {
+      this.updateUserAnswersCount();
+
       this.highlight = false;
 
       if (this.selectedQuestionIndex > 0) {
@@ -473,6 +484,8 @@ export default {
     },
 
     nextQuestion() {
+      this.updateUserAnswersCount();
+
       this.highlight = false;
 
       if (this.selectedQuestionIndex < this.tryout_soal.length - 1) {
@@ -501,6 +514,7 @@ export default {
     },
 
     displayQuestion(index) {
+      this.updateUserAnswersCount();
       this.highlight = false;
 
       this.selectedQuestionIndex = index;
@@ -631,9 +645,8 @@ export default {
   },
   computed: {
     answeredQuestions() {
-      return this.tryout_soal.filter(
-        (question) => question.jawaban_tryout !== null
-      ).length;
+      let userAnswers = JSON.parse(localStorage.getItem("userAnswers")) || [];
+      return userAnswers.length;
     },
   },
 };

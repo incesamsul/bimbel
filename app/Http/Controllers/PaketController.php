@@ -51,9 +51,12 @@ class PaketController extends Controller
             ->where('id_user', auth()->user()->id)
             ->where('status', 'paid')
             ->first();
+        $isiPaket = $transaksi->paket->isi_paket;
+        $isiPaketArr = explode(', ', $isiPaket);
         return Inertia::render('Paket/Content', [
             'user' => auth()->user(),
-            'transaksi' => $transaksi
+            'transaksi' => $transaksi,
+            'isi_paket' => $isiPaketArr,
         ]);
     }
 
@@ -238,12 +241,14 @@ class PaketController extends Controller
         Paket::create([
             'nama_paket' => $request->nama_paket,
             'link_telegram' => $request->link_telegram,
+            'link_zoom' => $request->link_zoom,
             'paket_video' => $request->paket_video,
             'paket_text' => $request->paket_text,
             'paket_tryout' => $request->paket_tryout,
             'paket_latihan' => $request->paket_latihan,
             'harga' => $request->harga,
             'list_paket' => $request->list_paket,
+            'isi_paket' => $request->isi_paket,
             'jenis_paket' => $request->jenis_paket
         ])->id;
 
@@ -258,12 +263,14 @@ class PaketController extends Controller
         Paket::where('id', $request->id)->update([
             'nama_paket' => $request->nama_paket,
             'link_telegram' => $request->link_telegram,
+            'link_zoom' => $request->link_zoom,
             'paket_video' => $request->paket_video,
             'paket_text' => $request->paket_text,
             'paket_tryout' => $request->paket_tryout,
             'paket_latihan' => $request->paket_latihan,
             'harga' => $request->harga,
             'list_paket' => $request->list_paket,
+            'isi_paket' => $request->isi_paket,
             'jenis_paket' => $request->jenis_paket
         ]);
 

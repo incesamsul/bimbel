@@ -23,7 +23,7 @@ class SoalController extends Controller
             'kelas' => Kelas::all(),
             'kategori_soal' => KategoriSoal::all(),
             'sub_kategori_soal' => SubKategoriSoal::all(),
-            'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->get(),
+            // 'soal' => Soal::with('kelas')->with('kategori_soal')->with('sub_kategori_soal')->get(),
         ]);
     }
 

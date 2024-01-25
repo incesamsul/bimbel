@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama_paket');
             $table->string('link_telegram')->nullable();
+            $table->string('link_zoom')->nullable();
             $table->string('paket_video')->nullable();
             $table->string('paket_text')->nullable();
             $table->string('paket_tryout')->nullable();
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->integer('harga');
             $table->string('tampilkan')->default(0);
             $table->string('list_paket');
+            $table->string('isi_paket');
             $table->enum('jenis_paket', ['bimbel', 'non_bimbel']);
             $table->timestamps();
         });
