@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('kelas_id');
             $table->unsignedBigInteger('kategori_soal_id');
             $table->integer('durasi');
+            $table->enum('pembahasan', ['1', '0']);
             $table->dateTime('mulai');
             $table->timestamps();
             $table->foreign('kelas_id')->references('id')->on('kelas');

@@ -23,22 +23,22 @@ class DashboardController extends Controller
                 'paket_aktif' => Transaksi::where('status', 'paid')->where('id_user', auth()->user()->id)->get(),
                 'transaksi_paid' => Transaksi::where('status', 'paid')->where('id_user', auth()->user()->id)->get(),
                 'transaksi_unpaid' => Transaksi::where('status', 'unpaid')->where('id_user', auth()->user()->id)->get(),
-                'member' => User::where('role', 'member')->get(),
-                'total_transaksi' => Transaksi::where('status', 'paid')->get(),
-                'total_paket' => Paket::all(),
-                'total_tryout' => Tryout::all(),
-                'total_latihan' => Latihan::all(),
-                'total_paket_video' => PaketVideo::all(),
-                'total_paket_text' => PaketText::all(),
-                'total_paket_latihan' => PaketVideo::all(),
-                'total_paket_soal' => PaketSoal::all(),
+                'member' => User::where('role', 'member')->get()->count(),
+                'total_transaksi' => Transaksi::where('status', 'paid')->sum('total_amount'),
+                'total_paket' => Paket::all()->count(),
+                'total_tryout' => Tryout::all()->count(),
+                'total_latihan' => Latihan::all()->count(),
+                'total_paket_video' => PaketVideo::all()->count(),
+                'total_paket_text' => PaketText::all()->count(),
+                'total_paket_latihan' => PaketVideo::all()->count(),
+                'total_paket_soal' => PaketSoal::all()->count(),
             ]);
         } else {
             return Inertia::render('Dashboard', [
                 'user' => auth()->user(),
-                'paket_aktif' => Transaksi::where('status', 'paid')->where('id_user', auth()->user()->id)->get(),
-                'transaksi_paid' => Transaksi::where('status', 'paid')->where('id_user', auth()->user()->id)->get(),
-                'transaksi_unpaid' => Transaksi::where('status', 'unpaid')->where('id_user', auth()->user()->id)->get(),
+                'paket_aktif' => Transaksi::where('status', 'paid')->where('id_user', auth()->user()->id)->get()->count(),
+                'transaksi_paid' => Transaksi::where('status', 'paid')->where('id_user', auth()->user()->id)->get()->count(),
+                'transaksi_unpaid' => Transaksi::where('status', 'unpaid')->where('id_user', auth()->user()->id)->get()->count(),
             ]);
         }
     }

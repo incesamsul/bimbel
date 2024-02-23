@@ -165,14 +165,14 @@ class TryoutController extends Controller
         $poinTkp1 = 0;
 
         $jawabanTryout = JawabanTryout::select('soal_id', 'jawaban' /* other columns from the GROUP BY clause */)
-                ->with('segment_tryout.tryout.tryout_soal.soal')
-                ->where('user_id', auth()->user()->id)
-                ->where('segment_tryout_id', $segment_tryout_id)
-                ->groupBy('soal_id', 'jawaban' /* other columns from the GROUP BY clause */)
+            ->with('segment_tryout.tryout.tryout_soal.soal')
+            ->where('user_id', auth()->user()->id)
+            ->where('segment_tryout_id', $segment_tryout_id)
+            ->groupBy('soal_id', 'jawaban' /* other columns from the GROUP BY clause */)
             ->get();
 
 
-            $tiuTerjawabData = JawabanTryout::select('soal_id', 'jawaban' /* other columns needed */)
+        $tiuTerjawabData = JawabanTryout::select('soal_id', 'jawaban' /* other columns needed */)
             ->whereHas('soal', function ($query) {
                 $query->where('kategori_soal_id', 1);
             })->where('segment_tryout_id', $segment_tryout_id)
@@ -491,15 +491,22 @@ class TryoutController extends Controller
     public function review($segment_tryout_id)
     {
 
+        $segmentTryout = SegmentTryout::where('id', $segment_tryout_id)->first();
+        $pembahasan = $segmentTryout->tryout->pembahasan;
+        if ($pembahasan == '1') {
+            return Inertia::render('Tryout/Review', [
+                'user' => auth()->user(),
+                // 'tryout_soal' => TryoutSoal::with('soal.pilihan')->with('tryout')->where('tryout_id', $segment_tryout_id)->get(),
+                'kategori_soals' => KategoriSoal::all(),
+                'kelas' => Kelas::all(),
+                'segment_tryout_id' => $segment_tryout_id,
+                'id_tryout' => SegmentTryout::where('id', $segment_tryout_id)->first()->tryout_id,
+            ]);
+        } else {
 
-        return Inertia::render('Tryout/Review', [
-            'user' => auth()->user(),
-            // 'tryout_soal' => TryoutSoal::with('soal.pilihan')->with('tryout')->where('tryout_id', $segment_tryout_id)->get(),
-            'kategori_soals' => KategoriSoal::all(),
-            'kelas' => Kelas::all(),
-            'segment_tryout_id' => $segment_tryout_id,
-            'id_tryout' => SegmentTryout::where('id', $segment_tryout_id)->first()->tryout_id,
-        ]);
+            // return alert
+            return redirect()->back()->with('error', 'You are not allowed to access the review page.');
+        }
     }
 
 
@@ -555,6 +562,28 @@ class TryoutController extends Controller
         Tryout::where('id', $idKelas)->delete();
         return response()->json([
             'message' => 'Tryout berhasil dihapus',
+        ]);
+    }
+
+    public function aktifkanPembahasan($idTryout)
+    {
+        Tryout::where('id', $idTryout)->update([
+            'pembahasan' => '1',
+        ]);
+
+        return response()->json([
+            'message' => 'Tryout berhasil diaktifkan',
+        ]);
+    }
+
+    public function nonAktifkanPembahasan($idTryout)
+    {
+        Tryout::where('id', $idTryout)->update([
+            'pembahasan' => '0',
+        ]);
+
+        return response()->json([
+            'message' => 'Tryout berhasil di non aktifkan',
         ]);
     }
 }

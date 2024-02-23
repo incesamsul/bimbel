@@ -63,6 +63,7 @@ import { showFlashMessage } from "@/global_func.js";
                     Mulai
                   </button>
                   <Link
+                    v-if="item.pembahasan == '1'"
                     title="History "
                     class="btn btn-secondary ml-2"
                     :href="'/member/latihan/history/' + item.id"

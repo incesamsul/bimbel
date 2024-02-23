@@ -207,6 +207,8 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::get('/tryout/create', [TryoutController::class, 'create']);
     Route::post('/tryout', [TryoutController::class, 'store']);
     Route::put('/tryout', [TryoutController::class, 'update']);
+    Route::put('/tryout/aktifkan-pembahasan/{id_tryout}', [TryoutController::class, 'aktifkanPembahasan']);
+    Route::put('/tryout/non-aktifkan-pembahasan/{id_tryout}', [TryoutController::class, 'nonAktifkanPembahasan']);
     Route::get('/tryout/edit/{id_soal}', [TryoutController::class, 'edit']);
     Route::delete('/tryout/{id_soal}', [TryoutController::class, 'delete'])->name('tryout.delete');
 
@@ -216,6 +218,8 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::get('/latihan/create', [LatihanController::class, 'create']);
     Route::post('/latihan', [LatihanController::class, 'store']);
     Route::put('/latihan', [LatihanController::class, 'update']);
+    Route::put('/latihan/aktifkan-pembahasan/{id_tryout}', [LatihanController::class, 'aktifkanPembahasan']);
+    Route::put('/latihan/non-aktifkan-pembahasan/{id_tryout}', [LatihanController::class, 'nonAktifkanPembahasan']);
     Route::get('/latihan/edit/{id_soal}', [LatihanController::class, 'edit']);
     Route::delete('/latihan/{id_soal}', [LatihanController::class, 'delete'])->name('latihan.delete');
 
@@ -228,7 +232,7 @@ Route::group(['middleware' => ['auth', 'ceklevel:admin']], function () {
     Route::group(['prefix' => 'admin'], function () {
         // GET REQUEST
         Route::get('/pengguna', [UserController::class, 'pengguna']);
-
+        Route::get('/pengguna-datatable', [UserController::class, 'penggunaDatatable'])->name('pengguna.datatable');
         Route::put('/reset-pass/{id}', [UserController::class, 'resetPass']);
         // CRUD PENGGUNA
         Route::post('/pengguna', [UserController::class, 'store'])->name('pengguna.store');

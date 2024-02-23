@@ -514,15 +514,20 @@ class LatihanController extends Controller
     public function review($segment_latihan_id)
     {
 
-
-        return Inertia::render('Latihan/Review', [
-            'user' => auth()->user(),
-            // 'latihan_soal' => latihanSoal::with('soal.pilihan')->with('latihan')->where('latihan_id', $segment_latihan_id)->get(),
-            'kategori_soals' => KategoriSoal::all(),
-            'kelas' => Kelas::all(),
-            'segment_latihan_id' => $segment_latihan_id,
-            'id_latihan' => SegmentLatihan::where('id', $segment_latihan_id)->first()->latihan_id,
-        ]);
+        $segmentLatihan = SegmentLatihan::where('id', $segment_latihan_id)->first();
+        $pembahasan = $segmentLatihan->latihan->pembahasan;
+        if ($pembahasan == '1') {
+            return Inertia::render('Latihan/Review', [
+                'user' => auth()->user(),
+                // 'latihan_soal' => latihanSoal::with('soal.pilihan')->with('latihan')->where('latihan_id', $segment_latihan_id)->get(),
+                'kategori_soals' => KategoriSoal::all(),
+                'kelas' => Kelas::all(),
+                'segment_latihan_id' => $segment_latihan_id,
+                'id_latihan' => SegmentLatihan::where('id', $segment_latihan_id)->first()->latihan_id,
+            ]);
+        } else {
+            return redirect()->back()->with('error', 'You are not allowed to access the review page.');
+        }
     }
 
 
@@ -580,6 +585,28 @@ class LatihanController extends Controller
         Latihan::where('id', $idKelas)->delete();
         return response()->json([
             'message' => 'latihan berhasil dihapus',
+        ]);
+    }
+
+    public function aktifkanPembahasan($idLatihan)
+    {
+        Latihan::where('id', $idLatihan)->update([
+            'pembahasan' => '1',
+        ]);
+
+        return response()->json([
+            'message' => 'Latihan berhasil diaktifkan',
+        ]);
+    }
+
+    public function nonAktifkanPembahasan($idLatihan)
+    {
+        Latihan::where('id', $idLatihan)->update([
+            'pembahasan' => '0',
+        ]);
+
+        return response()->json([
+            'message' => 'Latihan berhasil di non aktifkan',
         ]);
     }
 }
