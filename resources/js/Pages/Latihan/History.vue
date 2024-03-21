@@ -55,6 +55,7 @@ import { showFlashMessage } from "@/global_func.js";
                         >Hasil
                       </Link>
                       <Link
+                        v-if="pembahasan == '1'"
                         class="btn btn-success ml-2"
                         :href="'/member/latihan/review/' + item.id"
                       >
@@ -83,6 +84,7 @@ export default {
     user: Object,
     users: Object,
     history: Object,
+    pembahasan: String,
   },
   computed: {},
   methods: {
@@ -95,8 +97,6 @@ export default {
     $("#dataTable").DataTable({
       // DataTables configuration options
     });
-
-    showFlashMessage("Anda tidak memiliki akses ke halaman ini");
   },
 };
 </script>

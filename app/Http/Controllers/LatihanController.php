@@ -46,10 +46,12 @@ class LatihanController extends Controller
 
     public function history($latihanId)
     {
-
+        $latihan = Latihan::where('id', $latihanId)->first();
+        $pembahasan = $latihan->pembahasan;
         return Inertia::render('Latihan/History', [
             'user' => auth()->user(),
-            'history' => SegmentLatihan::where('latihan_id', $latihanId)->where('user_id', auth()->user()->id)->get()
+            'history' => SegmentLatihan::where('latihan_id', $latihanId)->where('user_id', auth()->user()->id)->get(),
+            'pembahasan' => $pembahasan
         ]);
     }
 

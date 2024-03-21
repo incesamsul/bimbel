@@ -47,9 +47,12 @@ class TryoutController extends Controller
     public function history($tryoutId)
     {
 
+        $tryout = Tryout::where('id', $tryoutId)->first();
+        $pembahasan = $tryout->pembahasan;
         return Inertia::render('Tryout/History', [
             'user' => auth()->user(),
-            'history' => SegmentTryout::where('tryout_id', $tryoutId)->where('user_id', auth()->user()->id)->get()
+            'history' => SegmentTryout::where('tryout_id', $tryoutId)->where('user_id', auth()->user()->id)->get(),
+            'pembahasan' => $pembahasan
         ]);
     }
 
@@ -238,7 +241,11 @@ class TryoutController extends Controller
 
 
             foreach ($answers as $key => $value) {
-                $answer = $value[0];
+
+
+                if (isset($value[0])) {
+                    $answer = $value[0];
+                }
                 if ($answer == $jawaban) {
                     $poin = $value[1];
                     if ($poin == 3) {
